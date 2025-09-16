@@ -207,9 +207,9 @@ Imagem compatível com normalidade. Sugerimos acompanhamento clínico de rotina.
                       <span className="font-semibold text-lg">Análise Concluída</span>
                     </div>
                     
-                    <Card className="p-6 bg-card shadow-soft">
+                    <Card className="p-6 bg-card shadow-soft border border-border">
                       <div className="prose prose-sm max-w-none">
-                        <pre className="whitespace-pre-wrap text-card-foreground font-mono text-sm leading-relaxed">
+                        <pre className="whitespace-pre-wrap text-card-foreground font-mono text-sm leading-relaxed bg-muted/30 p-4 rounded-lg border">
                           {analysisResult}
                         </pre>
                       </div>

@@ -9,52 +9,55 @@ All colors MUST be HSL.
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 215 25% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 215 25% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 215 25% 15%;
 
-    /* Medical Blue Theme */
-    --primary: 210 100% 45%;
+    /* Medical Blue Theme - Contraste otimizado */
+    --primary: 210 85% 35%;
     --primary-foreground: 0 0% 100%;
-    --primary-light: 210 100% 85%;
-    --primary-dark: 210 100% 35%;
+    --primary-light: 210 60% 85%;
+    --primary-dark: 210 100% 25%;
 
-    --secondary: 200 20% 96%;
-    --secondary-foreground: 210 100% 45%;
+    --secondary: 210 15% 94%;
+    --secondary-foreground: 215 25% 15%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 210 15% 94%;
+    --muted-foreground: 215 20% 40%;
 
-    --accent: 190 95% 50%;
+    --accent: 195 85% 40%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 210 100% 45%;
+    --border: 214 15% 88%;
+    --input: 214 15% 88%;
+    --ring: 210 85% 35%;
 
-    /* Medical specific colors */
-    --medical-success: 142 76% 36%;
-    --medical-warning: 45 93% 47%;
-    --medical-info: 210 100% 50%;
-    --medical-neutral: 215 20% 65%;
+    /* Medical specific colors - Alto contraste */
+    --medical-success: 142 70% 25%;
+    --medical-success-foreground: 0 0% 100%;
+    --medical-warning: 45 85% 35%;
+    --medical-warning-foreground: 0 0% 100%;
+    --medical-info: 210 85% 35%;
+    --medical-info-foreground: 0 0% 100%;
+    --medical-neutral: 215 15% 45%;
 
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(210 100% 45%), hsl(190 95% 50%));
-    --gradient-hero: linear-gradient(135deg, hsl(210 100% 45%) 0%, hsl(190 95% 50%) 100%);
-    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 40% 98%) 100%);
+    /* Gradients com melhor contraste */
+    --gradient-primary: linear-gradient(135deg, hsl(210 85% 35%), hsl(195 85% 40%));
+    --gradient-hero: linear-gradient(135deg, hsl(210 100% 25%) 0%, hsl(195 85% 30%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 15% 98%) 100%);
 
     /* Shadows */
-    --shadow-soft: 0 2px 8px -2px hsl(210 100% 45% / 0.1);
-    --shadow-medium: 0 4px 12px -2px hsl(210 100% 45% / 0.15);
-    --shadow-strong: 0 8px 25px -5px hsl(210 100% 45% / 0.2);
-    --shadow-glow: 0 0 30px hsl(210 100% 45% / 0.3);
+    --shadow-soft: 0 2px 8px -2px hsl(210 85% 35% / 0.1);
+    --shadow-medium: 0 4px 12px -2px hsl(210 85% 35% / 0.15);
+    --shadow-strong: 0 8px 25px -5px hsl(210 85% 35% / 0.2);
+    --shadow-glow: 0 0 30px hsl(210 85% 35% / 0.3);
 
     --radius: 0.5rem;
 
@@ -76,39 +79,48 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 215 30% 8%;
+    --foreground: 0 0% 95%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 215 25% 12%;
+    --card-foreground: 0 0% 95%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 215 25% 12%;
+    --popover-foreground: 0 0% 95%;
 
-    --primary: 210 100% 55%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --primary-light: 210 100% 75%;
+    --primary: 210 80% 55%;
+    --primary-foreground: 215 30% 8%;
+    --primary-light: 210 60% 75%;
     --primary-dark: 210 100% 45%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 215 20% 18%;
+    --secondary-foreground: 0 0% 95%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 215 20% 18%;
+    --muted-foreground: 215 15% 70%;
 
-    --accent: 190 95% 60%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 195 80% 60%;
+    --accent-foreground: 215 30% 8%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 65% 55%;
+    --destructive-foreground: 0 0% 95%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 210 100% 55%;
+    --border: 215 20% 20%;
+    --input: 215 20% 20%;
+    --ring: 210 80% 55%;
 
-    --gradient-primary: linear-gradient(135deg, hsl(210 100% 55%), hsl(190 95% 60%));
-    --gradient-hero: linear-gradient(135deg, hsl(210 100% 55%) 0%, hsl(190 95% 60%) 100%);
-    --gradient-subtle: linear-gradient(180deg, hsl(222.2 84% 4.9%) 0%, hsl(217.2 32.6% 17.5%) 100%);
+    /* Medical colors para dark mode */
+    --medical-success: 142 60% 45%;
+    --medical-success-foreground: 215 30% 8%;
+    --medical-warning: 45 80% 55%;
+    --medical-warning-foreground: 215 30% 8%;
+    --medical-info: 210 80% 55%;
+    --medical-info-foreground: 215 30% 8%;
+    --medical-neutral: 215 15% 65%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(210 80% 55%), hsl(195 80% 60%));
+    --gradient-hero: linear-gradient(135deg, hsl(210 100% 45%) 0%, hsl(195 80% 50%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(215 30% 8%) 0%, hsl(215 25% 12%) 100%);
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;

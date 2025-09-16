@@ -28,7 +28,7 @@ const HeroSection = () => {
             <Link to="/analise">
               <Button 
                 size="lg" 
-                className="bg-white text-primary hover:bg-white/90 shadow-strong hover:shadow-glow transition-all text-lg px-8 py-4"
+                className="bg-white text-primary-dark hover:bg-white/95 shadow-strong hover:shadow-glow transition-all text-lg px-8 py-4 font-bold"
               >
                 <Upload className="mr-2 h-5 w-5" />
                 Enviar Imagem Agora
@@ -39,7 +39,7 @@ const HeroSection = () => {
             <Button 
               variant="outline" 
               size="lg"
-              className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm text-lg px-8 py-4"
+              className="border-2 border-white text-white hover:bg-white hover:text-primary-dark backdrop-blur-sm text-lg px-8 py-4 font-semibold transition-all"
             >
               Ver Demonstração
             </Button>
@@ -47,22 +47,22 @@ const HeroSection = () => {
 
           {/* Process Steps Preview */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/30">
               <Upload className="h-8 w-8 text-white mb-3 mx-auto" />
-              <h3 className="font-semibold mb-2">1. Upload</h3>
-              <p className="text-sm text-white/80">Envie sua imagem médica</p>
+              <h3 className="font-semibold mb-2 text-white">1. Upload</h3>
+              <p className="text-sm text-white/90">Envie sua imagem médica</p>
             </div>
             
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/30">
               <Brain className="h-8 w-8 text-white mb-3 mx-auto" />
-              <h3 className="font-semibold mb-2">2. Análise IA</h3>
-              <p className="text-sm text-white/80">Processamento inteligente</p>
+              <h3 className="font-semibold mb-2 text-white">2. Análise IA</h3>
+              <p className="text-sm text-white/90">Processamento inteligente</p>
             </div>
             
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/30">
               <FileText className="h-8 w-8 text-white mb-3 mx-auto" />
-              <h3 className="font-semibold mb-2">3. Laudo</h3>
-              <p className="text-sm text-white/80">Resultado detalhado</p>
+              <h3 className="font-semibold mb-2 text-white">3. Laudo</h3>
+              <p className="text-sm text-white/90">Resultado detalhado</p>
             </div>
           </div>
         </div>

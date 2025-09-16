@@ -51,8 +51,11 @@ export default {
         },
         medical: {
           success: "hsl(var(--medical-success))",
+          "success-foreground": "hsl(var(--medical-success-foreground))",
           warning: "hsl(var(--medical-warning))",
+          "warning-foreground": "hsl(var(--medical-warning-foreground))",
           info: "hsl(var(--medical-info))",
+          "info-foreground": "hsl(var(--medical-info-foreground))",
           neutral: "hsl(var(--medical-neutral))",
         },
         sidebar: {

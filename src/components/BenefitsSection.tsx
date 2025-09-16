@@ -6,37 +6,43 @@ const benefits = [
     icon: Clock,
     title: "Rapidez Excepcional",
     description: "Laudos médicos gerados em segundos, não em horas ou dias.",
-    color: "text-medical-info"
+    color: "text-medical-info",
+    bgColor: "bg-medical-info/10"
   },
   {
     icon: Shield,
     title: "Segurança Total",
     description: "Seus dados médicos são protegidos com criptografia de ponta.",
-    color: "text-medical-success"
+    color: "text-medical-success",
+    bgColor: "bg-medical-success/10"
   },
   {
     icon: Zap,
     title: "Precisão Avançada",
     description: "IA treinada em milhares de imagens médicas para máxima acurácia.",
-    color: "text-medical-warning"
+    color: "text-medical-warning",
+    bgColor: "bg-medical-warning/10"
   },
   {
     icon: Users,
     title: "Fácil de Usar",
     description: "Interface intuitiva projetada para profissionais de saúde.",
-    color: "text-primary"
+    color: "text-primary",
+    bgColor: "bg-primary/10"
   },
   {
     icon: Award,
     title: "Qualidade Médica",
     description: "Padrões internacionais de qualidade em análise médica.",
-    color: "text-accent"
+    color: "text-accent",
+    bgColor: "bg-accent/10"
   },
   {
     icon: CheckCircle,
     title: "Disponível 24/7",
     description: "Acesso completo a qualquer hora, em qualquer lugar.",
-    color: "text-medical-neutral"
+    color: "text-medical-neutral",
+    bgColor: "bg-medical-neutral/10"
   }
 ];
 
@@ -64,7 +70,7 @@ const BenefitsSection = () => {
                 className="bg-card rounded-2xl p-8 shadow-soft hover:shadow-medium transition-all duration-300 hover:-translate-y-1 border border-border/50"
               >
                 <div className="mb-6">
-                  <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-4">
+                  <div className={`w-16 h-16 ${benefit.bgColor} rounded-2xl flex items-center justify-center mb-4`}>
                     <IconComponent className={`h-8 w-8 ${benefit.color}`} />
                   </div>
                   <h3 className="text-xl font-bold mb-3 text-card-foreground">

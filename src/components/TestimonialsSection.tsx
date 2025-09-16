@@ -61,7 +61,7 @@ const TestimonialsSection = () => {
 
               <div className="flex mb-4">
                 {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} className="h-5 w-5 text-medical-warning fill-current" />
+                  <Star key={i} className="h-5 w-5 text-medical-warning fill-medical-warning" />
                 ))}
               </div>
 
@@ -73,24 +73,24 @@ const TestimonialsSection = () => {
         </div>
 
         {/* Statistics */}
-        <div className="bg-gradient-primary rounded-3xl p-12 text-white text-center">
-          <h3 className="text-3xl font-bold mb-8">Resultados que falam por si</h3>
+        <div className="bg-gradient-hero rounded-3xl p-12 text-white text-center shadow-strong">
+          <h3 className="text-3xl font-bold mb-8 text-white">Resultados que falam por si</h3>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <div className="text-4xl font-bold mb-2">95%</div>
-              <div className="text-white/80">Precisão na análise</div>
+              <div className="text-4xl font-bold mb-2 text-white">95%</div>
+              <div className="text-white/90 font-medium">Precisão na análise</div>
             </div>
             <div>
-              <div className="text-4xl font-bold mb-2">30s</div>
-              <div className="text-white/80">Tempo médio</div>
+              <div className="text-4xl font-bold mb-2 text-white">30s</div>
+              <div className="text-white/90 font-medium">Tempo médio</div>
             </div>
             <div>
-              <div className="text-4xl font-bold mb-2">500+</div>
-              <div className="text-white/80">Médicos ativos</div>
+              <div className="text-4xl font-bold mb-2 text-white">500+</div>
+              <div className="text-white/90 font-medium">Médicos ativos</div>
             </div>
             <div>
-              <div className="text-4xl font-bold mb-2">10k+</div>
-              <div className="text-white/80">Análises realizadas</div>
+              <div className="text-4xl font-bold mb-2 text-white">10k+</div>
+              <div className="text-white/90 font-medium">Análises realizadas</div>
             </div>
           </div>
         </div>

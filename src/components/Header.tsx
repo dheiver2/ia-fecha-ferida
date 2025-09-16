@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import logoImage from "@/assets/logo-fecha-ferida.jpg";
 
 const Header = () => {
@@ -29,9 +30,11 @@ const Header = () => {
           </a>
         </nav>
 
-        <Button variant="default" className="bg-gradient-primary shadow-medium hover:shadow-strong transition-all">
-          Começar Análise
-        </Button>
+        <Link to="/analise">
+          <Button variant="default" className="bg-gradient-primary shadow-medium hover:shadow-strong transition-all">
+            Começar Análise
+          </Button>
+        </Link>
       </div>
     </header>
   );

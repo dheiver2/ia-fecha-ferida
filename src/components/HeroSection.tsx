@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import { ArrowRight, Upload, Brain, FileText } from "lucide-react";
 
 const HeroSection = () => {
@@ -24,14 +25,16 @@ const HeroSection = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Button 
-              size="lg" 
-              className="bg-white text-primary hover:bg-white/90 shadow-strong hover:shadow-glow transition-all text-lg px-8 py-4"
-            >
-              <Upload className="mr-2 h-5 w-5" />
-              Enviar Imagem Agora
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
+            <Link to="/analise">
+              <Button 
+                size="lg" 
+                className="bg-white text-primary hover:bg-white/90 shadow-strong hover:shadow-glow transition-all text-lg px-8 py-4"
+              >
+                <Upload className="mr-2 h-5 w-5" />
+                Enviar Imagem Agora
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
             
             <Button 
               variant="outline" 

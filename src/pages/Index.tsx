@@ -2,7 +2,6 @@ import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import BenefitsSection from "@/components/BenefitsSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
-import UploadSection from "@/components/UploadSection";
 
 const Index = () => {
   return (
@@ -11,7 +10,6 @@ const Index = () => {
       <HeroSection />
       <BenefitsSection />
       <TestimonialsSection />
-      <UploadSection />
       
       {/* Footer */}
       <footer className="bg-primary text-primary-foreground py-12">

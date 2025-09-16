@@ -1,4 +1,5 @@
 import { CheckCircle, Clock, Shield, Zap, Users, Award } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const benefits = [
   {
@@ -87,9 +88,11 @@ const BenefitsSection = () => {
               Junte-se a centenas de profissionais que já confiam em nossa tecnologia.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-gradient-primary text-white px-8 py-4 rounded-xl font-semibold shadow-medium hover:shadow-strong transition-all">
-                Começar Gratuitamente
-              </button>
+              <Link to="/analise">
+                <button className="bg-gradient-primary text-white px-8 py-4 rounded-xl font-semibold shadow-medium hover:shadow-strong transition-all">
+                  Começar Gratuitamente
+                </button>
+              </Link>
               <button className="border border-border px-8 py-4 rounded-xl font-semibold hover:bg-muted transition-all">
                 Agendar Demonstração
               </button>

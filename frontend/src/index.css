@@ -1,0 +1,402 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 205 85% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 205 85% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 205 85% 15%;
+
+    /* Design System - Paleta Casa Fecha Feridas */
+    --primary: 220 85% 32%;        /* #1e3a8a - Azul principal da logomarca */
+    --primary-foreground: 0 0% 98%;
+    --primary-light: 213 93% 68%;   /* #60a5fa - Azul claro da árvore */
+    --primary-dark: 220 91% 20%;    /* Versão mais escura do azul principal */
+
+    --secondary: 213 100% 96%;      /* Azul muito claro para backgrounds */
+    --secondary-foreground: 220 85% 32%;
+
+    --muted: 213 50% 95%;
+    --muted-foreground: 220 30% 40%;
+
+    --accent: 188 95% 35%;          /* #0891b2 - Verde-azul da árvore */
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 200 30% 85%;
+    --input: 200 30% 90%;
+    --ring: 205 85% 35%;
+
+    /* Medical specific colors - Paleta médica consistente */
+    --medical-blue: 205 85% 25%;
+    --medical-green: 160 75% 30%;
+    --medical-red: 0 75% 45%;
+    --medical-orange: 35 85% 40%;
+    --medical-gray: 205 15% 35%;
+    --medical-success: 142 75% 20%;
+    --medical-success-foreground: 0 0% 100%;
+    --medical-warning: 45 90% 30%;
+    --medical-warning-foreground: 0 0% 100%;
+    --medical-error: 0 75% 45%;
+    --medical-error-foreground: 0 0% 100%;
+    --medical-info: 210 90% 30%;
+    --medical-info-foreground: 0 0% 100%;
+    --medical-neutral: 215 20% 40%;
+
+    /* Gradients Casa Fecha Feridas */
+    --gradient-primary: linear-gradient(135deg, hsl(220 85% 32%) 0%, hsl(213 93% 68%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(220 91% 20%) 0%, hsl(188 95% 35%) 50%, hsl(213 93% 68%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(213 100% 98%) 100%);
+
+    /* Shadows */
+    --shadow-soft: 0 2px 8px -2px hsl(210 90% 30% / 0.1);
+    --shadow-medium: 0 4px 12px -2px hsl(210 90% 30% / 0.15);
+    --shadow-strong: 0 8px 25px -5px hsl(210 90% 30% / 0.2);
+    --shadow-glow: 0 0 30px hsl(210 90% 30% / 0.3);
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 220 15% 8%;
+    --foreground: 210 40% 98%;
+
+    --card: 220 15% 10%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 220 15% 10%;
+    --popover-foreground: 210 40% 98%;
+
+    /* Design System - Paleta Casa Fecha Feridas - Modo Escuro */
+    --primary: 213 93% 68%;         /* Azul claro como primário no escuro */
+    --primary-foreground: 220 15% 8%;
+    --primary-light: 213 93% 78%;   /* Versão mais clara */
+    --primary-dark: 213 93% 58%;    /* Versão mais escura */
+
+    --secondary: 220 15% 15%;       /* Cinza escuro para backgrounds */
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 220 15% 12%;
+    --muted-foreground: 215 20% 75%;  /* Aumentado de 65% para 75% para melhor contraste */
+
+    --accent: 188 95% 45%;          /* Verde-azul mais claro */
+    --accent-foreground: 220 15% 8%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 220 15% 20%;
+    --input: 220 15% 18%;
+    --ring: 213 93% 68%;
+
+    /* Medical specific colors - Paleta médica modo escuro */
+    --medical-blue: 205 85% 70%;
+    --medical-green: 160 75% 65%;
+    --medical-red: 0 75% 70%;
+    --medical-orange: 35 85% 65%;
+    --medical-gray: 205 15% 75%;      /* Melhor contraste para textos secundários */
+    --medical-success: 142 75% 55%;
+    --medical-success-foreground: 220 15% 8%;
+    --medical-warning: 45 90% 65%;
+    --medical-warning-foreground: 220 15% 8%;
+    --medical-error: 0 75% 70%;
+    --medical-error-foreground: 220 15% 8%;
+    --medical-info: 210 90% 65%;
+    --medical-info-foreground: 220 15% 8%;
+    --medical-neutral: 215 20% 78%;   /* Melhor contraste para elementos neutros */
+
+    /* Gradients Casa Fecha Feridas - Modo Escuro */
+    --gradient-primary: linear-gradient(135deg, hsl(213 93% 68%) 0%, hsl(188 95% 45%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(220 15% 12%) 0%, hsl(188 95% 35%) 50%, hsl(213 93% 68%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(220 15% 8%) 0%, hsl(220 15% 12%) 100%);
+
+    /* Shadows - Modo Escuro */
+    --shadow-soft: 0 2px 8px -2px hsl(0 0% 0% / 0.3);
+    --shadow-medium: 0 4px 12px -2px hsl(0 0% 0% / 0.4);
+    --shadow-strong: 0 8px 25px -5px hsl(0 0% 0% / 0.5);
+    --shadow-glow: 0 0 30px hsl(213 93% 68% / 0.2);
+
+    --sidebar-background: 220 15% 10%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 210 40% 98%;
+    --sidebar-primary-foreground: 220 15% 8%;
+    --sidebar-accent: 220 15% 15%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 220 15% 20%;
+    --sidebar-ring: 213 93% 68%;
+  }
+
+  /* Estilos específicos para o laudo médico */
+  .medical-report-container {
+    font-family: 'Times New Roman', serif;
+    line-height: 1.4;
+    color: #000;
+    background: white;
+    padding: 20px;
+  }
+
+  .medical-report-container h1,
+  .medical-report-container h2,
+  .medical-report-container h3 {
+    margin: 0;
+    padding: 0;
+  }
+
+  .medical-report-container table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  .medical-report-container td,
+  .medical-report-container th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+
+  .medical-report-container ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  .medical-report-container p {
+    margin: 0;
+    margin-bottom: 8px;
+  }
+
+  .medical-report-container section {
+    margin-bottom: 25px;
+  }
+
+  /* Estilos específicos para impressão do laudo médico */
+  @media print {
+    .medical-report-container {
+      padding: 0;
+      font-size: 12px;
+    }
+
+    /* Ocultar elementos que não devem aparecer na impressão */
+    .no-print,
+    button,
+    .print-hidden,
+    nav,
+    .sidebar,
+    .toolbar {
+      display: none !important;
+    }
+
+    /* Configurações gerais para impressão */
+    * {
+      -webkit-print-color-adjust: exact !important;
+      color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: white !important;
+      color: black !important;
+      font-family: 'Times New Roman', serif !important;
+      font-size: 12pt !important;
+      line-height: 1.4 !important;
+    }
+
+    /* Container principal do laudo */
+    #medical-report-content {
+      width: 100% !important;
+      max-width: none !important;
+      margin: 0 !important;
+      padding: 15mm !important;
+      background: white !important;
+      box-shadow: none !important;
+      border: none !important;
+    }
+
+    /* Cards e seções */
+    .card,
+    .section {
+      background: white !important;
+      border: 1px solid #ccc !important;
+      box-shadow: none !important;
+      margin-bottom: 8mm !important;
+      page-break-inside: avoid;
+    }
+
+    /* Títulos de seções */
+    .card-title,
+    .section-title {
+      background: #f5f5f5 !important;
+      color: black !important;
+      font-weight: bold !important;
+      font-size: 14pt !important;
+      padding: 3mm !important;
+      border-bottom: 2px solid #333 !important;
+      margin-bottom: 3mm !important;
+    }
+
+    /* Conteúdo das seções */
+    .card-content {
+      padding: 5mm !important;
+      color: black !important;
+    }
+
+    /* Badges e elementos coloridos */
+    .badge {
+      background: #e5e5e5 !important;
+      color: black !important;
+      border: 1px solid #999 !important;
+      padding: 1mm 2mm !important;
+      font-size: 10pt !important;
+    }
+
+    /* Grids e layouts */
+    .grid {
+      display: block !important;
+    }
+
+    .grid > div {
+      margin-bottom: 3mm !important;
+      display: block !important;
+    }
+
+    /* Textos importantes */
+    .font-bold,
+    .font-semibold {
+      font-weight: bold !important;
+    }
+
+    /* Cores específicas para impressão */
+    .text-red-600,
+    .text-red-800,
+    .text-red-900 {
+      color: #cc0000 !important;
+    }
+
+    .text-blue-600,
+    .text-blue-800 {
+      color: #0066cc !important;
+    }
+
+    .text-green-600,
+    .text-green-800 {
+      color: #006600 !important;
+    }
+
+    /* Backgrounds para impressão */
+    .bg-red-50,
+    .bg-red-100 {
+      background: #f9f9f9 !important;
+      border: 1px solid #ccc !important;
+    }
+
+    .bg-blue-50,
+    .bg-blue-100 {
+      background: #f5f5f5 !important;
+      border: 1px solid #ccc !important;
+    }
+
+    /* Footer e elementos finais */
+    .footer {
+      margin-top: 10mm !important;
+      border-top: 2px solid #333 !important;
+      padding-top: 5mm !important;
+      text-align: center !important;
+      font-size: 10pt !important;
+    }
+
+    /* Quebras de página */
+    .page-break-before {
+      page-break-before: always;
+    }
+
+    .page-break-after {
+      page-break-after: always;
+    }
+
+    .page-break-inside-avoid {
+      page-break-inside: avoid;
+    }
+
+    /* Configurações da página */
+    @page {
+      size: A4;
+      margin: 15mm;
+      @top-center {
+        content: "Laudo Médico - Página " counter(page);
+        font-size: 10pt;
+        color: #666;
+      }
+    }
+
+    /* Primeira página sem cabeçalho */
+    @page :first {
+      @top-center {
+        content: none;
+      }
+    }
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /* Classes utilitárias para melhor contraste no modo escuro */
+  .text-secondary-dark {
+    @apply text-gray-600 dark:text-gray-300;
+  }
+
+  .text-muted-dark {
+    @apply text-gray-500 dark:text-gray-400;
+  }
+
+  .text-subtle-dark {
+    @apply text-gray-400 dark:text-gray-500;
+  }
+
+  /* Melhor contraste para elementos específicos no modo escuro */
+  .dark .text-gray-500 {
+    color: hsl(215 20% 75%) !important;
+  }
+
+  .dark .text-gray-600 {
+    color: hsl(215 20% 80%) !important;
+  }
+
+  .dark .text-gray-400 {
+    color: hsl(215 20% 70%) !important;
+  }
+
+  .dark .text-slate-600 {
+    color: hsl(215 20% 78%) !important;
+  }
+
+  .dark .text-slate-700 {
+    color: hsl(215 20% 85%) !important;
+  }
+}

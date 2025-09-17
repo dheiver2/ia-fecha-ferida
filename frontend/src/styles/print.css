@@ -1,0 +1,274 @@
+/* Estilos para impressão do laudo médico */
+@media print {
+  /* Reset geral para impressão */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Ocultar elementos desnecessários na impressão */
+  .no-print,
+  button:not(.print-button),
+  .sidebar,
+  .navigation,
+  .header-actions {
+    display: none !important;
+  }
+
+  /* Layout da página */
+  @page {
+    size: A4;
+    margin: 1.5cm 2cm;
+  }
+
+  body {
+    font-size: 12pt;
+    line-height: 1.4;
+    color: #000 !important;
+    background: white !important;
+  }
+
+  /* Container principal do laudo */
+  .compact-medical-report {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* Cabeçalho do laudo */
+  .report-header {
+    border-bottom: 2px solid #000;
+    padding-bottom: 10pt;
+    margin-bottom: 15pt;
+  }
+
+  .report-title {
+    font-size: 18pt;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 5pt;
+  }
+
+  .report-subtitle {
+    font-size: 12pt;
+    text-align: center;
+    color: #666 !important;
+  }
+
+  /* Grid de informações principais */
+  .patient-info-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 15pt !important;
+    margin-bottom: 20pt !important;
+  }
+
+  /* Seções do relatório */
+  .report-section {
+    margin-bottom: 15pt;
+    page-break-inside: avoid;
+  }
+
+  .section-title {
+    font-size: 14pt;
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 3pt;
+    margin-bottom: 8pt;
+  }
+
+  /* Diagnóstico principal - destaque */
+  .diagnosis-highlight {
+    border: 2px solid #dc2626 !important;
+    background-color: #fef2f2 !important;
+    padding: 12pt !important;
+    margin: 15pt 0 !important;
+    page-break-inside: avoid;
+  }
+
+  .diagnosis-title {
+    font-size: 16pt;
+    font-weight: bold;
+    color: #dc2626 !important;
+    margin-bottom: 8pt;
+  }
+
+  .diagnosis-content {
+    font-size: 14pt;
+    font-weight: bold;
+    margin-bottom: 5pt;
+  }
+
+  /* Grid de achados */
+  .findings-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 15pt !important;
+    margin: 15pt 0 !important;
+  }
+
+  .finding-box {
+    border: 1px solid #ccc !important;
+    padding: 10pt !important;
+    background-color: #f9f9f9 !important;
+  }
+
+  .finding-title {
+    font-size: 12pt;
+    font-weight: bold;
+    margin-bottom: 8pt;
+    color: #333 !important;
+  }
+
+  /* Listas */
+  .recommendation-list {
+    margin: 8pt 0;
+  }
+
+  .recommendation-item {
+    margin-bottom: 5pt;
+    padding-left: 15pt;
+    position: relative;
+  }
+
+  .recommendation-item::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+  }
+
+  /* Detalhes expandidos */
+  .details-section {
+    border-top: 1px solid #ccc;
+    padding-top: 15pt;
+    margin-top: 20pt;
+  }
+
+  /* Footer */
+  .report-footer {
+    border-top: 1px solid #ccc;
+    padding-top: 10pt;
+    margin-top: 20pt;
+    font-size: 10pt;
+    color: #666 !important;
+  }
+
+  /* Quebras de página */
+  .page-break-before {
+    page-break-before: always;
+  }
+
+  .page-break-after {
+    page-break-after: always;
+  }
+
+  .page-break-inside-avoid {
+    page-break-inside: avoid;
+  }
+
+  /* Badges e elementos visuais */
+  .badge {
+    border: 1px solid #ccc !important;
+    background-color: #f5f5f5 !important;
+    color: #000 !important;
+    padding: 2pt 6pt !important;
+    font-size: 10pt !important;
+  }
+
+  /* Ícones - ocultar na impressão */
+  .lucide {
+    display: none !important;
+  }
+
+  /* Botões de ação - ocultar na impressão */
+  .action-buttons {
+    display: none !important;
+  }
+
+  /* Tabelas */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10pt 0;
+  }
+
+  th, td {
+    border: 1px solid #ccc;
+    padding: 6pt;
+    text-align: left;
+    font-size: 11pt;
+  }
+
+  th {
+    background-color: #f5f5f5 !important;
+    font-weight: bold;
+  }
+
+  /* Assinatura médica */
+  .medical-signature {
+    margin-top: 30pt;
+    text-align: center;
+    border-top: 1px solid #000;
+    padding-top: 10pt;
+  }
+
+  .signature-line {
+    width: 200pt;
+    border-bottom: 1px solid #000;
+    margin: 20pt auto 5pt;
+  }
+
+  .signature-text {
+    font-size: 10pt;
+    color: #666 !important;
+  }
+}
+
+/* Estilos específicos para o componente CompactUnifiedMedicalReport */
+@media print {
+  .compact-unified-report {
+    max-width: none !important;
+    margin: 0 !important;
+  }
+
+  .compact-unified-report .card {
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+
+  .compact-unified-report .gradient-header {
+    background: #f8f9fa !important;
+    border: 1px solid #dee2e6 !important;
+  }
+
+  .compact-unified-report .info-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10pt !important;
+  }
+
+  .compact-unified-report .diagnosis-section {
+    background: #fff5f5 !important;
+    border: 2px solid #dc2626 !important;
+    page-break-inside: avoid;
+  }
+
+  .compact-unified-report .findings-section {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10pt !important;
+  }
+
+  .compact-unified-report .details-toggle {
+    display: none !important;
+  }
+
+  .compact-unified-report .expanded-details {
+    display: block !important;
+  }
+}

@@ -1,7 +1,8 @@
 const express = require('express');
 const { body, query, param, validationResult } = require('express-validator');
 const { authenticateToken, requireRole, extractRequestInfo } = require('../middleware/auth');
-const Database = require('../database/database');
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
 const router = express.Router();
 
@@ -116,7 +117,7 @@ const handleValidationErrors = (req, res, next) => {
 // GET /api/patients - Listar pacientes com busca e paginação
 router.get('/', searchValidation, handleValidationErrors, async (req, res) => {
     try {
-        const db = Database.getInstance();
+
         await db.initialize(); // Garantir que está inicializado
         
         const {
@@ -156,12 +157,12 @@ router.get('/', searchValidation, handleValidationErrors, async (req, res) => {
         };
 
         // Contar total de registros
-        const total = await db.prisma.patient.count({
+        const total = await prisma.patient.count({
             where: whereCondition
         });
 
         // Buscar pacientes
-        const patients = await db.prisma.patient.findMany({
+        const patients = await prisma.patient.findMany({
             where: whereCondition,
             select: {
                 id: true,
@@ -225,11 +226,11 @@ router.get('/', searchValidation, handleValidationErrors, async (req, res) => {
 // GET /api/patients/:id - Obter paciente específico
 router.get('/:id', idValidation, handleValidationErrors, async (req, res) => {
     try {
-        const db = Database.getInstance();
+
         await db.initialize(); // Garantir que está inicializado
         const patientId = parseInt(req.params.id);
 
-        const patient = await db.prisma.patient.findFirst({
+        const patient = await prisma.patient.findFirst({
             where: {
                 id: patientId,
                 createdBy: req.user.id
@@ -280,7 +281,7 @@ router.get('/:id', idValidation, handleValidationErrors, async (req, res) => {
 // POST /api/patients - Criar novo paciente
 router.post('/', patientValidation, handleValidationErrors, async (req, res) => {
     try {
-        const db = Database.getInstance();
+
         await db.initialize(); // Garantir que está inicializado
         
         const patientData = {
@@ -290,7 +291,7 @@ router.post('/', patientValidation, handleValidationErrors, async (req, res) => 
 
         // Verificar se já existe paciente com mesmo CPF (se fornecido)
         if (patientData.cpf) {
-            const existingPatient = await db.prisma.patient.findFirst({
+            const existingPatient = await prisma.patient.findFirst({
                 where: {
                     cpf: patientData.cpf,
                     createdBy: req.user.id
@@ -320,7 +321,7 @@ router.post('/', patientValidation, handleValidationErrors, async (req, res) => 
             createdBy: req.user.id
         };
 
-        const result = await db.prisma.patient.create({
+        const result = await prisma.patient.create({
             data: prismaData
         });
 
@@ -361,12 +362,12 @@ router.post('/', patientValidation, handleValidationErrors, async (req, res) => 
 // PUT /api/patients/:id - Atualizar paciente
 router.put('/:id', idValidation, patientValidation, handleValidationErrors, async (req, res) => {
     try {
-        const db = Database.getInstance();
+
         await db.initialize(); // Garantir que está inicializado
         const patientId = parseInt(req.params.id);
 
         // Verificar se paciente existe e pertence ao usuário
-        const existingPatient = await db.prisma.patient.findFirst({
+        const existingPatient = await prisma.patient.findFirst({
             where: {
                 id: patientId,
                 createdBy: req.user.id
@@ -384,7 +385,7 @@ router.put('/:id', idValidation, patientValidation, handleValidationErrors, asyn
 
         // Verificar se CPF já está em uso por outro paciente (se fornecido)
         if (req.body.cpf) {
-            const cpfInUse = await db.prisma.patient.findFirst({
+            const cpfInUse = await prisma.patient.findFirst({
                 where: {
                     cpf: req.body.cpf,
                     id: { not: patientId },
@@ -414,7 +415,7 @@ router.put('/:id', idValidation, patientValidation, handleValidationErrors, asyn
             medicalHistory: req.body.medical_history || null
         };
 
-        const result = await db.prisma.patient.update({
+        const result = await prisma.patient.update({
             where: { id: patientId },
             data: updateData
         });
@@ -456,12 +457,12 @@ router.put('/:id', idValidation, patientValidation, handleValidationErrors, asyn
 // DELETE /api/patients/:id - Excluir paciente
 router.delete('/:id', idValidation, handleValidationErrors, async (req, res) => {
     try {
-        const db = Database.getInstance();
+
         await db.initialize(); // Garantir que está inicializado
         const patientId = parseInt(req.params.id);
 
         // Verificar se paciente existe e pertence ao usuário
-        const existingPatient = await db.prisma.patient.findFirst({
+        const existingPatient = await prisma.patient.findFirst({
             where: {
                 id: patientId,
                 createdBy: req.user.id
@@ -478,7 +479,7 @@ router.delete('/:id', idValidation, handleValidationErrors, async (req, res) => 
         }
 
         // Verificar se existem análises associadas
-        const analysisCount = await db.prisma.woundAnalysis.count({
+        const analysisCount = await prisma.woundAnalysis.count({
             where: {
                 patientId: patientId
             }
@@ -492,7 +493,7 @@ router.delete('/:id', idValidation, handleValidationErrors, async (req, res) => 
             });
         }
 
-        await db.prisma.patient.delete({
+        await prisma.patient.delete({
             where: {
                 id: patientId
             }
@@ -516,12 +517,12 @@ router.delete('/:id', idValidation, handleValidationErrors, async (req, res) => 
 // GET /api/patients/:id/analyses - Obter análises do paciente
 router.get('/:id/analyses', idValidation, handleValidationErrors, async (req, res) => {
     try {
-        const db = Database.getInstance();
+
         await db.initialize(); // Garantir que está inicializado
         const patientId = parseInt(req.params.id);
 
         // Verificar se paciente existe e pertence ao usuário
-        const patient = await db.prisma.patient.findFirst({
+        const patient = await prisma.patient.findFirst({
             where: {
                 id: patientId,
                 createdBy: req.user.id
@@ -537,7 +538,7 @@ router.get('/:id/analyses', idValidation, handleValidationErrors, async (req, re
             });
         }
 
-        const analyses = await db.prisma.woundAnalysis.findMany({
+        const analyses = await prisma.woundAnalysis.findMany({
             where: {
                 patientId: patientId
             },

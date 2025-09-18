@@ -1,7 +1,8 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const { getDatabase } = require('../database/database');
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
 class AuthService {
     constructor() {
@@ -70,7 +71,7 @@ class AuthService {
 
     // Registrar novo usuário
     async register(userData, requestInfo = {}) {
-        const db = await getDatabase();
+
         
         try {
             const { email, password, name, role = 'user', specialty, crm, institution, phone } = userData;
@@ -136,7 +137,7 @@ class AuthService {
 
     // Login do usuário
     async login(credentials, requestInfo = {}) {
-        const db = await getDatabase();
+
         
         try {
             const { email, password } = credentials;
@@ -183,7 +184,7 @@ class AuthService {
             });
 
             // Atualizar último login
-            await db.prisma.user.update({
+            await prisma.user.update({
                 where: { id: user.id },
                 data: { lastLogin: new Date() }
             });
@@ -222,7 +223,7 @@ class AuthService {
 
     // Logout do usuário
     async logout(token, requestInfo = {}) {
-        const db = await getDatabase();
+
         
         try {
             const tokenHash = this.hashToken(token);
@@ -257,7 +258,7 @@ class AuthService {
 
     // Verificar se usuário está autenticado
     async verifyAuthentication(token) {
-        const db = await getDatabase();
+
         
         try {
             // Verificar token JWT
@@ -271,7 +272,7 @@ class AuthService {
             }
 
             // Atualizar último uso da sessão
-            await db.prisma.userSession.updateMany({
+            await prisma.userSession.updateMany({
                 where: { tokenHash: tokenHash },
                 data: { lastUsed: new Date() }
             });
@@ -291,7 +292,7 @@ class AuthService {
 
     // Alterar senha
     async changePassword(userId, oldPassword, newPassword) {
-        const db = await getDatabase();
+
         
         try {
             if (!oldPassword || !newPassword) {
@@ -318,7 +319,7 @@ class AuthService {
             const newPasswordHash = await this.hashPassword(newPassword);
 
             // Atualizar senha
-            await db.prisma.user.update({
+            await prisma.user.update({
                 where: { id: userId },
                 data: { 
                     passwordHash: newPasswordHash,
@@ -327,7 +328,7 @@ class AuthService {
             });
 
             // Invalidar todas as sessões do usuário (forçar novo login)
-            await db.prisma.userSession.updateMany({
+            await prisma.userSession.updateMany({
                 where: { userId: userId },
                 data: { isActive: false }
             });
@@ -344,10 +345,10 @@ class AuthService {
 
     // Listar sessões ativas do usuário
     async getUserSessions(userId) {
-        const db = await getDatabase();
+
         
         try {
-            const sessions = await db.prisma.userSession.findMany({
+            const sessions = await prisma.userSession.findMany({
                 where: {
                     userId: userId,
                     isActive: true,

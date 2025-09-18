@@ -1,7 +1,8 @@
 const express = require('express');
 const { param, validationResult } = require('express-validator');
 const { authenticateToken, extractRequestInfo } = require('../middleware/auth');
-const Database = require('../database/database');
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 const fs = require('fs').promises;
 const path = require('path');
 
@@ -34,13 +35,12 @@ const handleValidationErrors = (req, res, next) => {
 // GET /api/analyses - Listar análises do usuário
 router.get('/', async (req, res) => {
     try {
-        const db = Database.getInstance();
-        await db.initialize(); // Garantir que está inicializado
+        // Usando Prisma Client
         const { page = 1, limit = 50 } = req.query;
         const offset = (page - 1) * limit;
 
         // Usar método específico do Prisma para buscar análises
-        const analyses = await db.prisma.woundAnalysis.findMany({
+        const analyses = await prisma.woundAnalysis.findMany({
             where: {
                 userId: req.user.id
             },
@@ -60,7 +60,7 @@ router.get('/', async (req, res) => {
         });
 
         // Contar total de análises
-        const total = await db.prisma.woundAnalysis.count({
+        const total = await prisma.woundAnalysis.count({
             where: {
                 userId: req.user.id
             }
@@ -108,11 +108,11 @@ router.get('/', async (req, res) => {
 // GET /api/analyses/:id - Obter análise específica
 router.get('/:id', idValidation, handleValidationErrors, async (req, res) => {
     try {
-        const db = Database.getInstance();
+
         await db.initialize(); // Garantir que está inicializado
         const analysisId = parseInt(req.params.id);
 
-        const analysis = await db.prisma.woundAnalysis.findFirst({
+        const analysis = await prisma.woundAnalysis.findFirst({
             where: {
                 id: analysisId,
                 userId: req.user.id
@@ -204,7 +204,7 @@ router.get('/:id', idValidation, handleValidationErrors, async (req, res) => {
 // DELETE /api/analyses/bulk - Excluir múltiplas análises
 router.delete('/bulk', async (req, res) => {
     try {
-        const db = Database.getInstance();
+
         await db.initialize(); // Garantir que está inicializado
         const { analysisIds } = req.body;
 
@@ -219,7 +219,7 @@ router.delete('/bulk', async (req, res) => {
         const numericIds = analysisIds.map(id => parseInt(id));
 
         // Verificar se todas as análises pertencem ao usuário
-        const existingAnalyses = await db.prisma.woundAnalysis.findMany({
+        const existingAnalyses = await prisma.woundAnalysis.findMany({
             where: {
                 id: {
                     in: numericIds
@@ -242,7 +242,7 @@ router.delete('/bulk', async (req, res) => {
         }
 
         // Deletar análises do banco de dados
-        await db.prisma.woundAnalysis.deleteMany({
+        await prisma.woundAnalysis.deleteMany({
             where: {
                 id: {
                     in: numericIds
@@ -287,12 +287,12 @@ router.delete('/bulk', async (req, res) => {
 // DELETE /api/analyses/:id - Excluir análise
 router.delete('/:id', idValidation, handleValidationErrors, async (req, res) => {
     try {
-        const db = Database.getInstance();
+
         await db.initialize(); // Garantir que está inicializado
         const analysisId = parseInt(req.params.id);
 
         // Verificar se análise existe e pertence ao usuário
-        const existingAnalysis = await db.prisma.woundAnalysis.findFirst({
+        const existingAnalysis = await prisma.woundAnalysis.findFirst({
             where: {
                 id: analysisId,
                 userId: req.user.id
@@ -313,7 +313,7 @@ router.delete('/:id', idValidation, handleValidationErrors, async (req, res) => 
         }
 
         // Deletar análise do banco de dados
-        await db.prisma.woundAnalysis.delete({
+        await prisma.woundAnalysis.delete({
             where: {
                 id: analysisId
             }

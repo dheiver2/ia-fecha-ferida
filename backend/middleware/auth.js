@@ -136,11 +136,14 @@ const canAccessResource = (resourceType) => {
 
                 case 'patient':
                     // Verificar se o paciente pertence ao usuário
-                    const { getDatabase } = require('../database/database');
-                    const db = await getDatabase();
-                    const patient = await db.get('SELECT user_id FROM patients WHERE id = ?', [resourceId]);
+                    const { PrismaClient } = require('@prisma/client');
+                    const prisma = new PrismaClient();
+                    const patient = await prisma.patient.findUnique({
+                        where: { id: parseInt(resourceId) },
+                        select: { userId: true }
+                    });
                     
-                    if (!patient || patient.user_id !== userId) {
+                    if (!patient || patient.userId !== userId) {
                         return res.status(403).json({
                             success: false,
                             message: 'Acesso negado ao paciente',
@@ -151,10 +154,13 @@ const canAccessResource = (resourceType) => {
 
                 case 'analysis':
                     // Verificar se a análise pertence ao usuário
-                    const db2 = await getDatabase();
-                    const analysis = await db2.get('SELECT user_id FROM wound_analyses WHERE id = ?', [resourceId]);
+                    const prisma2 = new PrismaClient();
+                    const analysis = await prisma2.woundAnalysis.findUnique({
+                        where: { id: parseInt(resourceId) },
+                        select: { userId: true }
+                    });
                     
-                    if (!analysis || analysis.user_id !== userId) {
+                    if (!analysis || analysis.userId !== userId) {
                         return res.status(403).json({
                             success: false,
                             message: 'Acesso negado à análise',

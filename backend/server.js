@@ -6,8 +6,9 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
-// Importar banco de dados
-const Database = require('./database/database');
+// Importar Prisma Client
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -98,8 +99,7 @@ const analysesRoutes = require('./routes/analyses');
 // Inicializar banco de dados
 async function initializeDatabase() {
   try {
-    const db = Database.getInstance();
-    await db.connect();
+    await prisma.$connect();
     console.log('✅ Banco de dados inicializado com sucesso');
   } catch (error) {
     console.error('❌ Erro ao inicializar banco de dados:', error);

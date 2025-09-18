@@ -146,6 +146,8 @@ class AuthService {
 
         
         try {
+            console.log('🔍 AuthService: Iniciando login...');
+            console.log('🔍 Prisma instance:', prisma ? 'OK' : 'UNDEFINED');
             const { email, password } = credentials;
             
             if (!email || !password) {

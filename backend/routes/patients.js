@@ -130,7 +130,7 @@ router.get('/', searchValidation, handleValidationErrors, async (req, res) => {
 
         // Construir filtros para Prisma
         const whereCondition = {
-            createdBy: req.user.id
+            userId: req.user.id
         };
 
         // Adicionar busca se fornecida
@@ -229,7 +229,7 @@ router.get('/:id', idValidation, handleValidationErrors, async (req, res) => {
         const patient = await prisma.patient.findFirst({
             where: {
                 id: patientId,
-                createdBy: req.user.id
+                userId: req.user.id
             }
         });
 
@@ -252,7 +252,7 @@ router.get('/:id', idValidation, handleValidationErrors, async (req, res) => {
             cpf: patient.cpf,
             address: patient.address,
             medical_history: patient.medicalHistory,
-            created_by: patient.createdBy,
+            created_by: patient.userId,
             created_at: patient.createdAt,
             updated_at: patient.updatedAt
         };
@@ -288,7 +288,7 @@ router.post('/', patientValidation, handleValidationErrors, async (req, res) => 
             const existingPatient = await prisma.patient.findFirst({
                 where: {
                     cpf: patientData.cpf,
-                    createdBy: req.user.id
+                    userId: req.user.id
                 },
                 select: { id: true }
             });
@@ -312,7 +312,7 @@ router.post('/', patientValidation, handleValidationErrors, async (req, res) => 
             cpf: patientData.cpf || null,
             address: patientData.address || null,
             medicalHistory: patientData.medical_history || null,
-            createdBy: req.user.id
+            userId: req.user.id
         };
 
         const result = await prisma.patient.create({
@@ -330,7 +330,7 @@ router.post('/', patientValidation, handleValidationErrors, async (req, res) => 
             cpf: result.cpf,
             address: result.address,
             medical_history: result.medicalHistory,
-            created_by: result.createdBy,
+            created_by: result.userId,
             created_at: result.createdAt,
             updated_at: result.updatedAt
         };
@@ -363,7 +363,7 @@ router.put('/:id', idValidation, patientValidation, handleValidationErrors, asyn
         const existingPatient = await prisma.patient.findFirst({
             where: {
                 id: patientId,
-                createdBy: req.user.id
+                userId: req.user.id
             },
             select: { id: true }
         });
@@ -382,7 +382,7 @@ router.put('/:id', idValidation, patientValidation, handleValidationErrors, asyn
                 where: {
                     cpf: req.body.cpf,
                     id: { not: patientId },
-                    createdBy: req.user.id
+                    userId: req.user.id
                 },
                 select: { id: true }
             });
@@ -424,7 +424,7 @@ router.put('/:id', idValidation, patientValidation, handleValidationErrors, asyn
             cpf: result.cpf,
             address: result.address,
             medical_history: result.medicalHistory,
-            created_by: result.createdBy,
+            created_by: result.userId,
             created_at: result.createdAt,
             updated_at: result.updatedAt
         };
@@ -456,7 +456,7 @@ router.delete('/:id', idValidation, handleValidationErrors, async (req, res) => 
         const existingPatient = await prisma.patient.findFirst({
             where: {
                 id: patientId,
-                createdBy: req.user.id
+                userId: req.user.id
             },
             select: { id: true }
         });
@@ -514,7 +514,7 @@ router.get('/:id/analyses', idValidation, handleValidationErrors, async (req, re
         const patient = await prisma.patient.findFirst({
             where: {
                 id: patientId,
-                createdBy: req.user.id
+                userId: req.user.id
             },
             select: { id: true }
         });

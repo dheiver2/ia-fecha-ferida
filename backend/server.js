@@ -13,6 +13,9 @@ const prisma = new PrismaClient();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// Configurar trust proxy para Railway
+app.set('trust proxy', true);
+
 // Middleware de segurança
 app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" }
@@ -99,10 +102,17 @@ const analysesRoutes = require('./routes/analyses');
 // Inicializar banco de dados
 async function initializeDatabase() {
   try {
+    console.log('🔍 DATABASE_URL configurada:', process.env.DATABASE_URL ? 'SIM' : 'NÃO');
+    console.log('🔍 Tentando conectar ao Prisma...');
     await prisma.$connect();
     console.log('✅ Banco de dados inicializado com sucesso');
+    
+    // Testar uma query simples
+    const userCount = await prisma.user.count();
+    console.log('✅ Teste de query: encontrados', userCount, 'usuários');
   } catch (error) {
     console.error('❌ Erro ao inicializar banco de dados:', error);
+    console.error('❌ Stack trace:', error.stack);
     process.exit(1);
   }
 }
@@ -222,7 +232,7 @@ async function startServer() {
     // Iniciar servidor
     app.listen(PORT, () => {
       console.log(`🚀 Servidor rodando na porta ${PORT}`);
-      console.log(`📊 Banco de dados: SQLite`);
+      console.log(`📊 Banco de dados: PostgreSQL`);
       console.log(`🔐 Autenticação: JWT`);
       console.log(`🏥 Sistema de pacientes: Ativo`);
     });

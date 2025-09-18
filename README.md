@@ -17,7 +17,7 @@ Sistema inteligente de análise de feridas utilizando Inteligência Artificial p
 ```
 fecha-ferida-ia/
 ├── backend/                    # API Express.js + Node.js
-│   ├── database/              # Configuração e schema do SQLite
+│   ├── prisma/               # Configuração e schema do PostgreSQL
 │   ├── middleware/            # Middlewares de autenticação e validação
 │   ├── routes/               # Rotas da API (auth, patients, analyses)
 │   ├── services/             # Serviços (Gemini AI, Auth)
@@ -178,7 +178,7 @@ curl -X POST http://localhost:3001/api/analyze \
 
 ### Backend
 - **Node.js** + **Express.js** - Servidor e API REST
-- **SQLite** - Banco de dados leve e eficiente
+- **PostgreSQL** - Banco de dados robusto e escalável
 - **Google Generative AI (Gemini)** - Análise inteligente de feridas
 - **JWT** - Autenticação e autorização
 - **Multer** - Upload e processamento de imagens

@@ -116,7 +116,7 @@ class AuthService {
                     userId: result.id,
                     action: 'register',
                     resourceType: 'user',
-                    resourceId: result.id.toString(),
+                    resourceId: result.id,
                     details: JSON.stringify({ email, name, role }),
                     ipAddress: requestInfo.ip,
                     userAgent: requestInfo.userAgent
@@ -205,7 +205,7 @@ class AuthService {
                     userId: user.id,
                     action: 'login',
                     resourceType: 'user',
-                    resourceId: user.id.toString(),
+                    resourceId: user.id,
                     details: JSON.stringify({ email }),
                     ipAddress: requestInfo.ip,
                     userAgent: requestInfo.userAgent
@@ -260,7 +260,7 @@ class AuthService {
                         userId: session.userId,
                         action: 'logout',
                         resourceType: 'user',
-                        resourceId: session.userId.toString(),
+                        resourceId: session.userId,
                         details: JSON.stringify({ email: session.user.email }),
                         ipAddress: requestInfo.ip,
                         userAgent: requestInfo.userAgent

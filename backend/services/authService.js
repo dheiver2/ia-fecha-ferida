@@ -86,7 +86,9 @@ class AuthService {
             }
 
             // Verificar se email já existe
-            const existingUser = await db.getUserByEmail(email);
+            const existingUser = await prisma.user.findUnique({
+                where: { email }
+            });
             if (existingUser) {
                 throw new Error('Email já está em uso');
             }
@@ -95,26 +97,30 @@ class AuthService {
             const password_hash = await this.hashPassword(password);
 
             // Criar usuário
-            const result = await db.createUser({
-                email,
-                password_hash,
-                name,
-                role,
-                specialty,
-                crm,
-                institution,
-                phone
+            const result = await prisma.user.create({
+                data: {
+                    email,
+                    passwordHash: password_hash,
+                    name,
+                    role,
+                    specialty,
+                    crm,
+                    institution,
+                    phone
+                }
             });
 
             // Log da ação
-            await db.logAction({
-                user_id: result.id,
-                action: 'register',
-                resource_type: 'user',
-                resource_id: result.id,
-                details: { email, name, role },
-                ip_address: requestInfo.ip,
-                user_agent: requestInfo.userAgent
+            await prisma.auditLog.create({
+                data: {
+                    userId: result.id,
+                    action: 'register',
+                    resourceType: 'user',
+                    resourceId: result.id.toString(),
+                    details: JSON.stringify({ email, name, role }),
+                    ipAddress: requestInfo.ip,
+                    userAgent: requestInfo.userAgent
+                }
             });
 
             console.log(`✅ Usuário registrado: ${email} (ID: ${result.id})`);
@@ -147,7 +153,9 @@ class AuthService {
             }
 
             // Buscar usuário
-            const user = await db.getUserByEmail(email);
+            const user = await prisma.user.findUnique({
+                where: { email }
+            });
             if (!user) {
                 throw new Error('Credenciais inválidas');
             }
@@ -174,13 +182,15 @@ class AuthService {
             expiresAt.setHours(expiresAt.getHours() + 24); // 24 horas
 
             // Salvar sessão
-            await db.createSession({
-                user_id: user.id,
-                token_hash: tokenHash,
-                device_info: requestInfo.deviceInfo || 'Unknown',
-                ip_address: requestInfo.ip,
-                user_agent: requestInfo.userAgent,
-                expires_at: expiresAt.toISOString()
+            await prisma.session.create({
+                data: {
+                    userId: user.id,
+                    tokenHash: tokenHash,
+                    deviceInfo: requestInfo.deviceInfo || 'Unknown',
+                    ipAddress: requestInfo.ip,
+                    userAgent: requestInfo.userAgent,
+                    expiresAt: expiresAt
+                }
             });
 
             // Atualizar último login
@@ -190,14 +200,16 @@ class AuthService {
             });
 
             // Log da ação
-            await db.logAction({
-                user_id: user.id,
-                action: 'login',
-                resource_type: 'user',
-                resource_id: user.id,
-                details: { email },
-                ip_address: requestInfo.ip,
-                user_agent: requestInfo.userAgent
+            await prisma.auditLog.create({
+                data: {
+                    userId: user.id,
+                    action: 'login',
+                    resourceType: 'user',
+                    resourceId: user.id.toString(),
+                    details: JSON.stringify({ email }),
+                    ipAddress: requestInfo.ip,
+                    userAgent: requestInfo.userAgent
+                }
             });
 
             console.log(`✅ Login realizado: ${email} (ID: ${user.id})`);
@@ -229,23 +241,33 @@ class AuthService {
             const tokenHash = this.hashToken(token);
             
             // Buscar sessão ativa
-            const session = await db.getActiveSession(tokenHash);
+            const session = await prisma.session.findFirst({
+                where: {
+                    tokenHash: tokenHash,
+                    expiresAt: { gt: new Date() }
+                },
+                include: { user: true }
+            });
             if (session) {
                 // Invalidar sessão
-                await db.invalidateSession(tokenHash);
-
-                // Log da ação
-                await db.logAction({
-                    user_id: session.user_id,
-                    action: 'logout',
-                    resource_type: 'user',
-                    resource_id: session.user_id,
-                    details: { email: session.email },
-                    ip_address: requestInfo.ip,
-                    user_agent: requestInfo.userAgent
+                await prisma.session.delete({
+                    where: { id: session.id }
                 });
 
-                console.log(`✅ Logout realizado: ${session.email}`);
+                // Log da ação
+                await prisma.auditLog.create({
+                    data: {
+                        userId: session.userId,
+                        action: 'logout',
+                        resourceType: 'user',
+                        resourceId: session.userId.toString(),
+                        details: JSON.stringify({ email: session.user.email }),
+                        ipAddress: requestInfo.ip,
+                        userAgent: requestInfo.userAgent
+                    }
+                });
+
+                console.log(`✅ Logout realizado: ${session.user.email}`);
             }
 
             return { success: true };
@@ -266,22 +288,28 @@ class AuthService {
             const tokenHash = this.hashToken(token);
 
             // Verificar sessão no banco
-            const session = await db.getActiveSession(tokenHash);
+            const session = await prisma.session.findFirst({
+                where: {
+                    tokenHash: tokenHash,
+                    expiresAt: { gt: new Date() }
+                },
+                include: { user: true }
+            });
             if (!session) {
                 throw new Error('Sessão inválida ou expirada');
             }
 
             // Atualizar último uso da sessão
-            await prisma.userSession.updateMany({
-                where: { tokenHash: tokenHash },
+            await prisma.session.update({
+                where: { id: session.id },
                 data: { lastUsed: new Date() }
             });
 
             return {
-                id: session.user_id,
-                email: session.email,
-                name: session.name,
-                role: session.role
+                id: session.user.id,
+                email: session.user.email,
+                name: session.user.name,
+                role: session.user.role
             };
 
         } catch (error) {
@@ -304,13 +332,15 @@ class AuthService {
             }
 
             // Buscar usuário
-            const user = await db.getUserById(userId);
+            const user = await prisma.user.findUnique({
+                where: { id: userId }
+            });
             if (!user) {
                 throw new Error('Usuário não encontrado');
             }
 
             // Verificar senha atual
-            const isValidPassword = await this.verifyPassword(oldPassword, user.password_hash);
+            const isValidPassword = await this.verifyPassword(oldPassword, user.passwordHash);
             if (!isValidPassword) {
                 throw new Error('Senha atual incorreta');
             }

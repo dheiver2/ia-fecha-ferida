@@ -1,3 +1,4 @@
+# Configuração do Railway para deploy do backend
 [[services]]
 name = "fecha-ferida-backend"
 

@@ -269,4 +269,57 @@ router.post('/verify', async (req, res) => {
     }
 });
 
+// POST /api/auth/create-admin - Criar usuário admin (apenas se não houver usuários)
+router.post('/create-admin', async (req, res) => {
+    try {
+        const { PrismaClient } = require('@prisma/client');
+        const bcrypt = require('bcryptjs');
+        const prisma = new PrismaClient();
+
+        // Verificar se já existem usuários
+        const userCount = await prisma.user.count();
+        if (userCount > 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'Usuários já existem no sistema',
+                code: 'USERS_EXIST'
+            });
+        }
+
+        // Criar usuário admin
+        const passwordHash = await bcrypt.hash('admin123', 12);
+        const adminUser = await prisma.user.create({
+            data: {
+                email: 'admin@fechaferida.com',
+                passwordHash: passwordHash,
+                name: 'Administrador Sistema',
+                role: 'admin',
+                specialty: 'Administração',
+                crm: 'ADMIN-2024',
+                institution: 'Sistema Fecha Ferida IA'
+            }
+        });
+
+        res.status(201).json({
+            success: true,
+            message: 'Usuário administrador criado com sucesso',
+            data: {
+                id: adminUser.id,
+                email: adminUser.email,
+                name: adminUser.name,
+                role: adminUser.role
+            }
+        });
+
+    } catch (error) {
+        console.error('❌ Erro ao criar admin:', error.message);
+        
+        res.status(500).json({
+            success: false,
+            message: 'Erro interno do servidor',
+            code: 'CREATE_ADMIN_ERROR'
+        });
+    }
+});
+
 module.exports = router;

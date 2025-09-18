@@ -147,7 +147,7 @@ export const CompactValidation: React.FC<CompactValidationProps> = ({
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <Shield className="w-5 h-5 text-blue-600" />
-          <h3 className="font-semibold text-gray-900">Validação</h3>
+          <h3 className="font-semibold text-gray-900 dark:text-gray-100">Validação</h3>
         </div>
         <div className={`px-3 py-1 rounded-full text-sm font-medium ${getScoreColor(overallScore)}`}>
           {overallScore}%
@@ -159,15 +159,15 @@ export const CompactValidation: React.FC<CompactValidationProps> = ({
           <div key={index} className="flex items-center gap-2 p-2 bg-gray-50 rounded">
             {getStatusIcon(result.status)}
             <div className="min-w-0 flex-1">
-              <div className="text-xs font-medium text-gray-700">{result.category}</div>
-              <div className="text-xs text-gray-500 truncate">{result.message}</div>
+              <div className="text-xs font-medium text-gray-700 dark:text-gray-300">{result.category}</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400 truncate">{result.message}</div>
             </div>
           </div>
         ))}
       </div>
 
       {metadata && (
-        <div className="flex items-center gap-4 text-xs text-gray-500 pt-2 border-t">
+        <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400 pt-2 border-t">
           {metadata.confidence && (
             <div className="flex items-center gap-1">
               <Clock className="w-3 h-3" />

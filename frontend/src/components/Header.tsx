@@ -22,7 +22,7 @@ const Header = () => {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl border-b border-primary/10 shadow-xl">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border-b border-primary/10 dark:border-gray-700/50 shadow-xl">
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           {/* Logo Section */}
@@ -37,7 +37,7 @@ const Header = () => {
               <div className="absolute -top-1 -right-1 w-3 h-3 md:w-4 md:h-4 bg-gradient-to-r from-accent to-primary-light rounded-full animate-pulse shadow-glow"></div>
             </div>
             <div className="hidden sm:block">
-              <h1 className="text-lg md:text-xl font-bold bg-gradient-to-r from-primary via-accent to-primary-light bg-clip-text text-transparent">
+              <h1 className="text-lg md:text-xl font-bold bg-gradient-to-r from-primary via-accent to-primary-light bg-clip-text text-transparent dark:bg-none dark:text-gray-100">
                 Casa Fecha Feridas
               </h1>
               <div className="flex items-center space-x-1">
@@ -55,7 +55,7 @@ const Header = () => {
                 <Link 
                   key={index}
                   to={item.href} 
-                  className="relative text-foreground/80 hover:text-primary font-semibold transition-all duration-300 hover:scale-105 group"
+                  className="relative text-foreground/80 dark:text-gray-300 hover:text-primary dark:hover:text-primary font-semibold transition-all duration-300 hover:scale-105 group"
                 >
                   {item.label}
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-accent transition-all duration-300 group-hover:w-full"></span>
@@ -64,7 +64,7 @@ const Header = () => {
                 <a 
                   key={index}
                   href={item.href} 
-                  className="relative text-foreground/80 hover:text-primary font-semibold transition-all duration-300 hover:scale-105 group"
+                  className="relative text-foreground/80 dark:text-gray-300 hover:text-primary dark:hover:text-primary font-semibold transition-all duration-300 hover:scale-105 group"
                 >
                   {item.label}
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-accent transition-all duration-300 group-hover:w-full"></span>
@@ -83,8 +83,8 @@ const Header = () => {
                 <div className="flex items-center space-x-2 px-3 py-2 bg-primary/5 rounded-xl">
                   <User className="w-4 h-4 text-primary" />
                   <div className="text-sm">
-                    <p className="font-semibold text-foreground">{user?.name}</p>
-                    <p className="text-xs text-muted-foreground capitalize">{user?.role}</p>
+                    <p className="font-semibold text-foreground dark:text-gray-200">{user?.name}</p>
+                <p className="text-xs text-muted-foreground dark:text-gray-400 capitalize">{user?.role}</p>
                   </div>
                 </div>
                 
@@ -145,7 +145,7 @@ const Header = () => {
                   <Link 
                     key={index}
                     to={item.href} 
-                    className="text-foreground/80 hover:text-primary font-semibold py-2 px-4 rounded-xl hover:bg-primary/5 transition-all duration-300"
+                    className="text-foreground/80 dark:text-gray-300 hover:text-primary dark:hover:text-primary font-semibold px-4 py-2 rounded-xl hover:bg-primary/5 dark:hover:bg-primary/10 transition-all duration-300"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {item.label}
@@ -154,7 +154,7 @@ const Header = () => {
                   <a 
                     key={index}
                     href={item.href} 
-                    className="text-foreground/80 hover:text-primary font-semibold py-2 px-4 rounded-xl hover:bg-primary/5 transition-all duration-300"
+                    className="text-foreground/80 dark:text-gray-300 hover:text-primary dark:hover:text-primary font-semibold px-4 py-2 rounded-xl hover:bg-primary/5 dark:hover:bg-primary/10 transition-all duration-300"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {item.label}
@@ -167,8 +167,8 @@ const Header = () => {
                   <div className="flex items-center space-x-3 px-4 py-3 bg-primary/5 rounded-xl mt-4">
                     <User className="w-5 h-5 text-primary" />
                     <div>
-                      <p className="font-semibold text-foreground">{user?.name}</p>
-                      <p className="text-sm text-muted-foreground capitalize">{user?.role}</p>
+                      <p className="font-semibold text-foreground dark:text-gray-200">{user?.name}</p>
+                      <p className="text-sm text-muted-foreground dark:text-gray-400 capitalize">{user?.role}</p>
                     </div>
                   </div>
                   

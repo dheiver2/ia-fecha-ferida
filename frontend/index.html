@@ -19,6 +19,16 @@
     <meta name="twitter:title" content="Plataforma Fecha Ferida - Análise Médica com IA" />
     <meta name="twitter:description" content="Análise médica inteligente e rápida para profissionais de saúde" />
     <meta name="twitter:image" content="https://plataforma-fecha-ferida.com/og-image.jpg" />
+    <script>
+      // Prevent flash of unstyled content (FOUC) for dark mode
+      (function() {
+        const theme = localStorage.getItem('theme') || 
+                     (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
   </head>
 
   <body>

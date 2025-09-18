@@ -54,20 +54,20 @@ const benefits = [
 
 const BenefitsSection = () => {
   return (
-    <section id="beneficios" className="py-24 bg-gradient-subtle relative overflow-hidden">
+    <section id="beneficios" className="py-24 bg-gradient-subtle dark:bg-gray-900 relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute top-20 right-10 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
       <div className="absolute bottom-20 left-10 w-80 h-80 bg-accent/5 rounded-full blur-3xl"></div>
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-20">
-          <h2 className="text-5xl md:text-6xl font-extrabold mb-8 text-foreground">
+          <h2 className="text-5xl md:text-6xl font-extrabold mb-8 text-foreground dark:text-gray-100">
             Por que escolher a
             <span className="block bg-gradient-to-r from-primary via-accent to-primary-light bg-clip-text text-transparent">
               Casa Fecha Feridas?
             </span>
           </h2>
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
+          <p className="text-xl md:text-2xl text-muted-foreground dark:text-gray-300 max-w-4xl mx-auto leading-relaxed">
             Revolucione seu trabalho médico com tecnologia de ponta que combina velocidade, 
             precisão e segurança em uma única solução inovadora.
           </p>
@@ -79,16 +79,16 @@ const BenefitsSection = () => {
             return (
               <div 
                 key={index}
-                className="group bg-white/80 backdrop-blur-lg rounded-3xl p-8 shadow-soft hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-white/50 hover:border-white/80 hover:bg-white/90"
+                className="group bg-white/80 dark:bg-gray-800/90 backdrop-blur-lg rounded-3xl p-8 shadow-soft hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-white/50 dark:border-gray-700 hover:border-white/80 dark:hover:border-gray-600 hover:bg-white/90 dark:hover:bg-gray-800"
               >
                 <div className="mb-6">
                   <div className={`w-20 h-20 bg-gradient-to-br ${benefit.gradient} rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
                     <IconComponent className={`h-10 w-10 ${benefit.color} group-hover:scale-110 transition-transform`} />
                   </div>
-                  <h3 className="text-2xl font-bold mb-4 text-card-foreground group-hover:text-primary transition-colors">
+                  <h3 className="text-2xl font-bold mb-4 text-card-foreground dark:text-gray-100 group-hover:text-primary transition-colors">
                     {benefit.title}
                   </h3>
-                  <p className="text-muted-foreground leading-relaxed text-lg">
+                  <p className="text-muted-foreground dark:text-gray-300 leading-relaxed text-lg">
                     {benefit.description}
                   </p>
                 </div>
@@ -98,18 +98,18 @@ const BenefitsSection = () => {
         </div>
 
         <div className="mt-20 text-center">
-          <div className="bg-white/90 backdrop-blur-lg rounded-3xl p-12 shadow-2xl border border-white/60 max-w-5xl mx-auto relative overflow-hidden">
+          <div className="bg-white/90 dark:bg-gray-800/95 backdrop-blur-lg rounded-3xl p-12 shadow-2xl border border-white/60 dark:border-gray-700 max-w-5xl mx-auto relative overflow-hidden">
             {/* Background Gradient */}
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-primary-light/5 rounded-3xl"></div>
             
             <div className="relative z-10">
-              <h3 className="text-3xl md:text-4xl font-extrabold mb-6 text-card-foreground">
+              <h3 className="text-3xl md:text-4xl font-extrabold mb-6 text-card-foreground dark:text-gray-100">
                 Pronto para transformar sua 
                 <span className="block bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                   prática médica?
                 </span>
               </h3>
-              <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
+              <p className="text-xl text-muted-foreground dark:text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
                 Junte-se a centenas de profissionais que já confiam em nossa tecnologia inovadora 
                 para análise médica com inteligência artificial.
               </p>
@@ -122,7 +122,7 @@ const BenefitsSection = () => {
                     </span>
                   </button>
                 </Link>
-                <button className="border border-border px-8 py-4 rounded-xl font-semibold hover:bg-muted transition-all">
+                <button className="border border-border dark:border-gray-600 px-8 py-4 rounded-xl font-semibold hover:bg-muted dark:hover:bg-gray-700 dark:text-gray-200 transition-all">
                   Agendar Demonstração
                 </button>
               </div>

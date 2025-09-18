@@ -154,8 +154,8 @@ export const MedicalFilters: React.FC<MedicalFiltersProps> = ({
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center space-x-2">
-            <Filter className="h-5 w-5 text-primary" />
-            <span>Filtros de Análise</span>
+              <Filter className="h-5 w-5 text-primary" />
+              <span className="text-gray-900 dark:text-gray-100">Filtros de Análise</span>
             {hasActiveFilters() && (
               <Badge variant="secondary" className="ml-2">
                 {Object.values(filters).filter(v => 
@@ -203,7 +203,7 @@ export const MedicalFilters: React.FC<MedicalFiltersProps> = ({
         {/* Quick Filters Row */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div>
-            <Label className="text-sm font-medium mb-2 flex items-center">
+            <Label className="text-sm font-medium mb-2 flex items-center text-gray-700 dark:text-gray-300">
               <CheckCircle className="h-4 w-4 mr-1" />
               Status
             </Label>

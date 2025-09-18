@@ -48,7 +48,7 @@ const Index = () => {
                       o Cuidado de Feridas
                     </span>
                   </h1>
-                  <p className="text-xl text-muted-foreground leading-relaxed max-w-lg">
+                  <p className="text-xl text-muted-foreground dark:text-gray-300 leading-relaxed max-w-lg">
                     Análise inteligente de feridas com IA avançada. Diagnósticos precisos, 
                     tratamentos personalizados e resultados comprovados.
                   </p>
@@ -85,32 +85,32 @@ const Index = () => {
               </div>
 
               <div className="relative">
-                <div className="relative z-10 bg-white rounded-3xl shadow-strong p-8 border border-border/20">
+                <div className="relative z-10 bg-white dark:bg-gray-800 rounded-3xl shadow-strong p-8 border border-border/20 dark:border-gray-700">
                   <div className="space-y-6">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-lg font-bold text-foreground">Análise em Tempo Real</h3>
+                      <h3 className="text-lg font-bold text-foreground dark:text-gray-100">Análise em Tempo Real</h3>
                       <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
                     </div>
                     
                     <div className="space-y-4">
                       <div className="flex items-center space-x-3">
                         <CheckCircle className="w-5 h-5 text-green-500" />
-                        <span className="text-sm text-muted-foreground">Imagem processada</span>
+                        <span className="text-sm text-muted-foreground dark:text-gray-300">Imagem processada</span>
                       </div>
                       <div className="flex items-center space-x-3">
                         <CheckCircle className="w-5 h-5 text-green-500" />
-                        <span className="text-sm text-muted-foreground">IA analisando padrões</span>
+                        <span className="text-sm text-muted-foreground dark:text-gray-300">IA analisando padrões</span>
                       </div>
                       <div className="flex items-center space-x-3">
                         <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-                        <span className="text-sm text-muted-foreground">Gerando relatório...</span>
+                        <span className="text-sm text-muted-foreground dark:text-gray-300">Gerando relatório...</span>
                       </div>
                     </div>
 
-                    <div className="bg-gradient-subtle rounded-2xl p-4">
+                    <div className="bg-gradient-subtle dark:bg-gray-700/50 rounded-2xl p-4">
                       <div className="text-sm font-semibold text-primary mb-2">Precisão do Diagnóstico</div>
                       <div className="flex items-center space-x-2">
-                        <div className="flex-1 bg-gray-200 rounded-full h-2">
+                        <div className="flex-1 bg-gray-200 dark:bg-gray-600 rounded-full h-2">
                           <div className="bg-gradient-primary h-2 rounded-full w-[94%]"></div>
                         </div>
                         <span className="text-sm font-bold text-primary">94%</span>
@@ -128,7 +128,7 @@ const Index = () => {
       </section>
 
       {/* Features Section */}
-      <section id="como-funciona" className="py-20 bg-white">
+      <section id="como-funciona" className="py-20 bg-white dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
@@ -136,7 +136,7 @@ const Index = () => {
                 Como Funciona
               </span>
             </h2>
-            <p className="text-xl text-muted-foreground leading-relaxed">
+            <p className="text-xl text-muted-foreground dark:text-gray-300 leading-relaxed">
               Tecnologia de ponta para análise médica precisa e eficiente
             </p>
           </div>
@@ -163,12 +163,12 @@ const Index = () => {
               }
             ].map((feature, index) => (
               <div key={index} className="group relative">
-                <div className="bg-white rounded-3xl p-8 shadow-medium hover:shadow-strong transition-all duration-300 border border-border/20 group-hover:border-primary/20">
+                <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-medium hover:shadow-strong transition-all duration-300 border border-border/20 dark:border-gray-700 group-hover:border-primary/20">
                   <div className={`inline-flex p-4 rounded-2xl bg-gradient-to-r ${feature.color} text-white mb-6`}>
                     {feature.icon}
                   </div>
-                  <h3 className="text-xl font-bold mb-4 text-foreground">{feature.title}</h3>
-                  <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
+                  <h3 className="text-xl font-bold mb-4 text-foreground dark:text-gray-100">{feature.title}</h3>
+                  <p className="text-muted-foreground dark:text-gray-300 leading-relaxed">{feature.description}</p>
                 </div>
               </div>
             ))}
@@ -215,7 +215,7 @@ const Index = () => {
                 <h2 className="text-3xl md:text-4xl font-bold">
                   Pronto para <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Revolucionar</span> seu Atendimento?
                 </h2>
-                <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+                <p className="text-xl text-muted-foreground dark:text-gray-300 leading-relaxed max-w-2xl mx-auto">
                   Junte-se a milhares de profissionais que já transformaram sua prática médica com nossa tecnologia.
                 </p>
               </div>
@@ -234,15 +234,15 @@ const Index = () => {
               </div>
 
               <div className="flex items-center justify-center space-x-8 pt-8">
-                <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                <div className="flex items-center space-x-2 text-sm text-muted-foreground dark:text-gray-300">
                   <CheckCircle className="w-4 h-4 text-green-500" />
                   <span>Teste grátis por 30 dias</span>
                 </div>
-                <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                <div className="flex items-center space-x-2 text-sm text-muted-foreground dark:text-gray-300">
                   <Shield className="w-4 h-4 text-blue-500" />
                   <span>Dados 100% seguros</span>
                 </div>
-                <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                <div className="flex items-center space-x-2 text-sm text-muted-foreground dark:text-gray-300">
                   <Award className="w-4 h-4 text-purple-500" />
                   <span>Certificado médico</span>
                 </div>
@@ -253,12 +253,12 @@ const Index = () => {
       </section>
       
       {/* Footer */}
-      <footer className="bg-primary-dark text-white py-16">
+      <footer className="bg-primary-dark dark:bg-gray-900 text-white py-16">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8 mb-12">
             <div className="space-y-4">
-              <h3 className="text-xl font-bold">Casa Fecha Feridas</h3>
-              <p className="text-white/80 leading-relaxed">
+              <h3 className="text-xl font-bold dark:text-gray-100">Casa Fecha Feridas</h3>
+              <p className="text-white/80 dark:text-gray-300 leading-relaxed">
                 Transformando o futuro da medicina com inteligência artificial avançada.
               </p>
               <div className="flex space-x-4">
@@ -267,45 +267,45 @@ const Index = () => {
             </div>
             
             <div className="space-y-4">
-              <h4 className="font-semibold">Produto</h4>
-              <ul className="space-y-2 text-white/80">
-                <li><a href="#" className="hover:text-white transition-colors">Análise de Feridas</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Relatórios</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Histórico</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">API</a></li>
+              <h4 className="font-semibold dark:text-gray-100">Produto</h4>
+              <ul className="space-y-2 text-white/80 dark:text-gray-300">
+                <li><a href="#" className="hover:text-white dark:hover:text-gray-100 transition-colors">Análise de Feridas</a></li>
+                <li><a href="#" className="hover:text-white dark:hover:text-gray-100 transition-colors">Relatórios</a></li>
+                <li><a href="#" className="hover:text-white dark:hover:text-gray-100 transition-colors">Histórico</a></li>
+                <li><a href="#" className="hover:text-white dark:hover:text-gray-100 transition-colors">API</a></li>
               </ul>
             </div>
             
             <div className="space-y-4">
-              <h4 className="font-semibold">Empresa</h4>
-              <ul className="space-y-2 text-white/80">
-                <li><a href="#" className="hover:text-white transition-colors">Sobre Nós</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Carreiras</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Imprensa</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Contato</a></li>
+              <h4 className="font-semibold dark:text-gray-100">Empresa</h4>
+              <ul className="space-y-2 text-white/80 dark:text-gray-300">
+                <li><a href="#" className="hover:text-white dark:hover:text-gray-100 transition-colors">Sobre Nós</a></li>
+                <li><a href="#" className="hover:text-white dark:hover:text-gray-100 transition-colors">Carreiras</a></li>
+                <li><a href="#" className="hover:text-white dark:hover:text-gray-100 transition-colors">Imprensa</a></li>
+                <li><a href="#" className="hover:text-white dark:hover:text-gray-100 transition-colors">Contato</a></li>
               </ul>
             </div>
             
             <div className="space-y-4">
-              <h4 className="font-semibold">Suporte</h4>
-              <ul className="space-y-2 text-white/80">
-                <li><a href="#" className="hover:text-white transition-colors">Central de Ajuda</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Documentação</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Status</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Segurança</a></li>
+              <h4 className="font-semibold dark:text-gray-100">Suporte</h4>
+              <ul className="space-y-2 text-white/80 dark:text-gray-300">
+                <li><a href="#" className="hover:text-white dark:hover:text-gray-100 transition-colors">Central de Ajuda</a></li>
+                <li><a href="#" className="hover:text-white dark:hover:text-gray-100 transition-colors">Documentação</a></li>
+                <li><a href="#" className="hover:text-white dark:hover:text-gray-100 transition-colors">Status</a></li>
+                <li><a href="#" className="hover:text-white dark:hover:text-gray-100 transition-colors">Segurança</a></li>
               </ul>
             </div>
           </div>
           
-          <div className="border-t border-white/20 pt-8">
+          <div className="border-t border-white/20 dark:border-gray-700 pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-              <div className="text-white/70 text-sm">
+              <div className="text-white/70 dark:text-gray-400 text-sm">
                 © 2024 Casa Fecha Feridas. Todos os direitos reservados.
               </div>
-              <div className="flex space-x-6 text-sm text-white/70">
-                <a href="#" className="hover:text-white transition-colors">Política de Privacidade</a>
-                <a href="#" className="hover:text-white transition-colors">Termos de Uso</a>
-                <a href="#" className="hover:text-white transition-colors">Cookies</a>
+              <div className="flex space-x-6 text-sm text-white/70 dark:text-gray-400">
+                <a href="#" className="hover:text-white dark:hover:text-gray-200 transition-colors">Política de Privacidade</a>
+                <a href="#" className="hover:text-white dark:hover:text-gray-200 transition-colors">Termos de Uso</a>
+                <a href="#" className="hover:text-white dark:hover:text-gray-200 transition-colors">Cookies</a>
               </div>
             </div>
           </div>

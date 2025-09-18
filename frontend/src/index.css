@@ -79,7 +79,7 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 220 15% 8%;
+    --background: 220 15% 12%;
     --foreground: 210 40% 98%;
 
     --card: 220 15% 10%;
@@ -98,7 +98,7 @@ All colors MUST be HSL.
     --secondary-foreground: 210 40% 98%;
 
     --muted: 220 15% 12%;
-    --muted-foreground: 215 20% 75%;  /* Aumentado de 65% para 75% para melhor contraste */
+    --muted-foreground: 215 20% 80%;  /* Aumentado para 80% para atender WCAG 2.1 AA */
 
     --accent: 188 95% 45%;          /* Verde-azul mais claro */
     --accent-foreground: 220 15% 8%;
@@ -115,7 +115,7 @@ All colors MUST be HSL.
     --medical-green: 160 75% 65%;
     --medical-red: 0 75% 70%;
     --medical-orange: 35 85% 65%;
-    --medical-gray: 205 15% 75%;      /* Melhor contraste para textos secundários */
+    --medical-gray: 205 15% 82%;      /* Melhor contraste para textos secundários - WCAG AA */
     --medical-success: 142 75% 55%;
     --medical-success-foreground: 220 15% 8%;
     --medical-warning: 45 90% 65%;
@@ -124,7 +124,7 @@ All colors MUST be HSL.
     --medical-error-foreground: 220 15% 8%;
     --medical-info: 210 90% 65%;
     --medical-info-foreground: 220 15% 8%;
-    --medical-neutral: 215 20% 78%;   /* Melhor contraste para elementos neutros */
+    --medical-neutral: 215 20% 85%;   /* Melhor contraste para elementos neutros - WCAG AA */
 
     /* Gradients Casa Fecha Feridas - Modo Escuro */
     --gradient-primary: linear-gradient(135deg, hsl(213 93% 68%) 0%, hsl(188 95% 45%) 100%);
@@ -379,6 +379,20 @@ All colors MUST be HSL.
     @apply text-gray-400 dark:text-gray-500;
   }
 
+/* Classes específicas para WCAG AA compliance */
+.dark .text-white\/70 {
+  color: hsl(0 0% 85%) !important; /* Melhor contraste que 70% */
+}
+
+.dark .text-white\/80 {
+  color: hsl(0 0% 90%) !important; /* Melhor contraste que 80% */
+}
+
+/* Melhor contraste para texto muted no modo escuro */
+.dark .text-muted-foreground {
+  color: hsl(215 20% 85%) !important;
+}
+
   /* Melhor contraste para elementos específicos no modo escuro */
   .dark .text-gray-500 {
     color: hsl(215 20% 75%) !important;
@@ -392,11 +406,64 @@ All colors MUST be HSL.
     color: hsl(215 20% 70%) !important;
   }
 
+  .dark .text-gray-700 {
+    color: hsl(215 20% 85%) !important;
+  }
+
+  .dark .text-gray-800 {
+    color: hsl(215 20% 90%) !important;
+  }
+
+  .dark .text-gray-900 {
+    color: hsl(215 20% 95%) !important;
+  }
+
   .dark .text-slate-600 {
     color: hsl(215 20% 78%) !important;
   }
 
   .dark .text-slate-700 {
     color: hsl(215 20% 85%) !important;
+  }
+
+  .dark .text-slate-800 {
+    color: hsl(215 20% 90%) !important;
+  }
+
+  .dark .text-slate-900 {
+    color: hsl(215 20% 95%) !important;
+  }
+
+  /* Melhor contraste para textos médicos no modo escuro */
+  .dark .text-slate-300 {
+    color: hsl(215 20% 80%) !important;
+  }
+
+  /* Garantir visibilidade de textos básicos no modo escuro */
+  .dark .text-foreground {
+    color: hsl(210 40% 98%) !important;
+  }
+
+  .dark .text-gray-300 {
+    color: hsl(215 20% 85%) !important;
+  }
+
+  .dark .text-gray-200 {
+    color: hsl(215 20% 90%) !important;
+  }
+
+  .dark .text-gray-100 {
+    color: hsl(215 20% 95%) !important;
+  }
+
+  /* Garantir que o fundo escuro seja aplicado */
+  .dark {
+    background-color: hsl(220 15% 12%) !important;
+    color: hsl(210 40% 98%) !important;
+  }
+
+  .dark body {
+    background-color: hsl(220 15% 12%) !important;
+    color: hsl(210 40% 98%) !important;
   }
 }

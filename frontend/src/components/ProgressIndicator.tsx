@@ -158,7 +158,7 @@ export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
           <div className="flex items-center space-x-2">
             <Clock className="h-4 w-4 text-blue-600 dark:text-blue-400" />
             <span className="text-sm text-blue-800 dark:text-blue-200">
-              Tempo estimado restante: {(steps.length - currentStep) * 15-30} segundos
+              Tempo estimado restante: {(steps.length - currentStep) * 15}-{(steps.length - currentStep) * 30} segundos
             </span>
           </div>
         </div>

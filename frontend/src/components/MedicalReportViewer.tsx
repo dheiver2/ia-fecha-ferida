@@ -207,9 +207,9 @@ export const MedicalReportViewer: React.FC<MedicalReportViewerProps> = ({
             {icon}
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="text-lg font-bold text-foreground mb-3 flex items-center">
-              {title}
-            </h3>
+            <h3 className="text-lg font-bold text-foreground dark:text-slate-200 mb-3 flex items-center">
+                      {title}
+                    </h3>
             <div className="prose prose-sm max-w-none">
               <div className="text-sm text-foreground leading-relaxed whitespace-pre-wrap">
                 {sectionContent}
@@ -460,7 +460,7 @@ export const MedicalReportViewer: React.FC<MedicalReportViewerProps> = ({
             <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-blue-50 border-b-2 border-blue-200">
               <div className="p-6">
                 <div className="flex items-center justify-between mb-5">
-                  <h2 className="text-xl font-bold text-slate-800 flex items-center space-x-3">
+                  <h2 className="text-xl font-bold text-slate-800 dark:text-slate-200 flex items-center space-x-3">
                     <div className="bg-blue-100 p-2 rounded-lg">
                       <User className="h-6 w-6 text-blue-600" />
                     </div>

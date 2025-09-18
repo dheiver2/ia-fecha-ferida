@@ -35,46 +35,62 @@ const handleValidationErrors = (req, res, next) => {
 router.get('/', async (req, res) => {
     try {
         const db = Database.getInstance();
+        await db.initialize(); // Garantir que está inicializado
         const { page = 1, limit = 50 } = req.query;
         const offset = (page - 1) * limit;
 
-        const analyses = await db.all(`
-            SELECT 
-                wa.id,
-                wa.protocol_number,
-                wa.image_filename,
-                wa.lesion_location,
-                wa.diagnosis_primary,
-                wa.diagnosis_confidence,
-                wa.severity,
-                wa.status,
-                wa.created_at,
-                wa.updated_at,
-                p.name as patient_name,
-                p.id as patient_id
-            FROM wound_analyses wa
-            LEFT JOIN patients p ON wa.patient_id = p.id
-            WHERE wa.user_id = ?
-            ORDER BY wa.created_at DESC
-            LIMIT ? OFFSET ?
-        `, [req.user.id, limit, offset]);
+        // Usar método específico do Prisma para buscar análises
+        const analyses = await db.prisma.woundAnalysis.findMany({
+            where: {
+                userId: req.user.id
+            },
+            include: {
+                patient: {
+                    select: {
+                        id: true,
+                        name: true
+                    }
+                }
+            },
+            orderBy: {
+                createdAt: 'desc'
+            },
+            take: parseInt(limit),
+            skip: offset
+        });
 
         // Contar total de análises
-        const totalResult = await db.get(`
-            SELECT COUNT(*) as total 
-            FROM wound_analyses 
-            WHERE user_id = ?
-        `, [req.user.id]);
+        const total = await db.prisma.woundAnalysis.count({
+            where: {
+                userId: req.user.id
+            }
+        });
+
+        // Mapear para formato compatível
+        const mappedAnalyses = analyses.map(analysis => ({
+            id: analysis.id,
+            protocol_number: analysis.protocolNumber,
+            image_filename: analysis.imageFilename,
+            lesion_location: analysis.lesionLocation,
+            diagnosis_primary: analysis.diagnosisPrimary,
+            diagnosis_confidence: analysis.diagnosisConfidence,
+            severity: analysis.severity,
+            status: analysis.status,
+            created_at: analysis.createdAt,
+            updated_at: analysis.updatedAt,
+            patient_name: analysis.patient?.name || null,
+            patient_id: analysis.patient?.id || null
+        }));
 
         res.json({
             success: true,
             data: {
-                analyses,
+                analyses: mappedAnalyses,
                 pagination: {
                     page: parseInt(page),
                     limit: parseInt(limit),
-                    total: totalResult.total,
-                    totalPages: Math.ceil(totalResult.total / limit)
+                    total: total,
+                    totalPages: Math.ceil(total / limit)
                 }
             }
         });
@@ -93,18 +109,24 @@ router.get('/', async (req, res) => {
 router.get('/:id', idValidation, handleValidationErrors, async (req, res) => {
     try {
         const db = Database.getInstance();
+        await db.initialize(); // Garantir que está inicializado
         const analysisId = parseInt(req.params.id);
 
-        const analysis = await db.get(`
-            SELECT 
-                wa.*,
-                p.name as patient_name,
-                p.birth_date as patient_birth_date,
-                p.gender as patient_gender
-            FROM wound_analyses wa
-            LEFT JOIN patients p ON wa.patient_id = p.id
-            WHERE wa.id = ? AND wa.user_id = ?
-        `, [analysisId, req.user.id]);
+        const analysis = await db.prisma.woundAnalysis.findFirst({
+            where: {
+                id: analysisId,
+                userId: req.user.id
+            },
+            include: {
+                patient: {
+                    select: {
+                        name: true,
+                        birthDate: true,
+                        gender: true
+                    }
+                }
+            }
+        });
 
         if (!analysis) {
             return res.status(404).json({
@@ -114,27 +136,58 @@ router.get('/:id', idValidation, handleValidationErrors, async (req, res) => {
             });
         }
 
-        // Parse dos campos JSON
-        if (analysis.patient_context) {
+        // Parse dos campos JSON e mapear para formato compatível
+        let patientContext = null;
+        let analysisResult = null;
+
+        if (analysis.patientContext) {
             try {
-                analysis.patient_context = JSON.parse(analysis.patient_context);
+                patientContext = JSON.parse(analysis.patientContext);
             } catch (e) {
-                analysis.patient_context = null;
+                patientContext = null;
             }
         }
 
-        if (analysis.analysis_result) {
+        if (analysis.analysisResult) {
             try {
-                analysis.analysis_result = JSON.parse(analysis.analysis_result);
+                analysisResult = JSON.parse(analysis.analysisResult);
             } catch (e) {
-                analysis.analysis_result = null;
+                analysisResult = null;
             }
         }
+
+        // Mapear para formato compatível
+        const mappedAnalysis = {
+            id: analysis.id,
+            user_id: analysis.userId,
+            patient_id: analysis.patientId,
+            protocol_number: analysis.protocolNumber,
+            image_filename: analysis.imageFilename,
+            image_path: analysis.imagePath,
+            lesion_location: analysis.lesionLocation,
+            patient_context: patientContext,
+            analysis_result: analysisResult,
+            diagnosis_primary: analysis.diagnosisPrimary,
+            diagnosis_confidence: analysis.diagnosisConfidence,
+            severity: analysis.severity,
+            healing_potential: analysis.healingPotential,
+            wound_length: analysis.woundLength,
+            wound_width: analysis.woundWidth,
+            wound_depth: analysis.woundDepth,
+            wound_area: analysis.woundArea,
+            processing_time: analysis.processingTime,
+            status: analysis.status,
+            created_at: analysis.createdAt,
+            updated_at: analysis.updatedAt,
+            patient_name: analysis.patient?.name || null,
+            patient_birth_date: analysis.patient?.birthDate || null,
+            patient_gender: analysis.patient?.gender || null
+        };
 
         res.json({
             success: true,
             data: {
-                analysis
+                analysis: mappedAnalysis
             }
         });
 
@@ -148,61 +201,11 @@ router.get('/:id', idValidation, handleValidationErrors, async (req, res) => {
     }
 });
 
-// DELETE /api/analyses/:id - Excluir análise
-router.delete('/:id', idValidation, handleValidationErrors, async (req, res) => {
-    try {
-        const db = Database.getInstance();
-        const analysisId = parseInt(req.params.id);
-
-        // Verificar se análise existe e pertence ao usuário
-        const existingAnalysis = await db.get(`
-            SELECT id, image_path, image_filename 
-            FROM wound_analyses 
-            WHERE id = ? AND user_id = ?
-        `, [analysisId, req.user.id]);
-
-        if (!existingAnalysis) {
-            return res.status(404).json({
-                success: false,
-                message: 'Análise não encontrada',
-                code: 'ANALYSIS_NOT_FOUND'
-            });
-        }
-
-        // Deletar análise do banco de dados
-        await db.deleteWoundAnalysis(analysisId, req.user.id);
-
-        // Tentar remover arquivo de imagem (não crítico se falhar)
-        try {
-            if (existingAnalysis.image_path) {
-                const imagePath = path.resolve(existingAnalysis.image_path);
-                await fs.unlink(imagePath);
-                console.log(`✅ Imagem removida: ${existingAnalysis.image_filename}`);
-            }
-        } catch (imageError) {
-            console.warn(`⚠️ Não foi possível remover imagem: ${existingAnalysis.image_filename}`, imageError.message);
-            // Não falha a operação se não conseguir remover a imagem
-        }
-
-        res.json({
-            success: true,
-            message: 'Análise excluída com sucesso'
-        });
-
-    } catch (error) {
-        console.error('❌ Erro ao excluir análise:', error.message);
-        res.status(500).json({
-            success: false,
-            message: 'Erro interno do servidor',
-            code: 'ANALYSIS_DELETE_ERROR'
-        });
-    }
-});
-
 // DELETE /api/analyses/bulk - Excluir múltiplas análises
 router.delete('/bulk', async (req, res) => {
     try {
         const db = Database.getInstance();
+        await db.initialize(); // Garantir que está inicializado
         const { analysisIds } = req.body;
 
         if (!Array.isArray(analysisIds) || analysisIds.length === 0) {
@@ -213,13 +216,22 @@ router.delete('/bulk', async (req, res) => {
             });
         }
 
+        const numericIds = analysisIds.map(id => parseInt(id));
+
         // Verificar se todas as análises pertencem ao usuário
-        const placeholders = analysisIds.map(() => '?').join(',');
-        const existingAnalyses = await db.all(`
-            SELECT id, image_path, image_filename 
-            FROM wound_analyses 
-            WHERE id IN (${placeholders}) AND user_id = ?
-        `, [...analysisIds, req.user.id]);
+        const existingAnalyses = await db.prisma.woundAnalysis.findMany({
+            where: {
+                id: {
+                    in: numericIds
+                },
+                userId: req.user.id
+            },
+            select: {
+                id: true,
+                imagePath: true,
+                imageFilename: true
+            }
+        });
 
         if (existingAnalyses.length !== analysisIds.length) {
             return res.status(404).json({
@@ -230,19 +242,26 @@ router.delete('/bulk', async (req, res) => {
         }
 
         // Deletar análises do banco de dados
-        await db.bulkDeleteWoundAnalyses(analysisIds, req.user.id);
+        await db.prisma.woundAnalysis.deleteMany({
+            where: {
+                id: {
+                    in: numericIds
+                },
+                userId: req.user.id
+            }
+        });
 
         // Tentar remover arquivos de imagem
         let removedImages = 0;
         for (const analysis of existingAnalyses) {
             try {
-                if (analysis.image_path) {
-                    const imagePath = path.resolve(analysis.image_path);
+                if (analysis.imagePath) {
+                    const imagePath = path.resolve(analysis.imagePath);
                     await fs.unlink(imagePath);
                     removedImages++;
                 }
             } catch (imageError) {
-                console.warn(`⚠️ Não foi possível remover imagem: ${analysis.image_filename}`, imageError.message);
+                console.warn(`⚠️ Não foi possível remover imagem: ${analysis.imageFilename}`, imageError.message);
             }
         }
 
@@ -261,6 +280,68 @@ router.delete('/bulk', async (req, res) => {
             success: false,
             message: 'Erro interno do servidor',
             code: 'BULK_DELETE_ERROR'
+        });
+    }
+});
+
+// DELETE /api/analyses/:id - Excluir análise
+router.delete('/:id', idValidation, handleValidationErrors, async (req, res) => {
+    try {
+        const db = Database.getInstance();
+        await db.initialize(); // Garantir que está inicializado
+        const analysisId = parseInt(req.params.id);
+
+        // Verificar se análise existe e pertence ao usuário
+        const existingAnalysis = await db.prisma.woundAnalysis.findFirst({
+            where: {
+                id: analysisId,
+                userId: req.user.id
+            },
+            select: {
+                id: true,
+                imagePath: true,
+                imageFilename: true
+            }
+        });
+
+        if (!existingAnalysis) {
+            return res.status(404).json({
+                success: false,
+                message: 'Análise não encontrada',
+                code: 'ANALYSIS_NOT_FOUND'
+            });
+        }
+
+        // Deletar análise do banco de dados
+        await db.prisma.woundAnalysis.delete({
+            where: {
+                id: analysisId
+            }
+        });
+
+        // Tentar remover arquivo de imagem (não crítico se falhar)
+        try {
+            if (existingAnalysis.imagePath) {
+                const imagePath = path.resolve(existingAnalysis.imagePath);
+                await fs.unlink(imagePath);
+                console.log(`✅ Imagem removida: ${existingAnalysis.imageFilename}`);
+            }
+        } catch (imageError) {
+            console.warn(`⚠️ Não foi possível remover imagem: ${existingAnalysis.imageFilename}`, imageError.message);
+            // Não falha a operação se não conseguir remover a imagem
+        }
+
+        res.json({
+            success: true,
+            message: 'Análise excluída com sucesso'
+        });
+
+    } catch (error) {
+        console.error('❌ Erro ao excluir análise:', error.message);
+        res.status(500).json({
+            success: false,
+            message: 'Erro interno do servidor',
+            code: 'ANALYSIS_DELETE_ERROR'
         });
     }
 });

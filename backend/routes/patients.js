@@ -117,6 +117,8 @@ const handleValidationErrors = (req, res, next) => {
 router.get('/', searchValidation, handleValidationErrors, async (req, res) => {
     try {
         const db = Database.getInstance();
+        await db.initialize(); // Garantir que está inicializado
+        
         const {
             search = '',
             page = 1,
@@ -127,39 +129,68 @@ router.get('/', searchValidation, handleValidationErrors, async (req, res) => {
 
         const offset = (parseInt(page) - 1) * parseInt(limit);
 
-        // Query base
-        let whereClause = 'WHERE created_by = ?';
-        let params = [req.user.id];
+        // Construir filtros para Prisma
+        const whereCondition = {
+            createdBy: req.user.id
+        };
 
         // Adicionar busca se fornecida
         if (search) {
-            whereClause += ' AND (name LIKE ? OR email LIKE ? OR cpf LIKE ? OR phone LIKE ?)';
-            const searchTerm = `%${search}%`;
-            params.push(searchTerm, searchTerm, searchTerm, searchTerm);
+            whereCondition.OR = [
+                { name: { contains: search } },
+                { email: { contains: search } },
+                { cpf: { contains: search } },
+                { phone: { contains: search } }
+            ];
         }
 
-        // Query para contar total
-        const countQuery = `
-            SELECT COUNT(*) as total 
-            FROM patients 
-            ${whereClause}
-        `;
-        const countResult = await db.get(countQuery, params);
-        const total = countResult.total;
+        // Mapear campos de ordenação
+        const sortFieldMap = {
+            'name': 'name',
+            'created_at': 'createdAt',
+            'updated_at': 'updatedAt'
+        };
 
-        // Query para buscar pacientes
-        const patientsQuery = `
-            SELECT 
-                id, name, email, phone, birth_date, gender, cpf,
-                created_at, updated_at
-            FROM patients 
-            ${whereClause}
-            ORDER BY ${sort_by} ${sort_order}
-            LIMIT ? OFFSET ?
-        `;
-        params.push(parseInt(limit), offset);
+        const orderBy = {
+            [sortFieldMap[sort_by]]: sort_order.toLowerCase()
+        };
 
-        const patients = await db.all(patientsQuery, params);
+        // Contar total de registros
+        const total = await db.prisma.patient.count({
+            where: whereCondition
+        });
+
+        // Buscar pacientes
+        const patients = await db.prisma.patient.findMany({
+            where: whereCondition,
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                phone: true,
+                birthDate: true,
+                gender: true,
+                cpf: true,
+                createdAt: true,
+                updatedAt: true
+            },
+            orderBy,
+            skip: offset,
+            take: parseInt(limit)
+        });
+
+        // Mapear campos para manter compatibilidade
+        const mappedPatients = patients.map(patient => ({
+            id: patient.id,
+            name: patient.name,
+            email: patient.email,
+            phone: patient.phone,
+            birth_date: patient.birthDate,
+            gender: patient.gender,
+            cpf: patient.cpf,
+            created_at: patient.createdAt,
+            updated_at: patient.updatedAt
+        }));
 
         // Calcular informações de paginação
         const totalPages = Math.ceil(total / parseInt(limit));
@@ -169,7 +200,7 @@ router.get('/', searchValidation, handleValidationErrors, async (req, res) => {
         res.json({
             success: true,
             data: {
-                patients,
+                patients: mappedPatients,
                 pagination: {
                     current_page: parseInt(page),
                     total_pages: totalPages,
@@ -195,12 +226,15 @@ router.get('/', searchValidation, handleValidationErrors, async (req, res) => {
 router.get('/:id', idValidation, handleValidationErrors, async (req, res) => {
     try {
         const db = Database.getInstance();
+        await db.initialize(); // Garantir que está inicializado
         const patientId = parseInt(req.params.id);
 
-        const patient = await db.get(`
-            SELECT * FROM patients 
-            WHERE id = ? AND created_by = ?
-        `, [patientId, req.user.id]);
+        const patient = await db.prisma.patient.findFirst({
+            where: {
+                id: patientId,
+                createdBy: req.user.id
+            }
+        });
 
         if (!patient) {
             return res.status(404).json({
@@ -210,10 +244,26 @@ router.get('/:id', idValidation, handleValidationErrors, async (req, res) => {
             });
         }
 
+        // Mapear campos para manter compatibilidade
+        const mappedPatient = {
+            id: patient.id,
+            name: patient.name,
+            email: patient.email,
+            phone: patient.phone,
+            birth_date: patient.birthDate,
+            gender: patient.gender,
+            cpf: patient.cpf,
+            address: patient.address,
+            medical_history: patient.medicalHistory,
+            created_by: patient.createdBy,
+            created_at: patient.createdAt,
+            updated_at: patient.updatedAt
+        };
+
         res.json({
             success: true,
             data: {
-                patient
+                patient: mappedPatient
             }
         });
 
@@ -231,6 +281,8 @@ router.get('/:id', idValidation, handleValidationErrors, async (req, res) => {
 router.post('/', patientValidation, handleValidationErrors, async (req, res) => {
     try {
         const db = Database.getInstance();
+        await db.initialize(); // Garantir que está inicializado
+        
         const patientData = {
             ...req.body,
             created_by: req.user.id
@@ -238,10 +290,13 @@ router.post('/', patientValidation, handleValidationErrors, async (req, res) => 
 
         // Verificar se já existe paciente com mesmo CPF (se fornecido)
         if (patientData.cpf) {
-            const existingPatient = await db.get(`
-                SELECT id FROM patients 
-                WHERE cpf = ? AND created_by = ?
-            `, [patientData.cpf, req.user.id]);
+            const existingPatient = await db.prisma.patient.findFirst({
+                where: {
+                    cpf: patientData.cpf,
+                    createdBy: req.user.id
+                },
+                select: { id: true }
+            });
 
             if (existingPatient) {
                 return res.status(409).json({
@@ -252,13 +307,44 @@ router.post('/', patientValidation, handleValidationErrors, async (req, res) => 
             }
         }
 
-        const result = await db.createPatient(patientData);
+        // Mapear campos para Prisma
+        const prismaData = {
+            name: patientData.name,
+            email: patientData.email || null,
+            phone: patientData.phone || null,
+            birthDate: patientData.birth_date || null,
+            gender: patientData.gender || null,
+            cpf: patientData.cpf || null,
+            address: patientData.address || null,
+            medicalHistory: patientData.medical_history || null,
+            createdBy: req.user.id
+        };
+
+        const result = await db.prisma.patient.create({
+            data: prismaData
+        });
+
+        // Mapear resultado para manter compatibilidade
+        const mappedResult = {
+            id: result.id,
+            name: result.name,
+            email: result.email,
+            phone: result.phone,
+            birth_date: result.birthDate,
+            gender: result.gender,
+            cpf: result.cpf,
+            address: result.address,
+            medical_history: result.medicalHistory,
+            created_by: result.createdBy,
+            created_at: result.createdAt,
+            updated_at: result.updatedAt
+        };
 
         res.status(201).json({
             success: true,
             message: 'Paciente criado com sucesso',
             data: {
-                patient: result
+                patient: mappedResult
             }
         });
 
@@ -276,13 +362,17 @@ router.post('/', patientValidation, handleValidationErrors, async (req, res) => 
 router.put('/:id', idValidation, patientValidation, handleValidationErrors, async (req, res) => {
     try {
         const db = Database.getInstance();
+        await db.initialize(); // Garantir que está inicializado
         const patientId = parseInt(req.params.id);
 
         // Verificar se paciente existe e pertence ao usuário
-        const existingPatient = await db.get(`
-            SELECT id FROM patients 
-            WHERE id = ? AND created_by = ?
-        `, [patientId, req.user.id]);
+        const existingPatient = await db.prisma.patient.findFirst({
+            where: {
+                id: patientId,
+                createdBy: req.user.id
+            },
+            select: { id: true }
+        });
 
         if (!existingPatient) {
             return res.status(404).json({
@@ -294,10 +384,14 @@ router.put('/:id', idValidation, patientValidation, handleValidationErrors, asyn
 
         // Verificar se CPF já está em uso por outro paciente (se fornecido)
         if (req.body.cpf) {
-            const cpfInUse = await db.get(`
-                SELECT id FROM patients 
-                WHERE cpf = ? AND id != ? AND created_by = ?
-            `, [req.body.cpf, patientId, req.user.id]);
+            const cpfInUse = await db.prisma.patient.findFirst({
+                where: {
+                    cpf: req.body.cpf,
+                    id: { not: patientId },
+                    createdBy: req.user.id
+                },
+                select: { id: true }
+            });
 
             if (cpfInUse) {
                 return res.status(409).json({
@@ -308,13 +402,44 @@ router.put('/:id', idValidation, patientValidation, handleValidationErrors, asyn
             }
         }
 
-        const result = await db.updatePatient(patientId, req.body);
+        // Mapear campos para Prisma
+        const updateData = {
+            name: req.body.name,
+            email: req.body.email || null,
+            phone: req.body.phone || null,
+            birthDate: req.body.birth_date || null,
+            gender: req.body.gender || null,
+            cpf: req.body.cpf || null,
+            address: req.body.address || null,
+            medicalHistory: req.body.medical_history || null
+        };
+
+        const result = await db.prisma.patient.update({
+            where: { id: patientId },
+            data: updateData
+        });
+
+        // Mapear resultado para manter compatibilidade
+        const mappedResult = {
+            id: result.id,
+            name: result.name,
+            email: result.email,
+            phone: result.phone,
+            birth_date: result.birthDate,
+            gender: result.gender,
+            cpf: result.cpf,
+            address: result.address,
+            medical_history: result.medicalHistory,
+            created_by: result.createdBy,
+            created_at: result.createdAt,
+            updated_at: result.updatedAt
+        };
 
         res.json({
             success: true,
             message: 'Paciente atualizado com sucesso',
             data: {
-                patient: result
+                patient: mappedResult
             }
         });
 
@@ -332,13 +457,17 @@ router.put('/:id', idValidation, patientValidation, handleValidationErrors, asyn
 router.delete('/:id', idValidation, handleValidationErrors, async (req, res) => {
     try {
         const db = Database.getInstance();
+        await db.initialize(); // Garantir que está inicializado
         const patientId = parseInt(req.params.id);
 
         // Verificar se paciente existe e pertence ao usuário
-        const existingPatient = await db.get(`
-            SELECT id FROM patients 
-            WHERE id = ? AND created_by = ?
-        `, [patientId, req.user.id]);
+        const existingPatient = await db.prisma.patient.findFirst({
+            where: {
+                id: patientId,
+                createdBy: req.user.id
+            },
+            select: { id: true }
+        });
 
         if (!existingPatient) {
             return res.status(404).json({
@@ -349,13 +478,13 @@ router.delete('/:id', idValidation, handleValidationErrors, async (req, res) => 
         }
 
         // Verificar se existem análises associadas
-        const analysisCount = await db.get(`
-            SELECT COUNT(*) as count 
-            FROM wound_analyses 
-            WHERE patient_id = ?
-        `, [patientId]);
+        const analysisCount = await db.prisma.woundAnalysis.count({
+            where: {
+                patientId: patientId
+            }
+        });
 
-        if (analysisCount.count > 0) {
+        if (analysisCount > 0) {
             return res.status(409).json({
                 success: false,
                 message: 'Não é possível excluir paciente com análises associadas',
@@ -363,10 +492,11 @@ router.delete('/:id', idValidation, handleValidationErrors, async (req, res) => 
             });
         }
 
-        await db.run(`
-            DELETE FROM patients 
-            WHERE id = ? AND created_by = ?
-        `, [patientId, req.user.id]);
+        await db.prisma.patient.delete({
+            where: {
+                id: patientId
+            }
+        });
 
         res.json({
             success: true,
@@ -387,13 +517,17 @@ router.delete('/:id', idValidation, handleValidationErrors, async (req, res) => 
 router.get('/:id/analyses', idValidation, handleValidationErrors, async (req, res) => {
     try {
         const db = Database.getInstance();
+        await db.initialize(); // Garantir que está inicializado
         const patientId = parseInt(req.params.id);
 
         // Verificar se paciente existe e pertence ao usuário
-        const patient = await db.get(`
-            SELECT id FROM patients 
-            WHERE id = ? AND created_by = ?
-        `, [patientId, req.user.id]);
+        const patient = await db.prisma.patient.findFirst({
+            where: {
+                id: patientId,
+                createdBy: req.user.id
+            },
+            select: { id: true }
+        });
 
         if (!patient) {
             return res.status(404).json({
@@ -403,19 +537,37 @@ router.get('/:id/analyses', idValidation, handleValidationErrors, async (req, re
             });
         }
 
-        const analyses = await db.all(`
-            SELECT 
-                id, image_path, analysis_result, confidence_score,
-                created_at, updated_at
-            FROM wound_analyses 
-            WHERE patient_id = ?
-            ORDER BY created_at DESC
-        `, [patientId]);
+        const analyses = await db.prisma.woundAnalysis.findMany({
+            where: {
+                patientId: patientId
+            },
+            select: {
+                id: true,
+                imagePath: true,
+                analysisResult: true,
+                confidenceScore: true,
+                createdAt: true,
+                updatedAt: true
+            },
+            orderBy: {
+                createdAt: 'desc'
+            }
+        });
+
+        // Mapear campos para manter compatibilidade
+        const mappedAnalyses = analyses.map(analysis => ({
+            id: analysis.id,
+            image_path: analysis.imagePath,
+            analysis_result: analysis.analysisResult,
+            confidence_score: analysis.confidenceScore,
+            created_at: analysis.createdAt,
+            updated_at: analysis.updatedAt
+        }));
 
         res.json({
             success: true,
             data: {
-                analyses
+                analyses: mappedAnalyses
             }
         });
 

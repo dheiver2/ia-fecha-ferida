@@ -152,7 +152,7 @@ class AuthService {
             }
 
             // Verificar senha
-            const isValidPassword = await this.verifyPassword(password, user.password_hash);
+            const isValidPassword = await this.verifyPassword(password, user.passwordHash);
             if (!isValidPassword) {
                 throw new Error('Credenciais inválidas');
             }
@@ -183,7 +183,10 @@ class AuthService {
             });
 
             // Atualizar último login
-            await db.run('UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE id = ?', [user.id]);
+            await db.prisma.user.update({
+                where: { id: user.id },
+                data: { lastLogin: new Date() }
+            });
 
             // Log da ação
             await db.logAction({
@@ -268,7 +271,10 @@ class AuthService {
             }
 
             // Atualizar último uso da sessão
-            await db.run('UPDATE user_sessions SET last_used = CURRENT_TIMESTAMP WHERE token_hash = ?', [tokenHash]);
+            await db.prisma.userSession.updateMany({
+                where: { tokenHash: tokenHash },
+                data: { lastUsed: new Date() }
+            });
 
             return {
                 id: session.user_id,
@@ -312,11 +318,19 @@ class AuthService {
             const newPasswordHash = await this.hashPassword(newPassword);
 
             // Atualizar senha
-            await db.run('UPDATE users SET password_hash = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?', 
-                [newPasswordHash, userId]);
+            await db.prisma.user.update({
+                where: { id: userId },
+                data: { 
+                    passwordHash: newPasswordHash,
+                    updatedAt: new Date()
+                }
+            });
 
             // Invalidar todas as sessões do usuário (forçar novo login)
-            await db.run('UPDATE user_sessions SET is_active = 0 WHERE user_id = ?', [userId]);
+            await db.prisma.userSession.updateMany({
+                where: { userId: userId },
+                data: { isActive: false }
+            });
 
             console.log(`✅ Senha alterada para usuário ID: ${userId}`);
             
@@ -333,14 +347,36 @@ class AuthService {
         const db = await getDatabase();
         
         try {
-            const sql = `
-                SELECT id, device_info, ip_address, created_at, last_used, expires_at
-                FROM user_sessions 
-                WHERE user_id = ? AND is_active = 1 AND expires_at > datetime('now')
-                ORDER BY last_used DESC
-            `;
-            
-            return await db.all(sql, [userId]);
+            const sessions = await db.prisma.userSession.findMany({
+                where: {
+                    userId: userId,
+                    isActive: true,
+                    expiresAt: {
+                        gt: new Date()
+                    }
+                },
+                select: {
+                    id: true,
+                    deviceInfo: true,
+                    ipAddress: true,
+                    createdAt: true,
+                    lastUsed: true,
+                    expiresAt: true
+                },
+                orderBy: {
+                    lastUsed: 'desc'
+                }
+            });
+
+            // Mapear campos para manter compatibilidade
+            return sessions.map(session => ({
+                id: session.id,
+                device_info: session.deviceInfo,
+                ip_address: session.ipAddress,
+                created_at: session.createdAt,
+                last_used: session.lastUsed,
+                expires_at: session.expiresAt
+            }));
 
         } catch (error) {
             console.error('❌ Erro ao buscar sessões:', error.message);

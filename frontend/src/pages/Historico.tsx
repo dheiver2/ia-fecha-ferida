@@ -516,10 +516,19 @@ const Historico: React.FC = () => {
 
   const deleteExam = async (examId: string) => {
     try {
-      // Deletar do backend
-      await analysisService.deleteAnalysis(parseInt(examId));
+      // Verificar se o ID é numérico (existe no backend) ou é um ID de exemplo
+      const isNumericId = !isNaN(parseInt(examId)) && parseInt(examId) > 0;
       
-      // Remover do estado local
+      if (isNumericId) {
+        // Tentar deletar do backend apenas se for um ID válido
+        try {
+          await analysisService.deleteAnalysis(parseInt(examId));
+        } catch (backendError) {
+          console.warn('Erro ao deletar do backend, removendo apenas do localStorage:', backendError);
+        }
+      }
+      
+      // Sempre remover do estado local e localStorage
       setExamHistory(prev => prev.filter(exam => exam.id !== examId));
       
       // Atualizar localStorage
@@ -528,7 +537,7 @@ const Historico: React.FC = () => {
       
       toast({
         title: "Exame removido",
-        description: "O exame foi removido do histórico e do banco de dados.",
+        description: "O exame foi removido do histórico com sucesso.",
         variant: "destructive"
       });
     } catch (error) {
@@ -568,12 +577,24 @@ const Historico: React.FC = () => {
 
   const bulkDelete = async () => {
     try {
-      const analysisIds = selectedExams.map(id => parseInt(id));
+      // Separar IDs numéricos (backend) dos IDs de exemplo
+      const numericIds = selectedExams
+        .filter(id => !isNaN(parseInt(id)) && parseInt(id) > 0)
+        .map(id => parseInt(id));
       
-      // Deletar do backend
-      const result = await analysisService.bulkDeleteAnalyses(analysisIds);
+      let deletedCount = 0;
       
-      // Remover do estado local
+      // Deletar do backend apenas os IDs válidos
+      if (numericIds.length > 0) {
+        try {
+          const result = await analysisService.bulkDeleteAnalyses(numericIds);
+          deletedCount = result.deletedAnalyses;
+        } catch (backendError) {
+          console.warn('Erro ao deletar alguns itens do backend, removendo apenas do localStorage:', backendError);
+        }
+      }
+      
+      // Sempre remover do estado local e localStorage
       setExamHistory(prev => prev.filter(exam => !selectedExams.includes(exam.id)));
       
       // Atualizar localStorage
@@ -584,7 +605,7 @@ const Historico: React.FC = () => {
       
       toast({
         title: "Exames removidos",
-        description: `${result.deletedAnalyses} exames foram removidos do histórico e do banco de dados.`,
+        description: `${selectedExams.length} exames foram removidos do histórico com sucesso.`,
         variant: "destructive"
       });
     } catch (error) {

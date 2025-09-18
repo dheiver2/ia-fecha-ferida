@@ -2,7 +2,7 @@ import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Upload, FileImage, X, Brain, CheckCircle, ArrowLeft } from "lucide-react";
+import { Upload, FileImage, X, Brain, CheckCircle, ArrowLeft, History } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
 import logoImage from "@/assets/logo-fecha-ferida.jpg";
@@ -175,12 +175,21 @@ const Analise = () => {
             </div>
           </Link>
           
-          <Link to="/">
-            <Button variant="outline" size="sm" className="border-border hover:bg-secondary">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Voltar ao Início
-            </Button>
-          </Link>
+          <div className="flex items-center space-x-3">
+            <Link to="/historico">
+              <Button variant="outline" size="sm" className="border-border hover:bg-secondary">
+                <History className="mr-2 h-4 w-4" />
+                Histórico
+              </Button>
+            </Link>
+            
+            <Link to="/">
+              <Button variant="outline" size="sm" className="border-border hover:bg-secondary">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Voltar ao Início
+              </Button>
+            </Link>
+          </div>
         </div>
       </header>
 

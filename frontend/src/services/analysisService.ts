@@ -36,7 +36,7 @@ interface PaginatedAnalyses {
 
 class AnalysisService {
   private getAuthToken(): string | null {
-    return localStorage.getItem('authToken');
+    return localStorage.getItem('auth_token');
   }
 
   private getHeaders(): HeadersInit {

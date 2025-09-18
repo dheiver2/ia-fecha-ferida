@@ -1,0 +1,146 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             Int      @id @default(autoincrement())
+  email          String   @unique @db.VarChar(255)
+  passwordHash   String   @map("password_hash") @db.VarChar(255)
+  name           String   @db.VarChar(255)
+  role           String   @default("user") @db.VarChar(50) // 'admin', 'doctor', 'nurse', 'user'
+  specialty      String?  @db.VarChar(100) // Especialidade médica
+  crm            String?  @db.VarChar(20) // Registro profissional
+  institution    String?  @db.VarChar(255) // Instituição de trabalho
+  phone          String?  @db.VarChar(20)
+  isActive       Boolean  @default(true) @map("is_active")
+  emailVerified  Boolean  @default(false) @map("email_verified")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+  lastLogin      DateTime? @map("last_login")
+
+  // Relacionamentos
+  patients       Patient[]
+  woundAnalyses  WoundAnalysis[]
+  userSessions   UserSession[]
+  auditLogs      AuditLog[]
+
+  @@index([email])
+  @@index([role])
+  @@map("users")
+}
+
+model Patient {
+  id                     Int      @id @default(autoincrement())
+  userId                 Int      @map("user_id")
+  name                   String   @db.VarChar(255)
+  birthDate              DateTime? @map("birth_date") @db.Date
+  gender                 String?  @db.VarChar(10) // 'M', 'F', 'Other'
+  cpf                    String?  @unique @db.VarChar(14)
+  phone                  String?  @db.VarChar(20)
+  email                  String?  @db.VarChar(255)
+  address                String?  @db.Text
+  medicalHistory         String?  @map("medical_history") @db.Text
+  allergies              String?  @db.Text
+  currentMedications     String?  @map("current_medications") @db.Text
+  emergencyContactName   String?  @map("emergency_contact_name") @db.VarChar(255)
+  emergencyContactPhone  String?  @map("emergency_contact_phone") @db.VarChar(20)
+  notes                  String?  @db.Text
+  isActive               Boolean  @default(true) @map("is_active")
+  createdAt              DateTime @default(now()) @map("created_at")
+  updatedAt              DateTime @updatedAt @map("updated_at")
+
+  // Relacionamentos
+  user                   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  woundAnalyses          WoundAnalysis[]
+
+  @@index([userId])
+  @@index([cpf])
+  @@map("patients")
+}
+
+model WoundAnalysis {
+  id                   Int      @id @default(autoincrement())
+  userId               Int      @map("user_id")
+  patientId            Int?     @map("patient_id")
+  protocolNumber       String   @unique @map("protocol_number") @db.VarChar(50)
+  imageFilename        String   @map("image_filename") @db.VarChar(255)
+  imagePath            String   @map("image_path") @db.VarChar(500)
+  
+  // Contexto da análise
+  lesionLocation       String?  @map("lesion_location") @db.VarChar(255)
+  patientContext       String?  @map("patient_context") @db.Text
+  
+  // Resultado da análise
+  analysisResult       String   @map("analysis_result") @db.Text
+  diagnosisPrimary     String?  @map("diagnosis_primary") @db.VarChar(500)
+  diagnosisConfidence  Decimal? @map("diagnosis_confidence") @db.Decimal(5,2)
+  severity             String?  @db.VarChar(50) // 'Leve', 'Moderada', 'Grave'
+  healingPotential     String?  @map("healing_potential") @db.VarChar(50)
+  
+  // Medidas da ferida
+  woundLength          Decimal? @map("wound_length") @db.Decimal(8,2)
+  woundWidth           Decimal? @map("wound_width") @db.Decimal(8,2)
+  woundDepth           Decimal? @map("wound_depth") @db.Decimal(8,2)
+  woundArea            Decimal? @map("wound_area") @db.Decimal(10,2)
+  
+  // Status e metadados
+  status               String   @default("completed") @db.VarChar(50) // 'processing', 'completed', 'error'
+  processingTime       Int?     @map("processing_time")
+  errorMessage         String?  @map("error_message") @db.Text
+  
+  // Timestamps
+  createdAt            DateTime @default(now()) @map("created_at")
+  updatedAt            DateTime @updatedAt @map("updated_at")
+
+  // Relacionamentos
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  patient              Patient? @relation(fields: [patientId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([patientId])
+  @@index([protocolNumber])
+  @@map("wound_analyses")
+}
+
+model UserSession {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @map("user_id")
+  tokenHash   String   @map("token_hash") @db.VarChar(255)
+  deviceInfo  String?  @map("device_info") @db.Text
+  ipAddress   String?  @map("ip_address") @db.VarChar(45)
+  userAgent   String?  @map("user_agent") @db.Text
+  expiresAt   DateTime @map("expires_at")
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  lastUsed    DateTime @default(now()) @map("last_used")
+
+  // Relacionamentos
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_sessions")
+}
+
+model AuditLog {
+  id           Int      @id @default(autoincrement())
+  userId       Int?     @map("user_id")
+  action       String   @db.VarChar(100) // 'login', 'logout', 'create_analysis', 'view_patient', etc.
+  resourceType String?  @map("resource_type") @db.VarChar(50) // 'user', 'patient', 'analysis'
+  resourceId   Int?     @map("resource_id")
+  details      String?  @db.Text // Detalhes da ação em JSON
+  ipAddress    String?  @map("ip_address") @db.VarChar(45)
+  userAgent    String?  @map("user_agent") @db.Text
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  // Relacionamentos
+  user         User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@map("audit_logs")
+}

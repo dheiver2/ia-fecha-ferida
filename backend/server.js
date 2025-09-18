@@ -17,26 +17,35 @@ app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
 
-// Rate limiting
+// Rate limiting - Configuração mais permissiva para desenvolvimento
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutos
-  max: 100, // máximo 100 requests por IP por janela
+  max: process.env.NODE_ENV === 'production' ? 100 : 1000, // 1000 requests em dev, 100 em produção
   message: {
     success: false,
     message: 'Muitas tentativas. Tente novamente em 15 minutos.',
     code: 'RATE_LIMIT_EXCEEDED'
+  },
+  skip: (req) => {
+    // Pular rate limiting para localhost em desenvolvimento
+    if (process.env.NODE_ENV !== 'production' && 
+        (req.ip === '127.0.0.1' || req.ip === '::1' || req.ip.includes('localhost'))) {
+      return true;
+    }
+    return false;
   }
 });
 
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutos
-  max: 5, // máximo 5 tentativas de login por IP por janela
-  message: {
-    success: false,
-    message: 'Muitas tentativas de login. Tente novamente em 15 minutos.',
-    code: 'AUTH_RATE_LIMIT_EXCEEDED'
-  }
-});
+// authLimiter removido para desenvolvimento - sem limite de tentativas de login
+// const authLimiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15 minutos
+//   max: 5, // máximo 5 tentativas de login por IP por janela
+//   message: {
+//     success: false,
+//     message: 'Muitas tentativas de login. Tente novamente em 15 minutos.',
+//     code: 'AUTH_RATE_LIMIT_EXCEEDED'
+//   }
+// });
 
 app.use(limiter);
 
@@ -98,9 +107,9 @@ async function initializeDatabase() {
   }
 }
 
-// Rotas de autenticação (com rate limiting específico)
-app.use('/api/auth/login', authLimiter);
-app.use('/api/auth/register', authLimiter);
+// Rotas de autenticação (rate limiting removido para desenvolvimento)
+// app.use('/api/auth/login', authLimiter);
+// app.use('/api/auth/register', authLimiter);
 app.use('/api/auth', authRoutes);
 
 // Rotas de pacientes

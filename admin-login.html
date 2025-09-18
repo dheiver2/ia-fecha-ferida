@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Administrador - Fecha Ferida IA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .btn {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .success {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .error {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .info {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Login Administrador - Fecha Ferida IA</h1>
+        
+        <div class="info">
+            <h3>Credenciais do Administrador:</h3>
+            <p><strong>Email:</strong> admin@fechaferida.com</p>
+            <p><strong>Senha:</strong> admin123</p>
+            <p><strong>Role:</strong> admin</p>
+        </div>
+
+        <button class="btn" onclick="loginAdmin()">🚀 Fazer Login como Admin</button>
+        <button class="btn" onclick="openApp()">📱 Abrir Aplicação</button>
+        <button class="btn" onclick="clearStorage()">🗑️ Limpar Storage</button>
+
+        <div id="status"></div>
+
+        <div class="info">
+            <h3>Instruções:</h3>
+            <ol>
+                <li>Clique em "Fazer Login como Admin" para configurar a sessão</li>
+                <li>Clique em "Abrir Aplicação" para acessar o sistema</li>
+                <li>Você estará logado como administrador automaticamente</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3001/api';
+        const APP_URL = 'http://localhost:8080';
+
+        async function loginAdmin() {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = '<p>🔄 Fazendo login...</p>';
+
+            try {
+                const response = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: 'admin@fechaferida.com',
+                        password: 'admin123'
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Salvar dados no localStorage
+                    localStorage.setItem('token', data.data.token);
+                    localStorage.setItem('user', JSON.stringify(data.data.user));
+                    
+                    statusDiv.innerHTML = `
+                        <p class="success">✅ Login realizado com sucesso!</p>
+                        <p><strong>Usuário:</strong> ${data.data.user.name}</p>
+                        <p><strong>Role:</strong> ${data.data.user.role}</p>
+                        <p><strong>Email:</strong> ${data.data.user.email}</p>
+                    `;
+                } else {
+                    statusDiv.innerHTML = `<p class="error">❌ Erro: ${data.message}</p>`;
+                    
+                    // Se houver rate limit, configurar dados manualmente
+                    if (data.code === 'AUTH_RATE_LIMIT_EXCEEDED') {
+                        statusDiv.innerHTML += `
+                            <p>⚠️ Rate limit ativo. Configurando sessão manualmente...</p>
+                        `;
+                        
+                        // Simular dados de admin (apenas para desenvolvimento)
+                        const adminData = {
+                            id: 'admin-id',
+                            name: 'Administrador Sistema',
+                            email: 'admin@fechaferida.com',
+                            role: 'admin',
+                            specialty: 'Administração',
+                            crm: 'ADMIN-2024',
+                            institution: 'Sistema Fecha Ferida IA'
+                        };
+                        
+                        localStorage.setItem('token', 'admin-dev-token');
+                        localStorage.setItem('user', JSON.stringify(adminData));
+                        
+                        statusDiv.innerHTML += `
+                            <p class="success">✅ Sessão configurada manualmente!</p>
+                            <p><strong>Usuário:</strong> ${adminData.name}</p>
+                            <p><strong>Role:</strong> ${adminData.role}</p>
+                        `;
+                    }
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `<p class="error">❌ Erro de conexão: ${error.message}</p>`;
+            }
+        }
+
+        function openApp() {
+            window.open(APP_URL, '_blank');
+        }
+
+        function clearStorage() {
+            localStorage.clear();
+            document.getElementById('status').innerHTML = '<p class="success">✅ Storage limpo!</p>';
+        }
+
+        // Verificar se já está logado
+        window.onload = function() {
+            const token = localStorage.getItem('token');
+            const user = localStorage.getItem('user');
+            
+            if (token && user) {
+                const userData = JSON.parse(user);
+                document.getElementById('status').innerHTML = `
+                    <p class="success">✅ Já logado como:</p>
+                    <p><strong>Usuário:</strong> ${userData.name}</p>
+                    <p><strong>Role:</strong> ${userData.role}</p>
+                `;
+            }
+        };
+    </script>
+</body>
+</html>

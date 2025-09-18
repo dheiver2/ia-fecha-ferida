@@ -60,12 +60,6 @@ app.use(limiter);
 console.log('DEBUG - ALLOWED_ORIGINS env var:', process.env.ALLOWED_ORIGINS);
 console.log('DEBUG - FRONTEND_URL env var:', process.env.FRONTEND_URL);
 
-const allowedOrigins = process.env.ALLOWED_ORIGINS 
-  ? process.env.ALLOWED_ORIGINS.split(',').map(origin => origin.trim())
-  : ['http://localhost:5173', 'http://localhost:3000'];
-
-console.log('CORS - Allowed Origins:', allowedOrigins);
-
 app.use(cors({
   origin: ['*'],
   credentials: true,

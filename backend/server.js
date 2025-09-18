@@ -13,13 +13,11 @@ const prisma = new PrismaClient();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Configurar trust proxy para Railway
-app.set('trust proxy', true);
-
-// Middleware de segurança
-app.use(helmet({
-  crossOriginResourcePolicy: { policy: "cross-origin" }
-}));
+app.use(cors(
+  {
+    origin: [process.env.FRONTEND_URL],
+  }
+));
 
 // Rate limiting - Configuração mais permissiva para desenvolvimento
 const limiter = rateLimit({
@@ -60,12 +58,6 @@ app.use(limiter);
 console.log('DEBUG - ALLOWED_ORIGINS env var:', process.env.ALLOWED_ORIGINS);
 console.log('DEBUG - FRONTEND_URL env var:', process.env.FRONTEND_URL);
 
-app.use(cors({
-  origin: ['*'],
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept']
-}));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(express.static('uploads'));

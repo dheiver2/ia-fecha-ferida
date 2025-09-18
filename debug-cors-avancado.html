@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug CORS Avançado - Fecha Ferida IA</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            background: #f8f9fa;
+        }
+        .section h2 {
+            color: #34495e;
+            margin-top: 0;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .input-group {
+            margin: 15px 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #bdc3c7;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        button {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: transform 0.2s;
+            margin: 10px 5px;
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        .info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+        }
+        .cors-header {
+            background: #e8f5e8;
+            padding: 10px;
+            margin: 5px 0;
+            border-left: 4px solid #28a745;
+            border-radius: 4px;
+        }
+        .cors-error {
+            background: #f8e8e8;
+            padding: 10px;
+            margin: 5px 0;
+            border-left: 4px solid #dc3545;
+            border-radius: 4px;
+        }
+        .timestamp {
+            color: #6c757d;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Debug CORS Avançado</h1>
+        
+        <div class="section">
+            <h2>📋 Configurações de Teste</h2>
+            <div class="input-group">
+                <label for="backendUrl">URL do Backend:</label>
+                <input type="text" id="backendUrl" value="https://worthy-clarity-production.up.railway.app">
+            </div>
+            <div class="input-group">
+                <label for="frontendUrl">URL do Frontend (Origin):</label>
+                <input type="text" id="frontendUrl" value="https://fecha-ferida-jopi2g8my-dheiver2s-projects.vercel.app">
+            </div>
+            <div class="input-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" value="admin@fechaferida.com">
+            </div>
+            <div class="input-group">
+                <label for="password">Senha:</label>
+                <input type="password" id="password" value="admin123">
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🧪 Testes Disponíveis</h2>
+            <button onclick="testarPreflight()">🔍 Testar Preflight (OPTIONS)</button>
+            <button onclick="testarLogin()">🔐 Testar Login (POST)</button>
+            <button onclick="testarHealth()">❤️ Testar Health Check</button>
+            <button onclick="testarCorsHeaders()">📡 Verificar Headers CORS</button>
+            <button onclick="limparResultados()">🧹 Limpar Resultados</button>
+        </div>
+
+        <div class="section">
+            <h2>📊 Resultados dos Testes</h2>
+            <div id="resultados"></div>
+        </div>
+
+        <div class="section">
+            <h2>📝 Diagnóstico Automático</h2>
+            <button onclick="diagnosticoCompleto()">🔬 Executar Diagnóstico Completo</button>
+            <div id="diagnostico"></div>
+        </div>
+    </div>
+
+    <script>
+        function log(message, type = 'info') {
+            const resultados = document.getElementById('resultados');
+            const timestamp = new Date().toLocaleTimeString();
+            const div = document.createElement('div');
+            div.className = `result ${type}`;
+            div.innerHTML = `<div class="timestamp">[${timestamp}]</div>${message}`;
+            resultados.appendChild(div);
+            resultados.scrollTop = resultados.scrollHeight;
+        }
+
+        function getConfig() {
+            return {
+                backendUrl: document.getElementById('backendUrl').value,
+                frontendUrl: document.getElementById('frontendUrl').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value
+            };
+        }
+
+        async function testarPreflight() {
+            const config = getConfig();
+            log('🔍 Iniciando teste Preflight (OPTIONS)...', 'info');
+            
+            try {
+                const response = await fetch(`${config.backendUrl}/api/auth/login`, {
+                    method: 'OPTIONS',
+                    headers: {
+                        'Origin': config.frontendUrl,
+                        'Access-Control-Request-Method': 'POST',
+                        'Access-Control-Request-Headers': 'Content-Type'
+                    }
+                });
+
+                log(`✅ Preflight Status: ${response.status}`, 'success');
+                
+                const headers = {};
+                response.headers.forEach((value, key) => {
+                    headers[key] = value;
+                });
+                
+                log('📡 Headers Preflight:', 'info');
+                Object.entries(headers).forEach(([key, value]) => {
+                    if (key.toLowerCase().includes('access-control') || key.toLowerCase().includes('origin')) {
+                        log(`  ✓ ${key}: ${value}`, 'success');
+                    }
+                });
+                
+            } catch (error) {
+                log(`❌ Erro no Preflight: ${error.message}`, 'error');
+            }
+        }
+
+        async function testarLogin() {
+            const config = getConfig();
+            log('🔐 Iniciando teste de Login...', 'info');
+            
+            try {
+                const response = await fetch(`${config.backendUrl}/api/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Origin': config.frontendUrl
+                    },
+                    body: JSON.stringify({
+                        email: config.email,
+                        password: config.password
+                    })
+                });
+
+                log(`📊 Login Status: ${response.status}`, response.ok ? 'success' : 'error');
+                
+                // Verificar headers CORS
+                const corsHeaders = {};
+                response.headers.forEach((value, key) => {
+                    if (key.toLowerCase().includes('access-control') || key.toLowerCase().includes('origin')) {
+                        corsHeaders[key] = value;
+                    }
+                });
+                
+                log('🎯 Headers CORS Recebidos:', 'info');
+                Object.entries(corsHeaders).forEach(([key, value]) => {
+                    const isCorrect = key === 'access-control-allow-origin' && value === config.frontendUrl;
+                    log(`  ${isCorrect ? '✅' : '⚠️'} ${key}: ${value}`, isCorrect ? 'success' : 'warning');
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    log(`✅ Login bem-sucedido: ${data.message}`, 'success');
+                } else {
+                    const errorText = await response.text();
+                    log(`❌ Erro no login: ${errorText}`, 'error');
+                }
+                
+            } catch (error) {
+                log(`❌ Erro na requisição: ${error.message}`, 'error');
+                if (error.message.includes('CORS')) {
+                    log('🚨 ERRO CORS DETECTADO! O backend não está permitindo requisições do frontend.', 'error');
+                }
+            }
+        }
+
+        async function testarHealth() {
+            const config = getConfig();
+            log('❤️ Testando Health Check...', 'info');
+            
+            try {
+                const response = await fetch(`${config.backendUrl}/health`);
+                const data = await response.text();
+                log(`✅ Health Check: ${response.status} - ${data}`, 'success');
+            } catch (error) {
+                log(`❌ Erro no Health Check: ${error.message}`, 'error');
+            }
+        }
+
+        async function testarCorsHeaders() {
+            const config = getConfig();
+            log('📡 Verificando Headers CORS detalhadamente...', 'info');
+            
+            try {
+                const response = await fetch(`${config.backendUrl}/api/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Origin': config.frontendUrl
+                    },
+                    body: JSON.stringify({ email: 'test', password: 'test' })
+                });
+
+                log('📋 TODOS OS HEADERS DA RESPOSTA:', 'info');
+                response.headers.forEach((value, key) => {
+                    log(`  ${key}: ${value}`, 'info');
+                });
+                
+                // Análise específica dos headers CORS
+                const allowOrigin = response.headers.get('access-control-allow-origin');
+                const allowCredentials = response.headers.get('access-control-allow-credentials');
+                
+                log('\n🔍 ANÁLISE CORS:', 'info');
+                log(`Frontend esperado: ${config.frontendUrl}`, 'info');
+                log(`Access-Control-Allow-Origin: ${allowOrigin}`, allowOrigin === config.frontendUrl ? 'success' : 'error');
+                log(`Access-Control-Allow-Credentials: ${allowCredentials}`, 'info');
+                
+                if (allowOrigin !== config.frontendUrl) {
+                    log('🚨 PROBLEMA IDENTIFICADO: O header Access-Control-Allow-Origin não corresponde ao frontend!', 'error');
+                    log('💡 SOLUÇÃO: Verificar as variáveis FRONTEND_URL e ALLOWED_ORIGINS no Railway.', 'warning');
+                }
+                
+            } catch (error) {
+                log(`❌ Erro ao verificar headers: ${error.message}`, 'error');
+            }
+        }
+
+        async function diagnosticoCompleto() {
+            const diagnostico = document.getElementById('diagnostico');
+            diagnostico.innerHTML = '<div class="result info">🔬 Executando diagnóstico completo...</div>';
+            
+            log('🔬 INICIANDO DIAGNÓSTICO COMPLETO...', 'info');
+            
+            await testarHealth();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            await testarPreflight();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            await testarCorsHeaders();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            await testarLogin();
+            
+            log('✅ DIAGNÓSTICO COMPLETO FINALIZADO!', 'success');
+            
+            // Resumo do diagnóstico
+            const config = getConfig();
+            const resumo = `
+🎯 RESUMO DO DIAGNÓSTICO:
+
+📍 URLs Configuradas:
+  • Backend: ${config.backendUrl}
+  • Frontend: ${config.frontendUrl}
+
+🔍 Próximos Passos:
+  1. Verificar se o Railway aplicou as mudanças nas variáveis de ambiente
+  2. Confirmar se FRONTEND_URL e ALLOWED_ORIGINS estão corretas
+  3. Aguardar alguns minutos para propagação das mudanças
+  4. Testar novamente o login
+
+💡 Se o problema persistir:
+  • Verificar logs do Railway
+  • Confirmar se o deploy foi bem-sucedido
+  • Verificar se não há cache no Railway
+            `;
+            
+            diagnostico.innerHTML = `<div class="result warning">${resumo}</div>`;
+        }
+
+        function limparResultados() {
+            document.getElementById('resultados').innerHTML = '';
+            document.getElementById('diagnostico').innerHTML = '';
+        }
+
+        // Executar teste inicial
+        window.onload = function() {
+            log('🚀 Debug CORS Avançado carregado!', 'success');
+            log('💡 Use os botões acima para executar diferentes testes.', 'info');
+        };
+    </script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 ## Usuário Administrador
 
 **Email:** admin@fechaferida.com  
-**Senha:** admin123  
+**Senha:** admni123  
 **Role:** admin  
 **Nome:** Administrador Sistema  
 **Especialidade:** Administração  

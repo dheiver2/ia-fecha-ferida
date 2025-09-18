@@ -32,7 +32,7 @@ const limiter = rateLimit({
   },
   standardHeaders: true,
   legacyHeaders: false,
-  trustProxy: process.env.NODE_ENV === 'production', // Apenas confiar em proxy em produção
+  trustProxy: false, // Desabilitar proxy em desenvolvimento
   skip: (req) => {
     // Pular rate limiting para localhost em desenvolvimento
     if (process.env.NODE_ENV !== 'production' && 

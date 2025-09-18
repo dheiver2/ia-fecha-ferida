@@ -99,7 +99,6 @@ class AuthService {
   // Login do usuário
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
     try {
-      console.log('credentials: ', credentials)
       const response = await api.post<AuthResponse>('/api/auth/login', credentials);
       
       if (response.data.success && response.data.data) {

@@ -1,23 +1,19 @@
-[build]
+[[services]]
+name = "fecha-ferida-backend"
+
+[services.build]
 builder = "nixpacks"
 
-[deploy]
+[services.deploy]
 startCommand = "npm start"
 healthcheckPath = "/health"
 healthcheckTimeout = 300
 restartPolicyType = "on_failure"
 
-[env]
-NODE_ENV = "production"
-PORT = { default = "3001" }
-
-[[services]]
-name = "fecha-ferida-backend"
-rootDirectory = "backend"
-
 [services.source]
 repo = "."
 branch = "main"
+rootDirectory = "backend"
 
 [services.variables]
 NODE_ENV = "production"

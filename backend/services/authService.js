@@ -182,7 +182,7 @@ class AuthService {
             expiresAt.setHours(expiresAt.getHours() + 24); // 24 horas
 
             // Salvar sessão
-            await prisma.session.create({
+            await prisma.userSession.create({
                 data: {
                     userId: user.id,
                     tokenHash: tokenHash,
@@ -241,7 +241,7 @@ class AuthService {
             const tokenHash = this.hashToken(token);
             
             // Buscar sessão ativa
-            const session = await prisma.session.findFirst({
+            const session = await prisma.userSession.findFirst({
                 where: {
                     tokenHash: tokenHash,
                     expiresAt: { gt: new Date() }
@@ -250,7 +250,7 @@ class AuthService {
             });
             if (session) {
                 // Invalidar sessão
-                await prisma.session.delete({
+                await prisma.userSession.delete({
                     where: { id: session.id }
                 });
 
@@ -288,7 +288,7 @@ class AuthService {
             const tokenHash = this.hashToken(token);
 
             // Verificar sessão no banco
-            const session = await prisma.session.findFirst({
+            const session = await prisma.userSession.findFirst({
                 where: {
                     tokenHash: tokenHash,
                     expiresAt: { gt: new Date() }
@@ -300,7 +300,7 @@ class AuthService {
             }
 
             // Atualizar último uso da sessão
-            await prisma.session.update({
+            await prisma.userSession.update({
                 where: { id: session.id },
                 data: { lastUsed: new Date() }
             });

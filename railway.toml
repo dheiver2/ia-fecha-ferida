@@ -3,6 +3,7 @@ name = "fecha-ferida-backend"
 
 [services.build]
 builder = "nixpacks"
+buildCommand = "npm install && npm run seed"
 
 [services.deploy]
 startCommand = "npm start"

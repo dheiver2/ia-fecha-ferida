@@ -30,6 +30,9 @@ const limiter = rateLimit({
     message: 'Muitas tentativas. Tente novamente em 15 minutos.',
     code: 'RATE_LIMIT_EXCEEDED'
   },
+  standardHeaders: true,
+  legacyHeaders: false,
+  trustProxy: process.env.NODE_ENV === 'production', // Apenas confiar em proxy em produção
   skip: (req) => {
     // Pular rate limiting para localhost em desenvolvimento
     if (process.env.NODE_ENV !== 'production' && 

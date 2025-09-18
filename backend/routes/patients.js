@@ -117,8 +117,6 @@ const handleValidationErrors = (req, res, next) => {
 // GET /api/patients - Listar pacientes com busca e paginação
 router.get('/', searchValidation, handleValidationErrors, async (req, res) => {
     try {
-
-        await db.initialize(); // Garantir que está inicializado
         
         const {
             search = '',
@@ -226,8 +224,6 @@ router.get('/', searchValidation, handleValidationErrors, async (req, res) => {
 // GET /api/patients/:id - Obter paciente específico
 router.get('/:id', idValidation, handleValidationErrors, async (req, res) => {
     try {
-
-        await db.initialize(); // Garantir que está inicializado
         const patientId = parseInt(req.params.id);
 
         const patient = await prisma.patient.findFirst({
@@ -282,8 +278,6 @@ router.get('/:id', idValidation, handleValidationErrors, async (req, res) => {
 router.post('/', patientValidation, handleValidationErrors, async (req, res) => {
     try {
 
-        await db.initialize(); // Garantir que está inicializado
-        
         const patientData = {
             ...req.body,
             created_by: req.user.id
@@ -363,7 +357,6 @@ router.post('/', patientValidation, handleValidationErrors, async (req, res) => 
 router.put('/:id', idValidation, patientValidation, handleValidationErrors, async (req, res) => {
     try {
 
-        await db.initialize(); // Garantir que está inicializado
         const patientId = parseInt(req.params.id);
 
         // Verificar se paciente existe e pertence ao usuário
@@ -457,8 +450,6 @@ router.put('/:id', idValidation, patientValidation, handleValidationErrors, asyn
 // DELETE /api/patients/:id - Excluir paciente
 router.delete('/:id', idValidation, handleValidationErrors, async (req, res) => {
     try {
-
-        await db.initialize(); // Garantir que está inicializado
         const patientId = parseInt(req.params.id);
 
         // Verificar se paciente existe e pertence ao usuário
@@ -517,8 +508,6 @@ router.delete('/:id', idValidation, handleValidationErrors, async (req, res) => 
 // GET /api/patients/:id/analyses - Obter análises do paciente
 router.get('/:id/analyses', idValidation, handleValidationErrors, async (req, res) => {
     try {
-
-        await db.initialize(); // Garantir que está inicializado
         const patientId = parseInt(req.params.id);
 
         // Verificar se paciente existe e pertence ao usuário

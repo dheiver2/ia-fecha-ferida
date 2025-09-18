@@ -108,8 +108,6 @@ router.get('/', async (req, res) => {
 // GET /api/analyses/:id - Obter análise específica
 router.get('/:id', idValidation, handleValidationErrors, async (req, res) => {
     try {
-
-        await db.initialize(); // Garantir que está inicializado
         const analysisId = parseInt(req.params.id);
 
         const analysis = await prisma.woundAnalysis.findFirst({
@@ -204,8 +202,6 @@ router.get('/:id', idValidation, handleValidationErrors, async (req, res) => {
 // DELETE /api/analyses/bulk - Excluir múltiplas análises
 router.delete('/bulk', async (req, res) => {
     try {
-
-        await db.initialize(); // Garantir que está inicializado
         const { analysisIds } = req.body;
 
         if (!Array.isArray(analysisIds) || analysisIds.length === 0) {
@@ -287,8 +283,6 @@ router.delete('/bulk', async (req, res) => {
 // DELETE /api/analyses/:id - Excluir análise
 router.delete('/:id', idValidation, handleValidationErrors, async (req, res) => {
     try {
-
-        await db.initialize(); // Garantir que está inicializado
         const analysisId = parseInt(req.params.id);
 
         // Verificar se análise existe e pertence ao usuário

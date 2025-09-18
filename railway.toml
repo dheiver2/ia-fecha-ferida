@@ -2,7 +2,7 @@
 builder = "nixpacks"
 
 [deploy]
-startCommand = "cd backend && npm start"
+startCommand = "npm start"
 healthcheckPath = "/health"
 healthcheckTimeout = 300
 restartPolicyType = "on_failure"
@@ -13,6 +13,7 @@ PORT = { default = "3001" }
 
 [[services]]
 name = "fecha-ferida-backend"
+rootDirectory = "backend"
 
 [services.source]
 repo = "."
@@ -21,3 +22,6 @@ branch = "main"
 [services.variables]
 NODE_ENV = "production"
 PORT = "3001"
+GEMINI_API_KEY = "AIzaSyAf4OvR408NrNp6pQaBCJKMWXeZnTaXuTU"
+JWT_SECRET = "OoAPaqNC4c9xVthGvqDuOZ9ZtU0B1So2"
+DATABASE_URL = "postgresql://neondb_owner:npg_gHsPjVuap5O0@ep-old-surf-advzi4ig-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"

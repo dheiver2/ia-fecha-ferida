@@ -5,9 +5,4 @@
       "destination": "/index.html"
     }
   ],
-  "env": {
-    "VITE_API_URL": "https://worthy-clarity-production.up.railway.app",
-    "VITE_APP_NAME": "Fecha Ferida IA",
-    "VITE_APP_VERSION": "1.0.1"
-  }
 }

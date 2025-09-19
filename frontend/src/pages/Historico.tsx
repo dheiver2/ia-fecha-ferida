@@ -845,12 +845,15 @@ const Historico: React.FC = () => {
             </Button>
 
             <Button
+              asChild
               variant="default"
               size="sm"
               className="bg-primary hover:bg-primary/90 text-primary-foreground flex items-center gap-2"
             >
-              <Plus className="h-4 w-4" />
-              Nova Análise
+              <Link to="/analise">
+                <Plus className="h-4 w-4" />
+                Nova Análise
+              </Link>
             </Button>
           </div>
         </div>

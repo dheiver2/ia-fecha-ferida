@@ -134,17 +134,17 @@ export const CompactUnifiedMedicalReport: React.FC<CompactUnifiedMedicalReportPr
           <div className="info-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             {/* Dados do Paciente */}
             <div className="space-y-2">
-              <div className="flex items-center space-x-2 text-sm font-medium text-gray-600">
+              <div className="flex items-center space-x-2 text-sm font-medium text-gray-600 dark:text-gray-400">
                 <User className="h-4 w-4" />
                 <span>Paciente</span>
               </div>
               <div className="space-y-1">
-                <p className="font-semibold text-gray-900">
+                <p className="font-semibold text-gray-900 dark:text-gray-100">
                   {Array.isArray(parsedReport.patientInfo.name) 
                     ? parsedReport.patientInfo.name.map(n => n.text || `${n.given?.join(' ') || ''} ${n.family || ''}`.trim()).join(', ')
                     : parsedReport.patientInfo.name || patientData?.name || 'N/A'}
                 </p>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   {parsedReport.patientInfo.age || patientData?.age || 'N/A'} • {parsedReport.patientInfo.gender || patientData?.gender || 'N/A'}
                 </p>
               </div>
@@ -152,31 +152,31 @@ export const CompactUnifiedMedicalReport: React.FC<CompactUnifiedMedicalReportPr
 
             {/* Data e Protocolo */}
             <div className="space-y-2">
-              <div className="flex items-center space-x-2 text-sm font-medium text-gray-600">
+              <div className="flex items-center space-x-2 text-sm font-medium text-gray-600 dark:text-gray-400">
                 <Calendar className="h-4 w-4" />
                 <span>Exame</span>
               </div>
               <div className="space-y-1">
-                <p className="font-semibold text-gray-900">
-                  {new Date().toLocaleDateString('pt-BR')}
+                <p className="font-semibold text-gray-900 dark:text-gray-100">
+                  {parsedReport.header?.date || new Date().toLocaleDateString('pt-BR')}
                 </p>
-                <p className="text-sm text-gray-600">
-                  {patientData?.protocol || `CFI-${Date.now().toString().slice(-8)}`}
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  {parsedReport.header?.protocol || patientData?.protocol || 'CFI-79479063'}
                 </p>
               </div>
             </div>
 
             {/* Qualidade da Imagem */}
             <div className="space-y-2">
-              <div className="flex items-center space-x-2 text-sm font-medium text-gray-600">
+              <div className="flex items-center space-x-2 text-sm font-medium text-gray-600 dark:text-gray-400">
                 <Eye className="h-4 w-4" />
                 <span>Qualidade</span>
               </div>
               <div className="space-y-1">
-                <p className="font-semibold text-gray-900">
+                <p className="font-semibold text-gray-900 dark:text-gray-100">
                   {parsedReport.examination?.imageQuality?.resolution || 'Boa'}
                 </p>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   Score: {parsedReport.examination?.imageQuality?.overallScore || 8}/10
                 </p>
               </div>
@@ -184,7 +184,7 @@ export const CompactUnifiedMedicalReport: React.FC<CompactUnifiedMedicalReportPr
 
             {/* Status */}
             <div className="space-y-2">
-              <div className="flex items-center space-x-2 text-sm font-medium text-gray-600">
+              <div className="flex items-center space-x-2 text-sm font-medium text-gray-600 dark:text-gray-400">
                 <CheckCircle className="h-4 w-4" />
                 <span>Status</span>
               </div>
@@ -192,7 +192,7 @@ export const CompactUnifiedMedicalReport: React.FC<CompactUnifiedMedicalReportPr
                 <Badge className={getUrgencyColor('normal')}>
                   Concluído
                 </Badge>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   {new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
                 </p>
               </div>
@@ -200,32 +200,79 @@ export const CompactUnifiedMedicalReport: React.FC<CompactUnifiedMedicalReportPr
           </div>
 
           {/* Diagnóstico Principal - Destaque */}
-          <div className="diagnosis-section bg-gradient-to-r from-red-50 to-red-100/50 border border-red-200 rounded-lg p-4 mb-6">
+          <div className="diagnosis-section bg-gradient-to-r from-red-50 to-red-100/50 dark:from-red-950/30 dark:to-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-6">
             <div className="flex items-center space-x-2 mb-3">
-              <Target className="h-5 w-5 text-red-600" />
-              <h3 className="text-lg font-semibold text-red-800">Impressão Diagnóstica</h3>
+              <Target className="h-5 w-5 text-red-600 dark:text-red-400" />
+              <h3 className="text-lg font-semibold text-red-800 dark:text-red-200">Impressão Diagnóstica</h3>
             </div>
-            <div className="space-y-2">
-              <p className="text-lg font-bold text-red-900">
-                {parsedReport.diagnosis?.primary?.condition || 'Análise em andamento'}
-              </p>
-              <p className="text-sm text-gray-700">
-                <strong>Etiologia:</strong> {parsedReport.diagnosis?.primary?.etiology || 'A determinar'}
-              </p>
-              <p className="text-sm text-gray-700">
-                <strong>Estágio:</strong> {parsedReport.diagnosis?.primary?.stage || 'Em avaliação'}
-              </p>
+            <div className="space-y-3">
+              <div className="bg-white dark:bg-gray-800 p-3 rounded border">
+                <p className="text-lg font-bold text-red-900 dark:text-red-100 mb-2">
+                  {parsedReport.diagnosis?.primary?.condition || 'Análise em andamento'}
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                  <p className="text-gray-700 dark:text-gray-300">
+                    <strong>Etiologia:</strong> {parsedReport.diagnosis?.primary?.etiology || 'A determinar'}
+                  </p>
+                  <p className="text-gray-700 dark:text-gray-300">
+                    <strong>Estágio:</strong> {parsedReport.diagnosis?.primary?.stage || 'Em avaliação'}
+                  </p>
+                </div>
+                {parsedReport.diagnosis?.primary?.justification && (
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                    <strong>Justificativa:</strong> {parsedReport.diagnosis.primary.justification}
+                  </p>
+                )}
+                <div className="flex items-center space-x-3 mt-2">
+                  {parsedReport.diagnosis?.primary?.severity && (
+                    <Badge variant="outline" className="text-xs">
+                      Severidade: {parsedReport.diagnosis.primary.severity}
+                    </Badge>
+                  )}
+                  {parsedReport.diagnosis?.primary?.confidence && (
+                    <Badge variant="outline" className="text-xs">
+                      Confiança: {parsedReport.diagnosis.primary.confidence}%
+                    </Badge>
+                  )}
+                  {parsedReport.diagnosis?.primary?.diagnosticCertainty?.level && (
+                    <Badge variant="outline" className="text-xs">
+                      Certeza: {parsedReport.diagnosis.primary.diagnosticCertainty.level}
+                    </Badge>
+                  )}
+                </div>
+              </div>
+
+              {/* Fisiopatologia Resumida */}
+              {parsedReport.diagnosis?.primary?.pathophysiology?.healingPhase && (
+                <div className="bg-blue-50 dark:bg-blue-950/30 p-2 rounded text-sm">
+                  <p className="text-blue-800 dark:text-blue-200">
+                    <strong>Fase de Cicatrização:</strong> {parsedReport.diagnosis.primary.pathophysiology.healingPhase}
+                  </p>
+                </div>
+              )}
+
+              {/* Prognóstico Resumido */}
+              {parsedReport.diagnosis?.primary?.prognosticImplications?.healingPotential && (
+                <div className="bg-orange-50 dark:bg-orange-950/30 p-2 rounded text-sm">
+                  <p className="text-orange-800 dark:text-orange-200">
+                    <strong>Prognóstico:</strong> {parsedReport.diagnosis.primary.prognosticImplications.healingPotential.timelineEstimate}
+                    {parsedReport.diagnosis.primary.prognosticImplications.healingPotential.probabilityScore && (
+                      <span className="ml-2">({parsedReport.diagnosis.primary.prognosticImplications.healingPotential.probabilityScore}% probabilidade)</span>
+                    )}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
 
           {/* Achados Principais - Resumo */}
           <div className="findings-section grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
               <div className="flex items-center space-x-2 mb-3">
-                <Activity className="h-5 w-5 text-blue-600" />
-                <h4 className="font-semibold text-blue-800">Características Morfológicas</h4>
+                <Activity className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                <h4 className="font-semibold text-blue-800 dark:text-blue-200">Características Morfológicas</h4>
               </div>
-              <div className="space-y-2 text-sm">
+              <div className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
                 <p><strong>Dimensões:</strong> {parsedReport.findings?.morphology?.dimensions?.length || 'N/A'} x {parsedReport.findings?.morphology?.dimensions?.width || 'N/A'} cm</p>
                 <p><strong>Profundidade:</strong> {parsedReport.findings?.morphology?.depth || 'N/A'}</p>
                 <p><strong>Bordas:</strong> {parsedReport.findings?.morphology?.edges?.definition || 'N/A'}</p>
@@ -233,29 +280,29 @@ export const CompactUnifiedMedicalReport: React.FC<CompactUnifiedMedicalReportPr
               </div>
             </div>
 
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+            <div className="bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800 rounded-lg p-4">
               <div className="flex items-center space-x-2 mb-3">
-                <Heart className="h-5 w-5 text-green-600" />
-                <h4 className="font-semibold text-green-800">Recomendações Imediatas</h4>
+                <Heart className="h-5 w-5 text-green-600 dark:text-green-400" />
+                <h4 className="font-semibold text-green-800 dark:text-green-200">Recomendações Imediatas</h4>
               </div>
-              <div className="space-y-2 text-sm">
+              <div className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
                 {parsedReport.recommendations?.immediate ? (
                   <>
                     {parsedReport.recommendations.immediate.cleaning && (
                       <div className="flex items-start space-x-2">
-                        <CheckCircle className="w-3 h-3 text-green-600 mt-1 flex-shrink-0" />
+                        <CheckCircle className="w-3 h-3 text-green-600 dark:text-green-400 mt-1 flex-shrink-0" />
                         <span>Limpeza: {parsedReport.recommendations.immediate.cleaning.solution}</span>
                       </div>
                     )}
                     {parsedReport.recommendations.immediate.dressing && (
                       <div className="flex items-start space-x-2">
-                        <CheckCircle className="w-3 h-3 text-green-600 mt-1 flex-shrink-0" />
+                        <CheckCircle className="w-3 h-3 text-green-600 dark:text-green-400 mt-1 flex-shrink-0" />
                         <span>Curativo: {parsedReport.recommendations.immediate.dressing.primary.type}</span>
                       </div>
                     )}
                     {parsedReport.recommendations.immediate.debridement?.indicated && (
                       <div className="flex items-start space-x-2">
-                        <CheckCircle className="w-3 h-3 text-green-600 mt-1 flex-shrink-0" />
+                        <CheckCircle className="w-3 h-3 text-green-600 dark:text-green-400 mt-1 flex-shrink-0" />
                         <span>Desbridamento: {parsedReport.recommendations.immediate.debridement.type}</span>
                       </div>
                     )}
@@ -359,9 +406,9 @@ export const CompactUnifiedMedicalReport: React.FC<CompactUnifiedMedicalReportPr
       </Card>
 
       {/* Footer Compacto */}
-      <Card className="bg-gray-50 border-gray-200">
+      <Card className="bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700">
         <CardContent className="p-4">
-          <div className="flex items-center justify-between text-sm text-gray-600">
+          <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-300">
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-1">
                 <Building className="h-4 w-4" />

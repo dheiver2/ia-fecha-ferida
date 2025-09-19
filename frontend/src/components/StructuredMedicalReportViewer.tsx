@@ -1435,25 +1435,141 @@ export const StructuredMedicalReportViewer: React.FC<StructuredMedicalReportView
               <Stethoscope className="h-5 w-5" />
               <span>Diagnóstico Principal</span>
             </h4>
-            <div className="space-y-3">
-              <p className="text-lg font-bold text-red-900">{parsedReport.diagnosis.primary.condition}</p>
-              <p className="text-sm text-gray-600">
-                <strong>Etiologia:</strong> {parsedReport.diagnosis.primary.etiology}
-              </p>
-              <p className="text-sm text-gray-600">
-                <strong>Estágio:</strong> {parsedReport.diagnosis.primary.stage}
-              </p>
-              <p className="text-sm text-gray-600">
-                <strong>Justificativa:</strong> {parsedReport.diagnosis.primary.justification}
-              </p>
-              <div className="flex items-center space-x-4">
-                <Badge className={getSeverityColor(parsedReport.diagnosis.primary.severity)}>
-                  Severidade: {parsedReport.diagnosis.primary.severity}
-                </Badge>
-                <Badge variant="outline">
-                  Confiança: {parsedReport.diagnosis.primary.confidence.toString()}%
-                </Badge>
+            <div className="space-y-4">
+              <div className="bg-white p-3 rounded border">
+                <p className="text-lg font-bold text-red-900 mb-2">{parsedReport.diagnosis.primary.condition}</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                  <p className="text-gray-600">
+                    <strong>Etiologia:</strong> {parsedReport.diagnosis.primary.etiology}
+                  </p>
+                  <p className="text-gray-600">
+                    <strong>Estágio:</strong> {parsedReport.diagnosis.primary.stage}
+                  </p>
+                </div>
+                <p className="text-sm text-gray-600 mt-2">
+                  <strong>Justificativa:</strong> {parsedReport.diagnosis.primary.justification}
+                </p>
+                <div className="flex items-center space-x-4 mt-3">
+                  <Badge className={getSeverityColor(parsedReport.diagnosis.primary.severity)}>
+                    Severidade: {parsedReport.diagnosis.primary.severity}
+                  </Badge>
+                  <Badge variant="outline">
+                    Confiança: {parsedReport.diagnosis.primary.confidence.toString()}%
+                  </Badge>
+                </div>
               </div>
+
+              {/* Fisiopatologia */}
+              {parsedReport.diagnosis.primary.pathophysiology && (
+                <div className="bg-blue-50 p-3 rounded border border-blue-200">
+                  <h5 className="font-semibold text-blue-800 mb-2 flex items-center">
+                    <Activity className="h-4 w-4 mr-2" />
+                    Fisiopatologia
+                  </h5>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                    <div>
+                      <p><strong>Mecanismo:</strong> {parsedReport.diagnosis.primary.pathophysiology.underlyingMechanism}</p>
+                      <p><strong>Envolvimento Tecidual:</strong> {parsedReport.diagnosis.primary.pathophysiology.tissueInvolvement}</p>
+                    </div>
+                    <div>
+                      <p><strong>Impacto Vascular:</strong> {parsedReport.diagnosis.primary.pathophysiology.vascularImpact}</p>
+                      <p><strong>Resposta Inflamatória:</strong> {parsedReport.diagnosis.primary.pathophysiology.inflammatoryResponse}</p>
+                    </div>
+                  </div>
+                  <p className="text-sm mt-2">
+                    <strong>Fase de Cicatrização:</strong> 
+                    <Badge variant="outline" className="ml-2">
+                      {parsedReport.diagnosis.primary.pathophysiology.healingPhase}
+                    </Badge>
+                  </p>
+                </div>
+              )}
+
+              {/* Correlação Clínica */}
+              {parsedReport.diagnosis.primary.clinicalCorrelation && (
+                <div className="bg-green-50 p-3 rounded border border-green-200">
+                  <h5 className="font-semibold text-green-800 mb-2 flex items-center">
+                    <MapPin className="h-4 w-4 mr-2" />
+                    Correlação Clínica
+                  </h5>
+                  <div className="space-y-3">
+                    {/* Localização Anatômica */}
+                    {parsedReport.diagnosis.primary.clinicalCorrelation.anatomicalLocation && (
+                      <div className="bg-white p-2 rounded">
+                        <p className="font-medium text-green-700 mb-1">Localização Anatômica:</p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                          <p><strong>Região:</strong> {parsedReport.diagnosis.primary.clinicalCorrelation.anatomicalLocation.region}</p>
+                          <p><strong>Lateralidade:</strong> {parsedReport.diagnosis.primary.clinicalCorrelation.anatomicalLocation.laterality}</p>
+                        </div>
+                        <p className="text-sm mt-1"><strong>Impacto Funcional:</strong> {parsedReport.diagnosis.primary.clinicalCorrelation.anatomicalLocation.functionalImpact}</p>
+                      </div>
+                    )}
+                    
+                    {/* Características Morfológicas */}
+                    {parsedReport.diagnosis.primary.clinicalCorrelation.morphologicalCharacteristics && (
+                      <div className="bg-white p-2 rounded">
+                        <p className="font-medium text-green-700 mb-1">Características Morfológicas:</p>
+                        <div className="text-sm space-y-1">
+                          <p><strong>Padrão Primário:</strong> {parsedReport.diagnosis.primary.clinicalCorrelation.morphologicalCharacteristics.primaryPattern}</p>
+                          <p><strong>Padrão de Evolução:</strong> {parsedReport.diagnosis.primary.clinicalCorrelation.morphologicalCharacteristics.evolutionPattern}</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Certeza Diagnóstica */}
+              {parsedReport.diagnosis.primary.diagnosticCertainty && (
+                <div className="bg-purple-50 p-3 rounded border border-purple-200">
+                  <h5 className="font-semibold text-purple-800 mb-2 flex items-center">
+                    <Target className="h-4 w-4 mr-2" />
+                    Certeza Diagnóstica
+                  </h5>
+                  <div className="space-y-2">
+                    <p className="text-sm">
+                      <strong>Nível:</strong> 
+                      <Badge variant="outline" className="ml-2">
+                        {parsedReport.diagnosis.primary.diagnosticCertainty.level}
+                      </Badge>
+                    </p>
+                    {parsedReport.diagnosis.primary.diagnosticCertainty.supportingEvidence?.length > 0 && (
+                      <div>
+                        <p className="text-sm font-medium text-purple-700">Evidências de Apoio:</p>
+                        <ul className="text-xs list-disc list-inside ml-4">
+                          {parsedReport.diagnosis.primary.diagnosticCertainty.supportingEvidence.map((evidence, idx) => (
+                            <li key={idx}>{evidence}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Implicações Prognósticas */}
+              {parsedReport.diagnosis.primary.prognosticImplications && (
+                <div className="bg-orange-50 p-3 rounded border border-orange-200">
+                  <h5 className="font-semibold text-orange-800 mb-2 flex items-center">
+                    <TrendingUp className="h-4 w-4 mr-2" />
+                    Implicações Prognósticas
+                  </h5>
+                  <div className="space-y-2">
+                    {parsedReport.diagnosis.primary.prognosticImplications.healingPotential && (
+                      <div className="bg-white p-2 rounded">
+                        <p className="text-sm font-medium text-orange-700">Potencial de Cicatrização:</p>
+                        <p className="text-sm"><strong>Estimativa:</strong> {parsedReport.diagnosis.primary.prognosticImplications.healingPotential.timelineEstimate}</p>
+                        <p className="text-sm">
+                          <strong>Probabilidade:</strong> 
+                          <Badge variant="outline" className="ml-2">
+                            {parsedReport.diagnosis.primary.prognosticImplications.healingPotential.probabilityScore}%
+                          </Badge>
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 

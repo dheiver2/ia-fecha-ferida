@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import logoImage from "@/assets/logo-fecha-ferida.jpg";
 import PatientContextForm, { PatientContext } from "@/components/PatientContextForm";
 import CompactUnifiedMedicalReport from "@/components/CompactUnifiedMedicalReport";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { apiService } from "@/services/apiService";
 
 const Analise = () => {
@@ -176,6 +177,8 @@ const Analise = () => {
           </Link>
           
           <div className="flex items-center space-x-3">
+            <ThemeToggle />
+            
             <Link to="/historico">
               <Button variant="outline" size="sm" className="border-border hover:bg-secondary">
                 <History className="mr-2 h-4 w-4" />

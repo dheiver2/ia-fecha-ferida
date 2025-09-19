@@ -12,6 +12,7 @@ import { InviteHandler } from '@/components/InviteHandler';
 import { NotificationSystem } from '@/components/NotificationSystem';
 import { useNotificationSystem } from '@/hooks/useNotificationSystem';
 import Breadcrumbs from '@/components/Breadcrumbs';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { 
   Video, 
   FileText, 
@@ -116,10 +117,10 @@ export const Teleconsulta: React.FC = () => {
 
   const getStatusBadge = (status: string) => {
     const statusConfig = {
-      scheduled: { label: 'Agendado', color: 'bg-blue-100 text-blue-800' },
-      in_progress: { label: 'Em Andamento', color: 'bg-green-100 text-green-800' },
-      completed: { label: 'Concluído', color: 'bg-gray-100 text-gray-800' },
-      cancelled: { label: 'Cancelado', color: 'bg-red-100 text-red-800' }
+      scheduled: { label: 'Agendado', color: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' },
+      in_progress: { label: 'Em Andamento', color: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' },
+      completed: { label: 'Concluído', color: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200' },
+      cancelled: { label: 'Cancelado', color: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' }
     };
     
     const config = statusConfig[status as keyof typeof statusConfig];
@@ -140,7 +141,7 @@ export const Teleconsulta: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
       <div className="max-w-7xl mx-auto">
         <Breadcrumbs />
         
@@ -160,20 +161,21 @@ export const Teleconsulta: React.FC = () => {
                 )}
               </div>
               <div className="flex items-center gap-4">
-                <NotificationSystem 
-                  onNotificationClick={(notification) => {
-                    markAsRead(notification.id);
-                    console.log('Notificação clicada:', notification);
-                    // Aqui você pode adicionar lógica para navegar ou realizar ações específicas
-                  }}
-                />
-                <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4" />
-                  <span className="text-sm text-muted-foreground">
-                    {new Date().toLocaleTimeString('pt-BR')}
-                  </span>
-                </div>
-              </div>
+                 <ThemeToggle />
+                 <NotificationSystem 
+                   onNotificationClick={(notification) => {
+                     markAsRead(notification.id);
+                     console.log('Notificação clicada:', notification);
+                     // Aqui você pode adicionar lógica para navegar ou realizar ações específicas
+                   }}
+                 />
+                 <div className="flex items-center gap-2">
+                   <Clock className="w-4 h-4" />
+                   <span className="text-sm text-muted-foreground">
+                     {new Date().toLocaleTimeString('pt-BR')}
+                   </span>
+                 </div>
+               </div>
             </CardTitle>
           </CardHeader>
         </Card>
@@ -378,9 +380,9 @@ export const Teleconsulta: React.FC = () => {
 
         {/* Floating Call Controls (when in call) */}
         {isInCall && (
-          <div className="fixed bottom-6 right-6 bg-white rounded-lg shadow-lg p-4 border">
+          <div className="fixed bottom-6 right-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 border border-gray-200 dark:border-gray-700 transition-colors duration-200">
             <div className="flex items-center gap-2">
-              <span className="text-sm font-medium">Controles da Chamada:</span>
+              <span className="text-sm font-medium text-gray-900 dark:text-gray-100">Controles da Chamada:</span>
               <Button size="sm" variant="outline">
                 <Mic className="w-4 h-4" />
               </Button>

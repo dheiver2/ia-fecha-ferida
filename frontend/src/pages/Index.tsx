@@ -73,6 +73,12 @@ const Index = () => {
                       <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   </Link>
+                  <Link to="/simples" className="w-full sm:w-auto">
+                    <Button size="lg" className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-2xl shadow-strong hover:shadow-glow transition-all duration-300 hover:scale-105 group min-h-[48px]">
+                      Videochamada Rápida
+                      <Stethoscope className="w-5 h-5 ml-2 group-hover:scale-110 transition-transform" />
+                    </Button>
+                  </Link>
                   <Button variant="outline" size="lg" className="w-full sm:w-auto border-2 border-primary text-primary hover:bg-primary hover:text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-2xl transition-all duration-300 min-h-[48px]">
                     Ver Demonstração
                   </Button>

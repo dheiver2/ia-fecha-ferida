@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ReactNode } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { CompactValidation } from './CompactValidation';
 import { 
@@ -46,7 +46,7 @@ interface ReportSection {
   id: string;
   title: string;
   content: string;
-  icon: React.ReactNode;
+  icon: ReactNode;
   priority: 'high' | 'medium' | 'low';
   confidence?: number;
   urgency?: 'normal' | 'urgent' | 'critical';

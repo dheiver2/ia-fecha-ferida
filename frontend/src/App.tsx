@@ -11,24 +11,23 @@ import Analise from "./pages/Analise";
 import Historico from "./pages/Historico";
 import { Teleconsulta } from "./pages/Teleconsulta";
 import { GuestVideoCall } from "./pages/GuestVideoCall";
-import SimpleTelehealth from "./pages/SimpleTelehealth";
-import SimpleJoin from "./pages/SimpleJoin";
-import PatientEntry from "./pages/PatientEntry";
-import QuickJoin from "./pages/QuickJoin";
+import { PatientEntry } from "./pages/PatientEntry";
+import SimplePeerVideoCall from "./components/SimplePeerVideoCall";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-    >
+const App = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange
+      >
       <TooltipProvider>
         <AuthProvider>
           <Toaster />
@@ -37,6 +36,12 @@ const App = () => (
             <Routes>
               {/* ===== PÁGINA INICIAL ===== */}
               <Route path="/" element={<Index />} />
+              
+              {/* ===== VIDEOCHAMADA COM SIMPLE-PEER ===== */}
+              <Route path="/video" element={<SimplePeerVideoCall userType="doctor" />} />
+              <Route path="/video/:roomId" element={<SimplePeerVideoCall userType="patient" />} />
+              <Route path="/medico/:roomId" element={<SimplePeerVideoCall userType="doctor" />} />
+              <Route path="/paciente/:roomId" element={<SimplePeerVideoCall userType="patient" />} />
               
               {/* ===== AUTENTICAÇÃO MÉDICOS ===== */}
               <Route path="/login" element={<Login />} />
@@ -51,6 +56,9 @@ const App = () => (
               {/* ===== TELECONSULTA (UNIFICADA) ===== */}
               {/* Sala de videochamada única - detecta automaticamente se é médico ou paciente */}
               <Route path="/consulta/:roomId" element={<GuestVideoCall />} />
+              <Route path="/guest/:roomId" element={<GuestVideoCall />} />
+              {/* Rota específica para guest/sala-* */}
+              <Route path="/guest/sala-:roomId" element={<GuestVideoCall />} />
               
               {/* ===== ÁREA MÉDICA (PROTEGIDA) ===== */}
               <Route path="/dashboard" element={
@@ -82,6 +90,8 @@ const App = () => (
               <Route path="/simple" element={<PatientEntry />} />
               <Route path="/simple/:roomId" element={<GuestVideoCall />} />
               
+
+              
               {/* ===== PÁGINA 404 ===== */}
               <Route path="*" element={<NotFound />} />
             </Routes>
@@ -90,6 +100,7 @@ const App = () => (
       </TooltipProvider>
     </ThemeProvider>
   </QueryClientProvider>
-);
+  );
+};
 
 export default App;

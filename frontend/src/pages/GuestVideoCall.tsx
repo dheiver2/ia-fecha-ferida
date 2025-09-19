@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { VideoCall } from '@/components/VideoCall';
+import SimplePeerVideoCall from '@/components/SimplePeerVideoCall';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { Video, ArrowLeft, User, Clock, Shield } from 'lucide-react';
 
@@ -23,34 +23,60 @@ export const GuestVideoCall: React.FC = () => {
   const [isCallActive, setIsCallActive] = useState(false);
 
   useEffect(() => {
+    if (!roomId) {
+      console.error('❌ Room ID não encontrado na URL');
+      navigate('/', { replace: true });
+      return;
+    }
+
+    console.log('🔍 Inicializando GuestVideoCall com roomId:', roomId);
+
     // Tentar obter dados do state (vindo do InviteHandler)
     const stateData = location.state as { inviteData?: InviteData; isGuest?: boolean };
     
     if (stateData?.inviteData) {
+      console.log('✅ Dados encontrados no state:', stateData.inviteData);
       setInviteData(stateData.inviteData);
-    } else if (roomId) {
+    } else {
       // Tentar obter do localStorage como fallback
       const storedData = localStorage.getItem(`invite_${roomId}`);
       if (storedData) {
         try {
-          setInviteData(JSON.parse(storedData));
+          const parsedData = JSON.parse(storedData);
+          console.log('✅ Dados encontrados no localStorage:', parsedData);
+          setInviteData(parsedData);
         } catch (error) {
-          console.error('Erro ao carregar dados do convite:', error);
-          // Criar dados padrão se não conseguir carregar
-          const defaultData: InviteData = {
-            roomId,
-            doctorName: 'Dr. Médico',
-            patientName: 'Paciente',
-            scheduledTime: new Date().toISOString(),
-            duration: 30,
-            notes: 'Teleconsulta de acesso direto'
-          };
-          setInviteData(defaultData);
-          localStorage.setItem(`invite_${roomId}`, JSON.stringify(defaultData));
+          console.error('❌ Erro ao carregar dados do localStorage:', error);
+          createDefaultInviteData();
         }
+      } else {
+        console.log('⚠️ Nenhum dado encontrado, criando dados padrão para acesso direto');
+        createDefaultInviteData();
       }
     }
-  }, [roomId, location.state]);
+
+    function createDefaultInviteData() {
+      // Extrair parâmetros da URL se disponíveis
+      const urlParams = new URLSearchParams(location.search);
+      const doctorName = urlParams.get('doctor') || 'Médico';
+      const patientName = urlParams.get('patient') || 'Visitante';
+      
+      const defaultData: InviteData = {
+        roomId,
+        doctorName: decodeURIComponent(doctorName),
+        patientName: decodeURIComponent(patientName),
+        scheduledTime: new Date().toISOString(),
+        duration: 30,
+        notes: 'Teleconsulta via link direto'
+      };
+      
+      console.log('📝 Criando dados padrão:', defaultData);
+      setInviteData(defaultData);
+      
+      // Salvar no localStorage para futuras visitas
+      localStorage.setItem(`invite_${roomId}`, JSON.stringify(defaultData));
+    }
+  }, [roomId, location.state, location.search, navigate]);
 
   const handleCallEnd = () => {
     setIsCallActive(false);
@@ -128,12 +154,8 @@ export const GuestVideoCall: React.FC = () => {
         </Card>
 
         {/* Video Call Component */}
-        <VideoCall 
-          isDoctor={false}
-          patientId={inviteData.patientName}
-          doctorName={inviteData.doctorName}
-          patientName={inviteData.patientName}
-          onCallEnd={handleCallEnd}
+        <SimplePeerVideoCall 
+          userType="patient"
           roomId={roomId}
         />
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Card, CardContent } from './ui/card';
 import { CompactMedicalReport } from './CompactMedicalReport';
 import { 
@@ -194,7 +194,7 @@ export const MedicalReportViewer: React.FC<MedicalReportViewerProps> = ({
   };
 
   // Função para renderizar seção do laudo
-  const renderSection = (title: string, content: string, icon: React.ReactNode, bgColor: string, borderColor: string) => {
+  const renderSection = (title: string, content: string, icon: ReactNode, bgColor: string, borderColor: string) => {
     if (!content.trim()) return null;
     
     const lines = content.split('\n').filter(line => line.trim());

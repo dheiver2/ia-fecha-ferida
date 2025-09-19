@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, ReactNode } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
@@ -767,8 +767,8 @@ export const StructuredMedicalReportViewer: React.FC<StructuredMedicalReportView
   const renderSection = (
     id: string,
     title: string,
-    icon: React.ReactNode,
-    children: React.ReactNode,
+    icon: ReactNode,
+    children: ReactNode,
     priority: 'high' | 'medium' | 'low' = 'medium'
   ) => {
     const isExpanded = expandedSections.has(id);

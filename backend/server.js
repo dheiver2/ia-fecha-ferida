@@ -4,11 +4,15 @@ const multer = require('multer');
 const path = require('path');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const http = require('http');
 require('dotenv').config();
 
 // Importar Prisma Client
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+
+// Importar servidor de sinalização WebRTC
+const SimpleSignalingServer = require('./services/simpleSignalingServer');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -229,13 +233,31 @@ async function startServer() {
     // Inicializar banco de dados
     await initializeDatabase();
     
+    // Criar servidor HTTP
+    const server = http.createServer(app);
+    
+    // Inicializar servidor de sinalização WebRTC
+    const signalingServer = new SimpleSignalingServer(server);
+    
+    // Rota para estatísticas do WebRTC (opcional)
+    app.get('/api/webrtc/stats', (req, res) => {
+      res.json(signalingServer.getStats());
+    });
+    
     // Iniciar servidor
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
       console.log(`🚀 Servidor rodando na porta ${PORT}`);
       console.log(`📊 Banco de dados: PostgreSQL`);
       console.log(`🔐 Autenticação: JWT`);
       console.log(`🏥 Sistema de pacientes: Ativo`);
+      console.log(`📹 WebRTC Signaling: Ativo (ws://localhost:${PORT}/ws)`);
     });
+    
+    // Limpeza periódica de salas vazias
+    setInterval(() => {
+      signalingServer.cleanupEmptyRooms();
+    }, 5 * 60 * 1000); // A cada 5 minutos
+    
   } catch (error) {
     console.error('❌ Erro ao iniciar servidor:', error);
     process.exit(1);

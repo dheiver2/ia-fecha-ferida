@@ -54,7 +54,7 @@ export const useCallLink = (
   // Função para gerar um link curto
   const generateShortLink = (roomId: string) => {
     const baseUrl = getNetworkUrl();
-    return `${baseUrl}/join/${roomId}`;
+    return `${baseUrl}/enter/${roomId}`;
   };
 
   // Função para gerar o link completo da chamada
@@ -66,7 +66,7 @@ export const useCallLink = (
     if (doctorName) params.append('doctor', encodeURIComponent(doctorName));
     
     const queryString = params.toString();
-    return `${baseUrl}/join/${roomId}${queryString ? `?${queryString}` : ''}`;
+    return `${baseUrl}/enter/${roomId}${queryString ? `?${queryString}` : ''}`;
   };
 
   // Função para copiar link para a área de transferência
@@ -82,10 +82,29 @@ export const useCallLink = (
 
   // Gerar link automaticamente quando o hook é inicializado
   useEffect(() => {
+    // Se já existe um roomId (modo guest), não gerar novo link
+    if (existingRoomId) {
+      console.log('🔗 Modo guest detectado - usando roomId existente:', existingRoomId);
+      
+      const callLink = generateCallLink(existingRoomId);
+      const shortLink = generateShortLink(existingRoomId);
+
+      const linkData: CallLinkData = {
+        roomId: existingRoomId,
+        callLink,
+        shortLink
+      };
+
+      setCallLinkData(linkData);
+      setIsGenerating(false);
+      return;
+    }
+
+    // Apenas gerar novo link se não houver roomId existente (modo médico)
     const generateAutoLink = () => {
       setIsGenerating(true);
       
-      const roomId = existingRoomId || generateRoomId();
+      const roomId = generateRoomId();
       const callLink = generateCallLink(roomId);
       const shortLink = generateShortLink(roomId);
 
@@ -108,7 +127,7 @@ export const useCallLink = (
       }
     };
 
-    // Gerar link automaticamente quando o componente monta
+    // Gerar link automaticamente quando o componente monta (apenas para médicos)
     generateAutoLink();
   }, [patientId, doctorName, onLinkGenerated, existingRoomId]);
 

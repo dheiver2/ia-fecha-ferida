@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
-import { VideoCall } from '@/components/VideoCall';
+import SimplePeerVideoCall from '@/components/SimplePeerVideoCall';
 import { ElectronicRecord } from '@/components/ElectronicRecord';
 import { ElectronicPrescription } from '@/components/ElectronicPrescription';
 import { AppointmentScheduler } from '@/components/AppointmentScheduler';
@@ -298,12 +298,9 @@ export const Teleconsulta: React.FC = () => {
                 </Card>
 
                 {/* Video Call Component */}
-                <VideoCall 
-                  isDoctor={true}
-                  patientId={currentConsultation.patientId}
-                  onCallEnd={endCall}
-                  onInviteSent={notifyInviteSent}
-                  onLinkGenerated={notifyLinkGenerated}
+                <SimplePeerVideoCall 
+                  userType="doctor"
+                  roomId={roomId}
                 />
               </div>
             ) : (

@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { ChevronRight, Home, Camera, History, Video, Users, LogIn, UserPlus, Phone, Stethoscope } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -5,7 +6,7 @@ import { useAuth } from "@/contexts/AuthContext";
 interface BreadcrumbItem {
   label: string;
   href?: string;
-  icon?: React.ReactNode;
+  icon?: ReactNode;
   description?: string;
 }
 

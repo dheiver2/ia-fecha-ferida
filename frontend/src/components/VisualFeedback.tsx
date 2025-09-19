@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { CheckCircle, AlertCircle, Info, X, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -28,7 +28,7 @@ export const LoadingSpinner: React.FC<{
 export const LoadingOverlay: React.FC<{
   isLoading: boolean;
   message?: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }> = ({ isLoading, message = 'Carregando...', children }) => {
   return (
     <div className="relative">
@@ -204,7 +204,7 @@ export const SkeletonLoader: React.FC<{
 // Button with Loading State
 export const LoadingButton: React.FC<{
   isLoading: boolean;
-  children: React.ReactNode;
+  children: ReactNode;
   loadingText?: string;
   className?: string;
   onClick?: () => void;

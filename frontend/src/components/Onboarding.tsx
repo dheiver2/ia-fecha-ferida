@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ReactNode } from 'react';
 import { X, ArrowRight, ArrowLeft, CheckCircle, Play, Users, Camera, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,8 +8,8 @@ interface OnboardingStep {
   id: string;
   title: string;
   description: string;
-  icon: React.ReactNode;
-  content: React.ReactNode;
+  icon: ReactNode;
+  content: ReactNode;
   action?: {
     label: string;
     href: string;

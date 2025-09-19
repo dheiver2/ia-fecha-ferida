@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -20,7 +20,7 @@ import {
 interface NavigationItem {
   label: string;
   href: string;
-  icon: React.ReactNode;
+  icon: ReactNode;
   description?: string;
   badge?: string;
   primary?: boolean;

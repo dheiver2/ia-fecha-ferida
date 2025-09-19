@@ -10,6 +10,7 @@ import PatientContextForm, { PatientContext } from "@/components/PatientContextF
 import CompactUnifiedMedicalReport from "@/components/CompactUnifiedMedicalReport";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { apiService } from "@/services/apiService";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 const Analise = () => {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
@@ -82,12 +83,20 @@ const Analise = () => {
         // Salvar no histórico automaticamente
         const examRecord = {
           id: Date.now().toString(),
-          date: new Date().toISOString(),
-          patientName: patientContext?.nome || 'Paciente não identificado',
-          examType: 'Análise de Ferida',
-          doctor: 'Sistema IA',
+          fileName: uploadedFile.name,
+          analysisDate: new Date().toISOString(),
           status: 'completed' as const,
           confidence: 85 + Math.floor(Math.random() * 15), // 85-99%
+          analysisResult: finalReport,
+          protocol: `CFI-${Date.now()}`,
+          examType: 'Análise de Ferida',
+          doctor: 'Sistema IA',
+          patient: {
+            name: patientContext?.nome || 'Paciente não identificado',
+            age: patientContext?.idade || 'Não informado',
+            gender: patientContext?.sexo || 'Não informado',
+            id: `PAC-${Date.now()}`,
+          },
           priority: 'medium' as const,
           tags: patientContext?.sintomas ? patientContext.sintomas.split(',').map((s: string) => s.trim()) : [],
           imageUrl: URL.createObjectURL(uploadedFile),
@@ -160,81 +169,86 @@ const Analise = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-subtle">
-      {/* Header simplificado */}
-      <header className="bg-background/95 backdrop-blur-sm border-b border-border">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center space-x-3">
-            <img 
-              src={logoImage} 
-              alt="Plataforma Fecha Ferida" 
-              className="w-10 h-10 rounded-full object-cover shadow-soft"
-            />
-            <div>
-              <h1 className="text-lg font-bold text-medical-primary">Plataforma Fecha Ferida</h1>
-              <p className="text-xs text-muted-foreground">Análise médica com IA</p>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      {/* Header */}
+      <header className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              <Link to="/" className="flex items-center space-x-2 sm:space-x-3 group">
+                <img 
+                  src={logoImage} 
+                  alt="Casa Fecha Feridas" 
+                  className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl object-cover shadow-md border border-primary/20 group-hover:scale-105 transition-all duration-300"
+                />
+                <div className="hidden sm:block">
+                  <h1 className="text-base sm:text-lg font-bold text-foreground dark:text-white group-hover:text-primary transition-colors">
+                    Casa Fecha Feridas
+                  </h1>
+                  <p className="text-xs text-muted-foreground">Análise médica com IA</p>
+                </div>
+              </Link>
             </div>
-          </Link>
-          
-          <div className="flex items-center space-x-3">
-            <ThemeToggle />
             
-            <Link to="/historico">
-              <Button variant="outline" size="sm" className="border-border hover:bg-secondary">
-                <History className="mr-2 h-4 w-4" />
-                Histórico
-              </Button>
-            </Link>
-            
-            <Link to="/">
-              <Button variant="outline" size="sm" className="border-border hover:bg-secondary">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Voltar ao Início
-              </Button>
-            </Link>
+            <div className="flex items-center space-x-1 sm:space-x-2 lg:space-x-4">
+              <Link to="/historico" className="hidden sm:block">
+                <Button variant="outline" size="sm" className="flex items-center gap-2">
+                  <History className="w-4 h-4" />
+                  <span className="hidden md:inline">Histórico</span>
+                </Button>
+              </Link>
+              <ThemeToggle />
+              <Link to="/">
+                <Button variant="ghost" size="sm" className="min-h-[44px] min-w-[44px] sm:min-w-auto">
+                  <ArrowLeft className="w-4 h-4 sm:mr-2" />
+                  <span className="hidden sm:inline">Voltar</span>
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </header>
 
-      <main className="py-12">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold mb-4">Análise de Imagem Médica</h1>
-            <p className="text-xl text-muted-foreground">
+      <main className="py-6 sm:py-8 lg:py-12">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
+          <Breadcrumbs />
+          <div className="text-center mb-8 sm:mb-10 lg:mb-12">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4">Análise de Imagem Médica</h1>
+            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground px-4 sm:px-0">
               Faça upload de sua imagem médica e receba um laudo detalhado em segundos
             </p>
           </div>
 
-          <Card className="p-8 shadow-medium border-2 border-dashed">
+          <Card className="p-4 sm:p-6 lg:p-8 shadow-medium border-2 border-dashed">
             {!uploadedFile ? (
               <div
                 {...getRootProps()}
-                className={`border-2 border-dashed rounded-xl p-12 text-center cursor-pointer transition-all ${
+                className={`border-2 border-dashed rounded-xl p-6 sm:p-8 lg:p-12 text-center cursor-pointer transition-all ${
                   isDragActive
                     ? 'border-primary bg-primary/5 scale-105'
                     : 'border-border hover:border-primary hover:bg-primary/5'
                 }`}
               >
                 <input {...getInputProps()} />
-                <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                  <Upload className="h-8 w-8 text-primary" />
+                <div className="mx-auto w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-primary/10 rounded-full flex items-center justify-center mb-3 sm:mb-4">
+                  <Upload className="h-6 w-6 sm:h-7 sm:w-7 lg:h-8 lg:w-8 text-primary" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2 text-foreground">
+                <h3 className="text-lg sm:text-xl font-semibold mb-2 text-foreground">
                   {isDragActive
                     ? 'Solte o arquivo aqui'
                     : 'Envie uma imagem da ferida'}
                 </h3>
-                <p className="text-muted-foreground mb-4">
+                <p className="text-sm sm:text-base text-muted-foreground mb-4 px-2 sm:px-0">
                   Arraste e solte ou clique para selecionar uma imagem
                 </p>
-                <div className="flex flex-wrap justify-center gap-2 text-xs text-muted-foreground mb-4">
-                  <span className="bg-secondary px-2 py-1 rounded">JPG</span>
-                  <span className="bg-secondary px-2 py-1 rounded">PNG</span>
-                  <span className="bg-secondary px-2 py-1 rounded">JPEG</span>
-                  <span className="bg-secondary px-2 py-1 rounded">DICOM</span>
-                  <span className="bg-secondary px-2 py-1 rounded">Máx: 10MB</span>
+                <div className="flex flex-wrap justify-center gap-1 sm:gap-2 text-xs text-muted-foreground mb-4">
+                  <span className="bg-secondary px-2 py-1 rounded text-xs">JPG</span>
+                  <span className="bg-secondary px-2 py-1 rounded text-xs">PNG</span>
+                  <span className="bg-secondary px-2 py-1 rounded text-xs">JPEG</span>
+                  <span className="bg-secondary px-2 py-1 rounded text-xs">DICOM</span>
+                  <span className="bg-secondary px-2 py-1 rounded text-xs">Máx: 10MB</span>
                 </div>
-                <Button variant="outline" size="lg" className="border-border hover:bg-secondary">
+                <Button variant="outline" size="lg" className="border-border hover:bg-secondary min-h-[48px] w-full sm:w-auto">
                   Selecionar Arquivo
                 </Button>
               </div>

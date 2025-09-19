@@ -115,6 +115,7 @@ import MedicalDashboard from '@/components/MedicalDashboard';
 import MedicalFilters, { FilterOptions } from '@/components/MedicalFilters';
 import Header from '@/components/Header';
 import analysisService from '@/services/analysisService';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 interface ExamRecord {
   id: string;
@@ -257,19 +258,33 @@ const Historico: React.FC = () => {
     if (savedExamHistory) {
       try {
         const rawData = JSON.parse(savedExamHistory);
-        // Validar e corrigir datas inválidas
-        examData = rawData.map((exam: any) => ({
-          ...exam,
-          analysisDate: exam.analysisDate && !isNaN(new Date(exam.analysisDate).getTime()) 
-            ? exam.analysisDate 
-            : new Date().toISOString(),
-          lastModified: exam.lastModified && !isNaN(new Date(exam.lastModified).getTime()) 
-            ? exam.lastModified 
-            : new Date().toISOString(),
-          followUpDate: exam.followUpDate && !isNaN(new Date(exam.followUpDate).getTime()) 
-            ? exam.followUpDate 
-            : undefined
-        }));
+        // Validar e corrigir datas inválidas e migrar dados antigos
+        examData = rawData.map((exam: any) => {
+          // Migração de dados antigos: converter patientName para patient.name
+          let patient = exam.patient;
+          if (!patient && exam.patientName) {
+            patient = {
+              name: exam.patientName,
+              age: 'Não informado',
+              gender: 'Não informado',
+              id: `PAC-${exam.id || Date.now()}`
+            };
+          }
+
+          return {
+            ...exam,
+            patient,
+            analysisDate: exam.analysisDate && !isNaN(new Date(exam.analysisDate).getTime()) 
+              ? exam.analysisDate 
+              : new Date().toISOString(),
+            lastModified: exam.lastModified && !isNaN(new Date(exam.lastModified).getTime()) 
+              ? exam.lastModified 
+              : new Date().toISOString(),
+            followUpDate: exam.followUpDate && !isNaN(new Date(exam.followUpDate).getTime()) 
+              ? exam.followUpDate 
+              : undefined
+          };
+        });
       } catch (error) {
         console.error('Erro ao carregar histórico de exames:', error);
       }
@@ -760,6 +775,8 @@ const Historico: React.FC = () => {
       <Header />
       
       <div className="container mx-auto px-4 pt-24 pb-8 space-y-8">
+        <Breadcrumbs />
+        
         {/* Header da página com funcionalidades avançadas */}
         <div className="flex flex-col space-y-4 lg:space-y-0 lg:flex-row lg:items-center lg:justify-between gap-4">
           <div className="flex-1 min-w-0">

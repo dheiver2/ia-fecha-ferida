@@ -9,6 +9,12 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Index from "./pages/Index";
 import Analise from "./pages/Analise";
 import Historico from "./pages/Historico";
+import { Teleconsulta } from "./pages/Teleconsulta";
+import { GuestVideoCall } from "./pages/GuestVideoCall";
+import SimpleTelehealth from "./pages/SimpleTelehealth";
+import SimpleJoin from "./pages/SimpleJoin";
+import PatientEntry from "./pages/PatientEntry";
+import QuickJoin from "./pages/QuickJoin";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
@@ -29,14 +35,29 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <Routes>
-              {/* Landing Page - Página inicial pública */}
+              {/* ===== PÁGINA INICIAL ===== */}
               <Route path="/" element={<Index />} />
               
-              {/* Rotas de autenticação */}
+              {/* ===== AUTENTICAÇÃO MÉDICOS ===== */}
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               
-              {/* Rotas protegidas - Análise e Histórico */}
+              {/* ===== ACESSO PACIENTES (PÚBLICO) ===== */}
+              {/* Entrada simplificada para pacientes com código */}
+              <Route path="/paciente/:codigo" element={<PatientEntry />} />
+              {/* Fallback para entrada manual de código */}
+              <Route path="/paciente" element={<PatientEntry />} />
+              
+              {/* ===== TELECONSULTA (UNIFICADA) ===== */}
+              {/* Sala de videochamada única - detecta automaticamente se é médico ou paciente */}
+              <Route path="/consulta/:roomId" element={<GuestVideoCall />} />
+              
+              {/* ===== ÁREA MÉDICA (PROTEGIDA) ===== */}
+              <Route path="/dashboard" element={
+                <ProtectedRoute>
+                  <Analise />
+                </ProtectedRoute>
+              } />
               <Route path="/analise" element={
                 <ProtectedRoute>
                   <Analise />
@@ -47,8 +68,21 @@ const App = () => (
                   <Historico />
                 </ProtectedRoute>
               } />
+              <Route path="/teleconsulta" element={
+                <ProtectedRoute>
+                  <Teleconsulta />
+                </ProtectedRoute>
+              } />
               
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              {/* ===== ROTAS LEGADAS (REDIRECIONAMENTOS) ===== */}
+              {/* Mantendo compatibilidade com links antigos */}
+              <Route path="/entrar" element={<PatientEntry />} />
+              <Route path="/join/:roomId" element={<GuestVideoCall />} />
+              <Route path="/call/:roomId" element={<GuestVideoCall />} />
+              <Route path="/simple" element={<PatientEntry />} />
+              <Route path="/simple/:roomId" element={<GuestVideoCall />} />
+              
+              {/* ===== PÁGINA 404 ===== */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

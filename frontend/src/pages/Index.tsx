@@ -2,9 +2,11 @@ import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import BenefitsSection from "@/components/BenefitsSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
+import Onboarding from "@/components/Onboarding";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { useOnboarding } from "@/hooks/useOnboarding";
 import { 
   Shield, 
   Zap, 
@@ -22,24 +24,34 @@ import {
 
 const Index = () => {
   const { user } = useAuth();
+  const { shouldShow, userType, completeOnboarding, skipOnboarding } = useOnboarding();
   
   return (
     <div className="min-h-screen bg-gradient-subtle">
       <Header />
       
+      {/* Sistema de Onboarding */}
+      {shouldShow && (
+        <Onboarding
+          userType={userType}
+          onComplete={completeOnboarding}
+          onSkip={skipOnboarding}
+        />
+      )}
+      
       {/* Hero Section - Enhanced */}
-      <section className="relative pt-24 pb-16 overflow-hidden">
+      <section className="relative pt-16 sm:pt-20 lg:pt-24 pb-12 sm:pb-16 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-hero opacity-5"></div>
-        <div className="container mx-auto px-4 relative z-10">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-6xl mx-auto">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div className="space-y-8">
-                <div className="space-y-4">
+            <div className="grid lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-12 items-center">
+              <div className="space-y-6 sm:space-y-8">
+                <div className="space-y-3 sm:space-y-4">
                   <div className="inline-flex items-center px-4 py-2 bg-primary/10 rounded-full text-primary font-semibold text-sm">
                     <Zap className="w-4 h-4 mr-2" />
                     Tecnologia Médica Avançada
                   </div>
-                  <h1 className="text-4xl md:text-6xl font-bold leading-tight">
+                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
                     <span className="bg-gradient-to-r from-primary via-accent to-primary-light bg-clip-text text-transparent">
                       Revolucione
                     </span>
@@ -48,29 +60,29 @@ const Index = () => {
                       o Cuidado de Feridas
                     </span>
                   </h1>
-                  <p className="text-xl text-muted-foreground dark:text-gray-300 leading-relaxed max-w-lg">
+                  <p className="text-lg sm:text-xl text-muted-foreground dark:text-gray-300 leading-relaxed max-w-lg">
                     Análise inteligente de feridas com IA avançada. Diagnósticos precisos, 
                     tratamentos personalizados e resultados comprovados.
                   </p>
                 </div>
                 
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Link to={user ? "/analise" : "/login"}>
-                    <Button size="lg" className="bg-gradient-primary text-white font-bold px-8 py-4 rounded-2xl shadow-strong hover:shadow-glow transition-all duration-300 hover:scale-105 group">
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                  <Link to={user ? "/analise" : "/login"} className="w-full sm:w-auto">
+                    <Button size="lg" className="w-full sm:w-auto bg-gradient-primary text-white font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-2xl shadow-strong hover:shadow-glow transition-all duration-300 hover:scale-105 group min-h-[48px]">
                       {user ? "Começar Análise" : "Entrar para Analisar"}
                       <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   </Link>
-                  <Button variant="outline" size="lg" className="border-2 border-primary text-primary hover:bg-primary hover:text-white font-semibold px-8 py-4 rounded-2xl transition-all duration-300">
+                  <Button variant="outline" size="lg" className="w-full sm:w-auto border-2 border-primary text-primary hover:bg-primary hover:text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-2xl transition-all duration-300 min-h-[48px]">
                     Ver Demonstração
                   </Button>
                 </div>
 
-                <div className="flex items-center space-x-8 pt-4">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-8 pt-4">
                   <div className="flex items-center space-x-2">
                     <div className="flex -space-x-2">
                       {[1,2,3,4].map((i) => (
-                        <div key={i} className="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-accent border-2 border-white"></div>
+                        <div key={i} className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-r from-primary to-accent border-2 border-white"></div>
                       ))}
                     </div>
                     <span className="text-sm text-muted-foreground font-medium">+1000 profissionais</span>
@@ -84,36 +96,36 @@ const Index = () => {
                 </div>
               </div>
 
-              <div className="relative">
-                <div className="relative z-10 bg-white dark:bg-gray-800 rounded-3xl shadow-strong p-8 border border-border/20 dark:border-gray-700">
-                  <div className="space-y-6">
+              <div className="relative mt-8 lg:mt-0">
+                <div className="relative z-10 bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl shadow-strong p-4 sm:p-6 lg:p-8 border border-border/20 dark:border-gray-700">
+                  <div className="space-y-4 sm:space-y-6">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-lg font-bold text-foreground dark:text-gray-100">Análise em Tempo Real</h3>
+                      <h3 className="text-base sm:text-lg font-bold text-foreground dark:text-gray-100">Análise em Tempo Real</h3>
                       <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
                     </div>
                     
-                    <div className="space-y-4">
+                    <div className="space-y-3 sm:space-y-4">
                       <div className="flex items-center space-x-3">
-                        <CheckCircle className="w-5 h-5 text-green-500" />
-                        <span className="text-sm text-muted-foreground dark:text-gray-300">Imagem processada</span>
+                        <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
+                        <span className="text-xs sm:text-sm text-muted-foreground dark:text-gray-300">Imagem processada</span>
                       </div>
                       <div className="flex items-center space-x-3">
-                        <CheckCircle className="w-5 h-5 text-green-500" />
-                        <span className="text-sm text-muted-foreground dark:text-gray-300">IA analisando padrões</span>
+                        <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
+                        <span className="text-xs sm:text-sm text-muted-foreground dark:text-gray-300">IA analisando padrões</span>
                       </div>
                       <div className="flex items-center space-x-3">
-                        <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-                        <span className="text-sm text-muted-foreground dark:text-gray-300">Gerando relatório...</span>
+                        <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-primary border-t-transparent rounded-full animate-spin flex-shrink-0"></div>
+                        <span className="text-xs sm:text-sm text-muted-foreground dark:text-gray-300">Gerando relatório...</span>
                       </div>
                     </div>
 
-                    <div className="bg-gradient-subtle dark:bg-gray-700/50 rounded-2xl p-4">
-                      <div className="text-sm font-semibold text-primary mb-2">Precisão do Diagnóstico</div>
+                    <div className="bg-gradient-subtle dark:bg-gray-700/50 rounded-xl sm:rounded-2xl p-3 sm:p-4">
+                      <div className="text-xs sm:text-sm font-semibold text-primary mb-2">Precisão do Diagnóstico</div>
                       <div className="flex items-center space-x-2">
                         <div className="flex-1 bg-gray-200 dark:bg-gray-600 rounded-full h-2">
-                          <div className="bg-gradient-primary h-2 rounded-full w-[94%]"></div>
+                          <div className="bg-gradient-primary h-2 rounded-full w-[94%] transition-all duration-1000"></div>
                         </div>
-                        <span className="text-sm font-bold text-primary">94%</span>
+                        <span className="text-xs sm:text-sm font-bold text-primary">94%</span>
                       </div>
                     </div>
                   </div>

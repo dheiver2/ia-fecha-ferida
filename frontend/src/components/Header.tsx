@@ -1,120 +1,173 @@
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { Menu, X, Heart, Sparkles, User, LogOut } from "lucide-react";
+import { Menu, X, Heart, Sparkles, User, LogOut, ChevronDown, Home, Activity, History, Video } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import logoImage from "@/assets/logo-fecha-ferida.jpg";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, logout } = useAuth();
+  const location = useLocation();
 
-  const handleLogout = async () => {
-    await logout();
+  const handleLogout = () => {
+    logout();
+    setIsMenuOpen(false);
   };
 
-  const navItems = [
+  const isActivePage = (href: string) => {
+    return location.pathname === href;
+  };
+
+  const publicNavItems = [
     { href: "#como-funciona", label: "Como Funciona" },
     { href: "#beneficios", label: "Benefícios" },
-    { href: "#depoimentos", label: "Depoimentos" },
-    { href: "/historico", label: "Histórico", isLink: true }
+    { href: "#depoimentos", label: "Depoimentos" }
   ];
+
+  const protectedNavItems = [
+    { href: "/analise", label: "Análise IA", isLink: true },
+    { href: "/historico", label: "Histórico", isLink: true },
+    { href: "/teleconsulta", label: "Teleconsulta", isLink: true }
+  ];
+
+  const navItems = user ? protectedNavItems : publicNavItems;
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border-b border-primary/10 dark:border-gray-700/50 shadow-xl">
-      <div className="container mx-auto px-4 py-3">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-3">
         <div className="flex items-center justify-between">
-          {/* Logo Section */}
-          <Link to="/" className="flex items-center space-x-3 group">
+          {/* Logo Section - Reorganizado */}
+          <Link to="/" className="flex items-center space-x-2 sm:space-x-3 group">
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-2xl blur-sm opacity-30 group-hover:opacity-50 transition-opacity"></div>
               <img 
                 src={logoImage} 
                 alt="Casa Fecha Feridas" 
-                className="relative w-12 h-12 md:w-14 md:h-14 rounded-2xl object-cover shadow-strong border-2 border-white group-hover:scale-105 transition-transform duration-300"
+                className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg sm:rounded-xl object-cover shadow-md border border-primary/20 group-hover:scale-105 transition-all duration-300"
               />
-              <div className="absolute -top-1 -right-1 w-3 h-3 md:w-4 md:h-4 bg-gradient-to-r from-accent to-primary-light rounded-full animate-pulse shadow-glow"></div>
+              <div className="absolute -top-0.5 -right-0.5 sm:-top-1 sm:-right-1 w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-green-500 rounded-full shadow-sm"></div>
             </div>
             <div className="hidden sm:block">
-              <h1 className="text-lg md:text-xl font-bold bg-gradient-to-r from-primary via-accent to-primary-light bg-clip-text text-transparent dark:bg-none dark:text-gray-100">
+              <h1 className="text-base sm:text-lg md:text-xl font-bold text-foreground dark:text-white group-hover:text-primary transition-colors">
                 Casa Fecha Feridas
               </h1>
-              <div className="flex items-center space-x-1">
-                <Heart className="w-3 h-3 text-primary/60" />
-                <p className="text-xs text-primary/70 font-medium">Análise médica com IA</p>
-                <Sparkles className="w-3 h-3 text-accent/60" />
-              </div>
+              <p className="text-xs text-muted-foreground font-medium flex items-center gap-1">
+                <Sparkles className="w-3 h-3" />
+                Análise médica com IA
+              </p>
             </div>
           </Link>
           
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-8">
-            {navItems.map((item, index) => (
-              item.isLink ? (
-                <Link 
-                  key={index}
-                  to={item.href} 
-                  className="relative text-foreground/80 dark:text-gray-300 hover:text-primary dark:hover:text-primary font-semibold transition-all duration-300 hover:scale-105 group"
-                >
-                  {item.label}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-accent transition-all duration-300 group-hover:w-full"></span>
-                </Link>
-              ) : (
-                <a 
-                  key={index}
-                  href={item.href} 
-                  className="relative text-foreground/80 dark:text-gray-300 hover:text-primary dark:hover:text-primary font-semibold transition-all duration-300 hover:scale-105 group"
-                >
-                  {item.label}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-accent transition-all duration-300 group-hover:w-full"></span>
-                </a>
-              )
-            ))}
-          </nav>
-
-          {/* Desktop Actions */}
-          <div className="hidden md:flex items-center space-x-3">
-            <ThemeToggle />
-            
+          {/* Desktop Navigation - Otimizada */}
+          <nav className="hidden md:flex items-center space-x-6">
             {user ? (
               <>
-                {/* User Info */}
-                <div className="flex items-center space-x-2 px-3 py-2 bg-primary/5 rounded-xl">
-                  <User className="w-4 h-4 text-primary" />
+                {/* Links diretos principais - mais limpo */}
+                <Link
+                  to="/analise"
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    isActivePage('/analise') 
+                      ? 'text-primary bg-primary/10 shadow-sm' 
+                      : 'text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-primary/5'
+                  }`}
+                >
+                  <Activity className="h-4 w-4" />
+                  Análise IA
+                </Link>
+                <Link
+                  to="/historico"
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    isActivePage('/historico') 
+                      ? 'text-primary bg-primary/10 shadow-sm' 
+                      : 'text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-primary/5'
+                  }`}
+                >
+                  <History className="h-4 w-4" />
+                  Histórico
+                </Link>
+                <Link
+                  to="/teleconsulta"
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    isActivePage('/teleconsulta') 
+                      ? 'text-primary bg-primary/10 shadow-sm' 
+                      : 'text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-primary/5'
+                  }`}
+                >
+                  <Video className="h-4 w-4" />
+                  Teleconsulta
+                </Link>
+              </>
+            ) : (
+              /* Links para usuários não logados - melhorados */
+              publicNavItems.map((item, index) => (
+                <a
+                  key={index}
+                  href={item.href}
+                  className="px-3 py-2 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-primary/5 transition-all duration-200"
+                >
+                  {item.label}
+                </a>
+              ))
+            )}
+          </nav>
+
+          {/* Desktop Actions - Reorganizada */}
+          <div className="hidden md:flex items-center space-x-4">
+            {user ? (
+              <>
+                {/* User Info - Mais compacta */}
+                <div className="flex items-center space-x-2 px-3 py-1.5 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                  <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                    <User className="w-4 h-4 text-primary" />
+                  </div>
                   <div className="text-sm">
-                    <p className="font-semibold text-foreground dark:text-gray-200">{user?.name}</p>
-                <p className="text-xs text-muted-foreground dark:text-gray-400 capitalize">{user?.role}</p>
+                    <p className="font-medium text-foreground dark:text-gray-200 leading-tight">{user?.name}</p>
+                    <p className="text-xs text-muted-foreground dark:text-gray-400 capitalize leading-tight">{user?.role}</p>
                   </div>
                 </div>
                 
+                {/* Botão principal */}
                 <Link to="/analise">
-                  <Button className="bg-gradient-primary text-white font-bold px-6 py-2.5 rounded-2xl shadow-strong hover:shadow-glow transition-all duration-300 hover:scale-105 group">
+                  <Button className="bg-primary hover:bg-primary/90 text-white font-medium px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 group">
                     <Heart className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
-                    Começar Análise
+                    Análise
                   </Button>
                 </Link>
                 
+                {/* Theme Toggle */}
+                <ThemeToggle />
+                
+                {/* Logout */}
                 <Button 
                   onClick={handleLogout}
-                  variant="outline" 
+                  variant="ghost" 
                   size="sm"
-                  className="border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300"
+                  className="text-gray-600 hover:text-red-600 hover:bg-red-50 dark:text-gray-400 dark:hover:text-red-400 dark:hover:bg-red-950/20"
                 >
-                  <LogOut className="w-4 h-4 mr-2" />
-                  Sair
+                  <LogOut className="w-4 h-4" />
                 </Button>
               </>
             ) : (
               <>
-                {/* Botões para usuários não autenticados */}
+                {/* Theme Toggle para não logados */}
+                <ThemeToggle />
+                
+                {/* Botões para usuários não autenticados - Mais limpos */}
                 <Link to="/login">
-                  <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
+                  <Button variant="ghost" className="text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-primary/5 font-medium">
                     Entrar
                   </Button>
                 </Link>
                 <Link to="/register">
-                  <Button className="bg-gradient-primary text-white font-bold px-6 py-2.5 rounded-2xl shadow-strong hover:shadow-glow transition-all duration-300 hover:scale-105">
+                  <Button className="bg-primary hover:bg-primary/90 text-white font-medium px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
                     Cadastrar
                   </Button>
                 </Link>
@@ -123,85 +176,120 @@ const Header = () => {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="flex items-center space-x-2 md:hidden">
+          <div className="flex items-center space-x-1 sm:space-x-2 md:hidden">
             <ThemeToggle />
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2"
+              className="p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
+              aria-label={isMenuOpen ? "Fechar menu" : "Abrir menu"}
             >
               {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </Button>
           </div>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Mobile Navigation - Otimizada */}
         {isMenuOpen && (
-          <div className="md:hidden mt-4 pb-4 border-t border-primary/10">
-            <nav className="flex flex-col space-y-3 pt-4">
-              {navItems.map((item, index) => (
-                item.isLink ? (
-                  <Link 
-                    key={index}
-                    to={item.href} 
-                    className="text-foreground/80 dark:text-gray-300 hover:text-primary dark:hover:text-primary font-semibold px-4 py-2 rounded-xl hover:bg-primary/5 dark:hover:bg-primary/10 transition-all duration-300"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {item.label}
-                  </Link>
-                ) : (
-                  <a 
-                    key={index}
-                    href={item.href} 
-                    className="text-foreground/80 dark:text-gray-300 hover:text-primary dark:hover:text-primary font-semibold px-4 py-2 rounded-xl hover:bg-primary/5 dark:hover:bg-primary/10 transition-all duration-300"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {item.label}
-                  </a>
-                )
-              ))}
+          <div className="md:hidden mt-3 sm:mt-4 pb-4 border-t border-gray-200 dark:border-gray-700">
+            <nav className="flex flex-col space-y-1 sm:space-y-2 pt-3 sm:pt-4">
               {user ? (
                 <>
-                  {/* User Info Mobile */}
-                  <div className="flex items-center space-x-3 px-4 py-3 bg-primary/5 rounded-xl mt-4">
-                    <User className="w-5 h-5 text-primary" />
+                  {/* User Info Mobile - Mais compacta */}
+                  <div className="flex items-center space-x-3 px-4 py-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 mb-3">
+                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                      <User className="w-5 h-5 text-primary" />
+                    </div>
                     <div>
-                      <p className="font-semibold text-foreground dark:text-gray-200">{user?.name}</p>
+                      <p className="font-medium text-foreground dark:text-gray-200">{user?.name}</p>
                       <p className="text-sm text-muted-foreground dark:text-gray-400 capitalize">{user?.role}</p>
                     </div>
                   </div>
                   
-                  <Link to="/analise" className="mt-4" onClick={() => setIsMenuOpen(false)}>
-                    <Button className="w-full bg-gradient-primary text-white font-bold py-3 rounded-2xl shadow-strong">
-                      <Heart className="w-4 h-4 mr-2" />
-                      Começar Análise
-                    </Button>
+                  {/* Navegação para usuários logados - Mais limpa */}
+                  <Link
+                    to="/analise"
+                    className={`flex items-center gap-3 px-4 py-3 sm:py-4 rounded-lg font-medium transition-all duration-200 min-h-[48px] ${
+                      isActivePage('/analise') 
+                        ? 'text-primary bg-primary/10 shadow-sm' 
+                        : 'text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-primary/5'
+                    }`}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <Activity className="h-5 w-5" />
+                    Análise IA
+                  </Link>
+                  <Link
+                    to="/historico"
+                    className={`flex items-center gap-3 px-4 py-3 sm:py-4 rounded-lg font-medium transition-all duration-200 min-h-[48px] ${
+                      isActivePage('/historico') 
+                        ? 'text-primary bg-primary/10 shadow-sm' 
+                        : 'text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-primary/5'
+                    }`}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <History className="h-5 w-5" />
+                    Histórico
+                  </Link>
+                  <Link
+                    to="/teleconsulta"
+                    className={`flex items-center gap-3 px-4 py-3 sm:py-4 rounded-lg font-medium transition-all duration-200 min-h-[48px] ${
+                      isActivePage('/teleconsulta') 
+                        ? 'text-primary bg-primary/10 shadow-sm' 
+                        : 'text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-primary/5'
+                    }`}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <Video className="h-5 w-5" />
+                    Teleconsulta
                   </Link>
                   
-                  <Button 
-                    onClick={() => {
-                      handleLogout();
-                      setIsMenuOpen(false);
-                    }}
-                    variant="outline" 
-                    className="w-full mt-2 border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300"
-                  >
-                    <LogOut className="w-4 h-4 mr-2" />
-                    Sair
-                  </Button>
+                  {/* Botões de ação mobile */}
+                  <div className="pt-3 space-y-2">
+                    <Link to="/analise" onClick={() => setIsMenuOpen(false)}>
+                      <Button className="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 rounded-lg shadow-sm">
+                        <Heart className="w-4 h-4 mr-2" />
+                        Começar Análise
+                      </Button>
+                    </Link>
+                    
+                    <Button 
+                      onClick={() => {
+                        handleLogout();
+                        setIsMenuOpen(false);
+                      }}
+                      variant="ghost" 
+                      className="w-full text-gray-600 hover:text-red-600 hover:bg-red-50 dark:text-gray-400 dark:hover:text-red-400 dark:hover:bg-red-950/20"
+                    >
+                      <LogOut className="w-4 h-4 mr-2" />
+                      Sair
+                    </Button>
+                  </div>
                 </>
               ) : (
                 <>
+                  {/* Navegação para usuários não logados - Melhorada */}
+                  {publicNavItems.map((item, index) => (
+                    <a 
+                      key={index}
+                      href={item.href} 
+                      className="px-4 py-3 rounded-lg font-medium text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-primary/5 transition-all duration-200"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {item.label}
+                    </a>
+                  ))}
+                  
                   {/* Botões para usuários não autenticados - Mobile */}
-                  <div className="space-y-3 mt-4">
+                  <div className="space-y-2 pt-3">
                     <Link to="/login" onClick={() => setIsMenuOpen(false)}>
-                      <Button variant="outline" className="w-full border-primary text-primary hover:bg-primary hover:text-white">
+                      <Button variant="ghost" className="w-full text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-primary/5 font-medium">
                         Entrar
                       </Button>
                     </Link>
                     <Link to="/register" onClick={() => setIsMenuOpen(false)}>
-                      <Button className="w-full bg-gradient-primary text-white font-bold py-3 rounded-2xl shadow-strong">
+                      <Button className="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 rounded-lg shadow-sm">
                         Cadastrar
                       </Button>
                     </Link>

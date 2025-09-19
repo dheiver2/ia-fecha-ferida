@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Eye, EyeOff, Mail, Lock, AlertCircle, CheckCircle } from 'lucide-react';
+import { LoadingButton, Notification } from '@/components/VisualFeedback';
+import { useNotifications } from '@/hooks/useNotifications';
 
 const Login: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +18,7 @@ const Login: React.FC = () => {
   const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const { notifications, removeNotification, showSuccess, showError } = useNotifications();
 
   // Redirecionar se já autenticado
   useEffect(() => {
@@ -51,6 +54,7 @@ const Login: React.FC = () => {
     setMessage(null);
 
     if (!validateForm()) {
+      showError('Dados inválidos', 'Por favor, corrija os erros no formulário.');
       return;
     }
 
@@ -60,13 +64,13 @@ const Login: React.FC = () => {
       const result = await login(formData.email, formData.password);
 
       if (result.success) {
-        setMessage({ type: 'success', text: result.message });
+        showSuccess('Login realizado com sucesso!', 'Redirecionando...');
         // Navegação será feita pelo useEffect quando isAuthenticated mudar
       } else {
-        setMessage({ type: 'error', text: result.message });
+        showError('Erro no login', result.message);
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'Erro interno do servidor. Tente novamente.' });
+      showError('Erro interno', 'Erro interno do servidor. Tente novamente.');
     } finally {
       setIsSubmitting(false);
     }
@@ -204,24 +208,14 @@ const Login: React.FC = () => {
           </div>
 
           <div>
-            <button
+            <LoadingButton
               type="submit"
-              disabled={isSubmitting}
-              className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white ${
-                isSubmitting
-                  ? 'bg-gray-400 cursor-not-allowed'
-                  : 'bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
-              } transition duration-150 ease-in-out`}
+              isLoading={isSubmitting}
+              loadingText="Entrando..."
+              className="w-full py-2 px-4 text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
-              {isSubmitting ? (
-                <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Entrando...
-                </>
-              ) : (
-                'Entrar'
-              )}
-            </button>
+              Entrar
+            </LoadingButton>
           </div>
 
           <div className="text-center">
@@ -237,6 +231,19 @@ const Login: React.FC = () => {
           </div>
         </form>
       </div>
+      
+      {/* Notifications Container */}
+      {notifications.map((notification) => (
+        <Notification
+          key={notification.id}
+          type={notification.type}
+          title={notification.title}
+          message={notification.message}
+          onClose={() => removeNotification(notification.id)}
+          autoClose={notification.autoClose}
+          duration={notification.duration}
+        />
+      ))}
     </div>
   );
 };

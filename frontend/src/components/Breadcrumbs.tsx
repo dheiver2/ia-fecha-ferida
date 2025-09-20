@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { ChevronRight, Home, Camera, History, Video, Users, LogIn, UserPlus, Phone, Stethoscope } from "lucide-react";
+import { ChevronRight, Home, Camera, History, Video, Users, LogIn, UserPlus, Phone, Stethoscope, AlertTriangle } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -43,6 +43,10 @@ const Breadcrumbs = () => {
       '/teleconsulta': [
         homeBase,
         { label: 'Teleconsulta', icon: <Video className="h-4 w-4" />, description: 'Videochamadas médicas' }
+      ],
+      '/alertas': [
+        homeBase,
+        { label: 'Alertas Médicos', icon: <AlertTriangle className="h-4 w-4" />, description: 'Sistema de alertas e monitoramento' }
       ],
       '/paciente': [
         { label: 'Início', href: '/', icon: <Home className="h-4 w-4" /> },

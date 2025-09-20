@@ -13,6 +13,7 @@ import { NotificationSystem } from '@/components/NotificationSystem';
 import { useNotificationSystem } from '@/hooks/useNotificationSystem';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import Header from '@/components/Header';
 import { 
   Video, 
   FileText, 
@@ -142,7 +143,8 @@ export const Teleconsulta: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
-      <div className="max-w-7xl mx-auto">
+      <Header />
+      <div className="max-w-7xl mx-auto pt-24">
         <Breadcrumbs />
         
         {/* Header */}

@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 import Analise from "./pages/Analise";
 import Historico from "./pages/Historico";
 import { Teleconsulta } from "./pages/Teleconsulta";
+import AlertasMedicos from "./pages/AlertasMedicos";
 import { GuestVideoCall } from "./pages/GuestVideoCall";
 import { PatientEntry } from "./pages/PatientEntry";
 import SimplePeerVideoCall from "./components/SimplePeerVideoCall";
@@ -79,6 +80,11 @@ const App = () => {
               <Route path="/teleconsulta" element={
                 <ProtectedRoute>
                   <Teleconsulta />
+                </ProtectedRoute>
+              } />
+              <Route path="/alertas" element={
+                <ProtectedRoute>
+                  <AlertasMedicos />
                 </ProtectedRoute>
               } />
               

@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { Menu, X, Heart, Sparkles, User, LogOut, ChevronDown, Home, Activity, History, Video } from "lucide-react";
+import { Menu, X, Heart, Sparkles, User, LogOut, ChevronDown, Home, Activity, History, Video, AlertTriangle } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import logoImage from "@/assets/logo-fecha-ferida.jpg";
@@ -36,7 +36,8 @@ const Header = () => {
   const protectedNavItems = [
     { href: "/analise", label: "Análise IA", isLink: true },
     { href: "/historico", label: "Histórico", isLink: true },
-    { href: "/teleconsulta", label: "Teleconsulta", isLink: true }
+    { href: "/teleconsulta", label: "Teleconsulta", isLink: true },
+    { href: "/alertas", label: "Alertas", isLink: true }
   ];
 
   const navItems = user ? protectedNavItems : publicNavItems;
@@ -103,6 +104,17 @@ const Header = () => {
                 >
                   <Video className="h-4 w-4" />
                   Teleconsulta
+                </Link>
+                <Link
+                  to="/alertas"
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    isActivePage('/alertas') 
+                      ? 'text-primary bg-primary/10 shadow-sm' 
+                      : 'text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-primary/5'
+                  }`}
+                >
+                  <AlertTriangle className="h-4 w-4" />
+                  Alertas
                 </Link>
               </>
             ) : (
@@ -243,6 +255,18 @@ const Header = () => {
                   >
                     <Video className="h-5 w-5" />
                     Teleconsulta
+                  </Link>
+                  <Link
+                    to="/alertas"
+                    className={`flex items-center gap-3 px-4 py-3 sm:py-4 rounded-lg font-medium transition-all duration-200 min-h-[48px] ${
+                      isActivePage('/alertas') 
+                        ? 'text-primary bg-primary/10 shadow-sm' 
+                        : 'text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-primary/5'
+                    }`}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <AlertTriangle className="h-5 w-5" />
+                    Alertas Médicos
                   </Link>
                   
                   {/* Botões de ação mobile */}

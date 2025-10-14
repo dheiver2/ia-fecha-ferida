@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useLocation, useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import SimplePeerVideoCall from '@/components/SimplePeerVideoCall';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import { Video, ArrowLeft, User, Clock, Shield } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import SimplePeerVideoCall from '@/features/peerVideoCall';
+import { ArrowLeft, Clock, Shield, User, Video } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 interface InviteData {
   roomId: string;

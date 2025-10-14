@@ -6,30 +6,131 @@ const { createSimplifiedPrompt } = require('../templates/simplifiedMedicalReport
 
 class GeminiService {
   constructor() {
+    // Verificar se a API key está configurada
+    if (!process.env.GEMINI_API_KEY) {
+      console.error('❌ GEMINI_API_KEY não está configurada no arquivo .env');
+      throw new Error('GEMINI_API_KEY não configurada');
+    }
+    
+    // Verificar se a API key não está vazia ou é um placeholder
+    if (process.env.GEMINI_API_KEY === 'your_gemini_api_key_here' || 
+        process.env.GEMINI_API_KEY.length < 20) {
+      console.error('❌ GEMINI_API_KEY parece ser inválida ou um placeholder');
+      throw new Error('GEMINI_API_KEY inválida');
+    }
+    
+    // Lista de modelos em ordem de preferência (do mais recente para o mais estável)
+    this.availableModels = [
+      'gemini-2.5-pro',
+      'gemini-2.5-flash',
+      'gemini-2.5-flash-lite',
+      'gemini-2.0-flash',
+      'gemini-2.0-flash-lite',
+      'gemini-1.5-pro-latest',
+      'gemini-1.5-pro',
+      'gemini-1.5-flash-latest',
+      'gemini-1.5-flash',
+      'gemini-pro'
+    ];
+    
     this.genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    this.model = this.genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    this.currentModel = null;
+    this.model = null;
+    
+    // Inicializar com o primeiro modelo disponível
+    this.initializeModel();
+  }
+
+  async initializeModel() {
+    for (const modelName of this.availableModels) {
+      try {
+        console.log(`🔄 Tentando inicializar modelo: ${modelName}`);
+        this.model = this.genAI.getGenerativeModel({ model: modelName });
+        this.currentModel = modelName;
+        console.log(`✅ Gemini AI inicializado com sucesso com modelo: ${modelName}`);
+        return;
+      } catch (error) {
+        console.log(`⚠️ Modelo ${modelName} não disponível: ${error.message}`);
+        continue;
+      }
+    }
+    
+    // Se chegou aqui, nenhum modelo funcionou
+    console.error('❌ Nenhum modelo Gemini disponível');
+    throw new Error('Nenhum modelo Gemini disponível');
+  }
+
+  async tryWithFallback(operation) {
+    let lastError = null;
+    
+    for (const modelName of this.availableModels) {
+      try {
+        console.log(`🔄 Tentando operação com modelo: ${modelName}`);
+        this.model = this.genAI.getGenerativeModel({ model: modelName });
+        this.currentModel = modelName;
+        
+        const result = await operation();
+        console.log(`✅ Operação bem-sucedida com modelo: ${modelName}`);
+        return result;
+      } catch (error) {
+        console.log(`⚠️ Falha com modelo ${modelName}: ${error.message}`);
+        lastError = error;
+        
+        // Tratamento específico para diferentes tipos de erro
+        if (error.message.includes('API key expired') || error.message.includes('API_KEY_INVALID')) {
+          throw new Error('API key do Google Gemini expirada. Por favor, renove a chave de API no arquivo .env');
+        } else if (error.message.includes('quota exceeded') || error.message.includes('QUOTA_EXCEEDED')) {
+          throw new Error('Cota da API do Google Gemini excedida. Tente novamente mais tarde');
+        } else if (error.message.includes('permission denied') || error.message.includes('PERMISSION_DENIED')) {
+          throw new Error('Permissão negada para a API do Google Gemini. Verifique as configurações da chave');
+        }
+        
+        // Se for erro 404 (modelo não encontrado), tenta o próximo
+        if (error.message.includes('404') || error.message.includes('not found')) {
+          continue;
+        }
+        
+        // Para outros erros críticos, relança a exceção
+        if (error.message.includes('INVALID_ARGUMENT') || error.message.includes('UNAUTHENTICATED')) {
+          throw new Error(`Erro de configuração da API: ${error.message}`);
+        }
+      }
+    }
+    
+    // Se chegou aqui, todos os modelos falharam
+    const errorMessage = lastError ? 
+      `Todos os modelos Gemini falharam. Último erro: ${lastError.message}` : 
+      'Todos os modelos Gemini falharam';
+    throw new Error(errorMessage);
   }
 
   async analyzeWoundImage(imagePath, patientContext = '') {
-    try {
-      console.log('=== GEMINI SERVICE DEBUG ===');
-      console.log('Caminho da imagem:', imagePath);
-      console.log('Contexto recebido:', patientContext);
-      console.log('Tipo do contexto:', typeof patientContext);
-      
-      // Ler a imagem
-      const imageBuffer = fs.readFileSync(imagePath);
-      const imageBase64 = imageBuffer.toString('base64');
-      console.log('Imagem lida, tamanho do buffer:', imageBuffer.length);
-      
-      // Preparar o contexto do paciente
-      const contextText = this.formatPatientContext(patientContext);
-      console.log('Contexto formatado:', contextText);
-      
-      // Prompt para análise médica
-      const prompt = createSimplifiedPrompt(patientContext);
+    console.log('=== GEMINI SERVICE DEBUG ===');
+    console.log('Caminho da imagem:', imagePath);
+    console.log('Contexto recebido:', patientContext);
+    console.log('Tipo do contexto:', typeof patientContext);
+    
+    // Verificar se a imagem existe
+    if (!fs.existsSync(imagePath)) {
+      throw new Error(`Arquivo de imagem não encontrado: ${imagePath}`);
+    }
+    
+    // Ler a imagem
+    const imageBuffer = fs.readFileSync(imagePath);
+    const imageBase64 = imageBuffer.toString('base64');
+    console.log('Imagem lida, tamanho do buffer:', imageBuffer.length);
+    
+    // Preparar o contexto do paciente
+    const contextText = this.formatPatientContext(patientContext);
+    console.log('Contexto formatado:', contextText);
+    
+    // Prompt para análise médica
+    const prompt = createSimplifiedPrompt(patientContext);
 
-      console.log('Enviando para Gemini API...');
+    // Usar sistema de fallback para tentar diferentes modelos
+    return await this.tryWithFallback(async () => {
+      console.log(`Enviando para Gemini API com modelo: ${this.currentModel}...`);
+      
       const result = await this.model.generateContent([
         prompt,
         {
@@ -49,6 +150,7 @@ class GeminiService {
       console.log('📄 CONTEÚDO DA RESPOSTA (últimos 500 chars):');
       console.log(responseText.substring(Math.max(0, responseText.length - 500)));
       console.log('🔍 Verificando se é JSON válido...');
+      
       try {
         JSON.parse(responseText);
         console.log('✅ Resposta é JSON válido');
@@ -63,13 +165,10 @@ class GeminiService {
           console.log('❌ Resposta limpa ainda NÃO é JSON válido:', cleanParseError.message);
         }
       }
+      
       console.log('=== FIM GEMINI SERVICE DEBUG ===');
       return responseText;
-
-    } catch (error) {
-      console.error('Erro no serviço Gemini:', error);
-      throw new Error(`Falha na análise da imagem: ${error.message}`);
-    }
+    });
   }
 
   formatPatientContext(context) {

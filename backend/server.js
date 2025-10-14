@@ -198,10 +198,34 @@ app.post('/api/analyze', upload.single('image'), async (req, res) => {
 
   } catch (error) {
     console.error('Erro na análise:', error);
-    res.status(500).json({ 
-      error: 'Erro interno do servidor',
-      message: error.message 
-    });
+    
+    // Tratamento específico para diferentes tipos de erro
+    if (error.message.includes('API key do Google Gemini expirada')) {
+      return res.status(503).json({ 
+        error: 'Serviço temporariamente indisponível',
+        message: 'A chave de API do Google Gemini expirou. Entre em contato com o administrador do sistema.',
+        code: 'GEMINI_API_KEY_EXPIRED'
+      });
+    } else if (error.message.includes('Cota da API do Google Gemini excedida')) {
+      return res.status(429).json({ 
+        error: 'Limite de uso excedido',
+        message: 'O limite de análises foi excedido. Tente novamente mais tarde.',
+        code: 'GEMINI_QUOTA_EXCEEDED'
+      });
+    } else if (error.message.includes('Arquivo de imagem não encontrado')) {
+      return res.status(400).json({ 
+        error: 'Arquivo não encontrado',
+        message: 'A imagem enviada não foi encontrada no servidor.',
+        code: 'IMAGE_NOT_FOUND'
+      });
+    } else {
+      return res.status(500).json({ 
+        error: 'Erro interno do servidor',
+        message: 'Ocorreu um erro inesperado durante a análise. Tente novamente.',
+        code: 'INTERNAL_SERVER_ERROR',
+        details: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
   }
 });
 

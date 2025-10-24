@@ -369,6 +369,34 @@ const Historico: React.FC = () => {
     setFilteredExams(examData);
   }, []);
 
+  // Sincronizar com backend se houver token de autenticação
+  useEffect(() => {
+    const sync = async () => {
+      const token = localStorage.getItem('auth_token');
+      if (!token) {
+        console.debug('Historico: sem token, mantendo dados locais.');
+        return;
+      }
+      setIsLoading(true);
+      try {
+        const { analyses } = await analysisService.getAnalyses(1, 100);
+        const examData = analyses.map((a: any) => analysisService.convertToExamRecord(a));
+        setExamHistory(examData);
+        setFilteredExams(examData);
+        localStorage.setItem('examHistory', JSON.stringify(examData));
+        toast({
+          title: 'Histórico sincronizado',
+          description: `Carregado ${examData.length} registros do servidor.`
+        });
+      } catch (err) {
+        console.warn('Historico: falha ao buscar análises do backend', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    sync();
+  }, []);
+
   // Aplicar filtros, ordenação e paginação
   useEffect(() => {
     let filtered = examHistory;

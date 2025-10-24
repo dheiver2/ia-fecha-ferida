@@ -1,5 +1,13 @@
 // Serviço para integração com APIs de análises médicas
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+const RAW_API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const API_BASE_URL = (() => {
+  try {
+    const base = RAW_API_URL.replace(/\/+$/, '');
+    return base.endsWith('/api') ? base : `${base}/api`;
+  } catch (e) {
+    return 'http://localhost:3001/api';
+  }
+})();
 
 interface ApiResponse<T> {
   success: boolean;
@@ -158,18 +166,20 @@ class AnalysisService {
 
   private getSeverityPriority(severity: string): 'low' | 'normal' | 'high' | 'urgent' | 'critical' {
     switch (severity?.toLowerCase()) {
+      case 'leve':
+      case 'low':
+        return 'low';
+      case 'moderada':
+      case 'normal':
+        return 'normal';
+      case 'alta':
+      case 'high':
+        return 'high';
+      case 'urgente':
+        return 'urgent';
       case 'crítica':
       case 'critical':
         return 'critical';
-      case 'grave':
-      case 'severe':
-        return 'urgent';
-      case 'moderada':
-      case 'moderate':
-        return 'high';
-      case 'leve':
-      case 'mild':
-        return 'normal';
       default:
         return 'normal';
     }

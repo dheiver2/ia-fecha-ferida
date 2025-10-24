@@ -4,17 +4,22 @@
   "description": "Sistema de análise de feridas com IA - Frontend e Backend",
   "scripts": {
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
-    "dev:backend": "cd backend && npm run dev",
-    "dev:frontend": "cd frontend && npm run dev",
-    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "install:all": "npm ci && npm --prefix backend ci && npm --prefix frontend ci",
     "build": "npm --prefix frontend run build",
-    "start": "cd backend && npm start",
-    "seed": "cd backend && npm run seed"
+    "start": "npm --prefix backend start",
+    "seed": "npm --prefix backend run seed"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
   },
-  "keywords": ["medical", "ai", "wound-analysis", "healthcare"],
+  "keywords": [
+    "medical",
+    "ai",
+    "wound-analysis",
+    "healthcare"
+  ],
   "author": "",
   "license": "MIT"
 }

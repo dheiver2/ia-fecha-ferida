@@ -30,6 +30,7 @@ interface AnalysisData {
   updated_at: string;
   patient_name?: string;
   patient_id?: number;
+  analysis_result?: string;
 }
 
 interface PaginatedAnalyses {
@@ -151,7 +152,7 @@ class AnalysisService {
       analysisDate: analysis.created_at,
       status: analysis.status as 'completed' | 'pending' | 'error' | 'reviewing' | 'archived' | 'draft',
       confidence: analysis.diagnosis_confidence,
-      analysisResult: analysis.diagnosis_primary,
+      analysisResult: analysis.analysis_result || analysis.diagnosis_primary,
       protocol: analysis.protocol_number,
       patient: analysis.patient_name ? {
         name: analysis.patient_name,

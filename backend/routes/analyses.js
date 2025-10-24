@@ -79,7 +79,8 @@ router.get('/', async (req, res) => {
             created_at: analysis.createdAt,
             updated_at: analysis.updatedAt,
             patient_name: analysis.patient?.name || null,
-            patient_id: analysis.patient?.id || null
+            patient_id: analysis.patient?.id || null,
+            analysis_result: analysis.analysisResult
         }));
 
         res.json({

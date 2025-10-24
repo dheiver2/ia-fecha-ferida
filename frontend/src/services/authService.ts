@@ -227,7 +227,8 @@ class AuthService {
   // Verificar validade do token (consulta ao backend)
   async verifyToken(): Promise<boolean> {
     try {
-      const response = await api.get<ApiResponse>('/api/auth/verify');
+      const token = this.getToken();
+      const response = await api.post<ApiResponse>('/api/auth/verify', { token });
       return response.data.success;
     } catch (error) {
       console.error('Erro ao verificar token:', error);

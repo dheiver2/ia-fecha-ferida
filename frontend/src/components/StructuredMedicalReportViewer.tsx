@@ -73,36 +73,36 @@ interface StructuredMedicalReportViewerProps {
 // Componente de Recomendações Melhoradas
 const ImprovedRecommendations = ({ parsedReport }: { parsedReport: MedicalReportTemplate }) => {
   return (
-    <div className="bg-gradient-to-r from-blue-100 to-indigo-100 p-4 rounded-lg border border-blue-300">
-      <h4 className="text-lg font-semibold mb-3 flex items-center space-x-2 text-blue-900">
+    <div className="bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20 p-4 rounded-lg border border-blue-300 dark:border-blue-800">
+      <h4 className="text-lg font-semibold mb-3 flex items-center space-x-2 text-blue-900 dark:text-blue-100">
         <Target className="h-5 w-5" />
         <span>Resumo das Recomendações</span>
       </h4>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white p-3 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
           <div className="flex items-center space-x-2 mb-2">
             <Zap className="h-4 w-4 text-red-600" />
             <span className="font-medium text-red-800">Urgente</span>
           </div>
-          <p className="text-sm text-gray-800 font-medium">
+          <p className="text-sm text-gray-800 dark:text-gray-200 font-medium">
             {parsedReport.recommendations.immediate ? 'Definidas' : 'Não definidas'}
           </p>
         </div>
-        <div className="bg-white p-3 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
           <div className="flex items-center space-x-2 mb-2">
             <Clock className="h-4 w-4 text-yellow-600" />
             <span className="font-medium text-yellow-800">Seguimento</span>
           </div>
-          <p className="text-sm text-gray-800 font-medium">
+          <p className="text-sm text-gray-800 dark:text-gray-200 font-medium">
             {parsedReport.recommendations.monitoring?.followUpSchedule?.length ? 'Agendado' : 'Não definido'}
           </p>
         </div>
-        <div className="bg-white p-3 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
           <div className="flex items-center space-x-2 mb-2">
             <Pill className="h-4 w-4 text-green-600" />
             <span className="font-medium text-green-800">Tratamento</span>
           </div>
-          <p className="text-sm text-gray-800 font-medium">
+          <p className="text-sm text-gray-800 dark:text-gray-200 font-medium">
             {parsedReport.recommendations.referrals?.length || 0} encaminhamentos
           </p>
         </div>
@@ -663,7 +663,7 @@ export const StructuredMedicalReportViewer: React.FC<StructuredMedicalReportView
               <div className="flex items-center">
                 <QrCode className="w-4 h-4 mr-2 text-green-600" />
                 <span className="text-sm font-medium">Código de Verificação</span>
-                <span className="ml-2 text-xs font-mono bg-white px-2 py-1 rounded">{reportId}</span>
+                <span className="ml-2 text-xs font-mono bg-white dark:bg-gray-800 dark:text-gray-200 px-2 py-1 rounded">{reportId}</span>
               </div>
             </div>
             <div className="text-xs text-green-700 space-y-1">
@@ -715,10 +715,10 @@ export const StructuredMedicalReportViewer: React.FC<StructuredMedicalReportView
     return (
       <Card className="w-full max-w-6xl mx-auto shadow-medium">
         <CardContent className="p-8 text-center">
-          <div className="text-gray-800">
+          <div className="text-gray-800 dark:text-gray-300">
             <FileText className="mx-auto h-12 w-12 mb-4 text-primary" />
-            <p className="text-lg font-medium text-gray-900">Nenhum laudo disponível</p>
-            <p className="text-sm text-gray-700 font-medium">Faça o upload de uma imagem para gerar o laudo médico</p>
+            <p className="text-lg font-medium text-gray-900 dark:text-gray-100">Nenhum laudo disponível</p>
+            <p className="text-sm text-gray-700 dark:text-gray-300 font-medium">Faça o upload de uma imagem para gerar o laudo médico</p>
           </div>
         </CardContent>
       </Card>
@@ -946,7 +946,7 @@ export const StructuredMedicalReportViewer: React.FC<StructuredMedicalReportView
                 <Award className="w-5 h-5 text-gray-600 mr-2" />
                 <p className="text-sm font-medium text-gray-700">Versão</p>
               </div>
-              <Badge variant="outline" className="bg-white border-gray-300 text-gray-800 font-bold">
+              <Badge variant="outline" className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-200 font-bold">
                 {parsedReport.header.version}
               </Badge>
             </div>

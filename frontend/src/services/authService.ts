@@ -2,11 +2,22 @@ import axios from 'axios';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
+// DEBUG: Log da configuração de ambiente e baseURL
+console.log('[AuthService] Ambiente', {
+  VITE_API_URL: import.meta.env.VITE_API_URL,
+  API_BASE_URL,
+  isProd: import.meta.env.PROD,
+  locationOrigin: typeof window !== 'undefined' ? window.location.origin : 'server'
+});
+
 // Configurar axios com interceptors
 const api = axios.create({
   baseURL: API_BASE_URL,
   timeout: 10000,
 });
+
+// DEBUG: Confirmação da instância axios
+console.log('[AuthService] Axios instance criada com baseURL=', api.defaults.baseURL);
 
 // Interceptor para adicionar token automaticamente
 api.interceptors.request.use(
@@ -15,17 +26,41 @@ api.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    // DEBUG: Log da request
+    console.log('[AuthService] Request', {
+      method: config.method,
+      url: config.url,
+      baseURL: config.baseURL,
+      fullUrl: `${config.baseURL || ''}${config.url || ''}`,
+      headers: config.headers
+    });
     return config;
   },
   (error) => {
+    console.error('[AuthService] Request error', error);
     return Promise.reject(error);
   }
 );
 
 // Interceptor para tratar respostas e erros de autenticação
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // DEBUG: Log da response
+    console.log('[AuthService] Response OK', {
+      status: response.status,
+      url: response.config?.url,
+      data: response.data
+    });
+    return response;
+  },
   (error) => {
+    // DEBUG: Log detalhado do erro
+    console.error('[AuthService] Response error', {
+      message: error.message,
+      status: error.response?.status,
+      url: error.config?.url,
+      data: error.response?.data
+    });
     if (error.response?.status === 401) {
       // Token expirado ou inválido
       localStorage.removeItem('auth_token');
@@ -99,7 +134,21 @@ class AuthService {
   // Login do usuário
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
     try {
+      // DEBUG: Log da chamada de login
+      console.log('[AuthService] login() - enviando requisição', {
+        endpoint: '/api/auth/login',
+        baseURL: API_BASE_URL,
+        origin: typeof window !== 'undefined' ? window.location.origin : 'server',
+        payload: credentials
+      });
+
       const response = await api.post<AuthResponse>('/api/auth/login', credentials);
+
+      // DEBUG: Log da resposta de login
+      console.log('[AuthService] login() - resposta', {
+        status: response.status,
+        data: response.data
+      });
       
       if (response.data.success && response.data.data) {
         // Salvar token e dados do usuário
@@ -109,7 +158,13 @@ class AuthService {
       
       return response.data;
     } catch (error: any) {
-      console.error('Erro no login:', error);
+      // DEBUG: Log de erro no login
+      console.error('[AuthService] login() - erro', {
+        message: error.message,
+        status: error.response?.status,
+        url: error.config?.url,
+        data: error.response?.data
+      });
       return {
         success: false,
         message: error.response?.data?.message || 'Erro interno do servidor',
@@ -169,96 +224,67 @@ class AuthService {
     return localStorage.getItem('auth_token');
   }
 
-  // Verificar token no servidor
+  // Verificar validade do token (consulta ao backend)
   async verifyToken(): Promise<boolean> {
     try {
-      const token = this.getToken();
-      if (!token) return false;
-
-      const response = await api.post<ApiResponse<{ user: User; valid: boolean }>>('/api/auth/verify', { token });
-      
-      if (response.data.success && response.data.data?.valid) {
-        // Atualizar dados do usuário se necessário
-        if (response.data.data.user) {
-          localStorage.setItem('user_data', JSON.stringify(response.data.data.user));
-        }
-        return true;
-      }
-      
-      return false;
+      const response = await api.get<ApiResponse>('/api/auth/verify');
+      return response.data.success;
     } catch (error) {
       console.error('Erro ao verificar token:', error);
       return false;
     }
   }
 
-  // Obter dados atualizados do usuário
+  // Obter informações do usuário atual (me)
   async getMe(): Promise<User | null> {
     try {
-      const response = await api.get<ApiResponse<{ user: User }>>('/api/auth/me');
-      
-      if (response.data.success && response.data.data?.user) {
-        const user = response.data.data.user;
-        localStorage.setItem('user_data', JSON.stringify(user));
-        return user;
-      }
-      
-      return null;
+      const response = await api.get<ApiResponse<User>>('/api/auth/me');
+      return response.data.data || null;
     } catch (error) {
       console.error('Erro ao obter dados do usuário:', error);
       return null;
     }
   }
 
-  // Alterar senha
+  // Alterar senha do usuário
   async changePassword(oldPassword: string, newPassword: string): Promise<ApiResponse> {
     try {
-      const response = await api.put<ApiResponse>('/api/auth/change-password', {
-        oldPassword,
-        newPassword
-      });
+      const response = await api.post<ApiResponse>('/api/auth/change-password', { oldPassword, newPassword });
       return response.data;
-    } catch (error: any) {
+    } catch (error) {
       console.error('Erro ao alterar senha:', error);
-      return {
-        success: false,
-        message: error.response?.data?.message || 'Erro interno do servidor',
-        errors: error.response?.data?.errors
-      };
+      return { success: false, message: 'Erro ao alterar senha' };
     }
   }
 
-  // Listar sessões ativas
+  // Obter sessões ativas (admin)
   async getSessions(): Promise<ApiResponse> {
     try {
       const response = await api.get<ApiResponse>('/api/auth/sessions');
       return response.data;
-    } catch (error: any) {
+    } catch (error) {
       console.error('Erro ao obter sessões:', error);
-      return {
-        success: false,
-        message: error.response?.data?.message || 'Erro interno do servidor'
-      };
+      return { success: false, message: 'Erro ao obter sessões' };
     }
   }
 
-  // Verificar se usuário tem permissão específica
+  // Verificar roles
   hasRole(role: string): boolean {
     const user = this.getCurrentUser();
     return user?.role === role;
   }
 
-  // Verificar se usuário é admin
+  // Verificar se é admin
   isAdmin(): boolean {
     return this.hasRole('admin');
   }
 
-  // Verificar se usuário é médico
+  // Verificar se é médico
   isDoctor(): boolean {
     return this.hasRole('doctor');
   }
 
-  // Verificar se usuário é enfermeiro
+  // Verificar se é enfermeiro
   isNurse(): boolean {
     return this.hasRole('nurse');
   }

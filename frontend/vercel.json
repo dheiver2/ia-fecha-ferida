@@ -4,6 +4,7 @@
   "installCommand": "npm install --include=dev",
   "framework": null,
   "routes": [
+    { "src": "/.well-known/vercel-user-meta", "dest": "/api/vercel-user-meta" },
     { "handle": "filesystem" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]

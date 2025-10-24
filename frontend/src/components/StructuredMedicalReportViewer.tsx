@@ -73,36 +73,36 @@ interface StructuredMedicalReportViewerProps {
 // Componente de Recomendações Melhoradas
 const ImprovedRecommendations = ({ parsedReport }: { parsedReport: MedicalReportTemplate }) => {
   return (
-    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-200">
-      <h4 className="text-lg font-semibold mb-3 flex items-center space-x-2 text-blue-800">
+    <div className="bg-gradient-to-r from-blue-100 to-indigo-100 p-4 rounded-lg border border-blue-300">
+      <h4 className="text-lg font-semibold mb-3 flex items-center space-x-2 text-blue-900">
         <Target className="h-5 w-5" />
         <span>Resumo das Recomendações</span>
       </h4>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white p-3 rounded-lg shadow-sm">
+        <div className="bg-white p-3 rounded-lg shadow-sm border border-gray-200">
           <div className="flex items-center space-x-2 mb-2">
-            <Zap className="h-4 w-4 text-red-500" />
-            <span className="font-medium text-red-700">Urgente</span>
+            <Zap className="h-4 w-4 text-red-600" />
+            <span className="font-medium text-red-800">Urgente</span>
           </div>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-800 font-medium">
             {parsedReport.recommendations.immediate ? 'Definidas' : 'Não definidas'}
           </p>
         </div>
-        <div className="bg-white p-3 rounded-lg shadow-sm">
+        <div className="bg-white p-3 rounded-lg shadow-sm border border-gray-200">
           <div className="flex items-center space-x-2 mb-2">
-            <Clock className="h-4 w-4 text-yellow-500" />
-            <span className="font-medium text-yellow-700">Seguimento</span>
+            <Clock className="h-4 w-4 text-yellow-600" />
+            <span className="font-medium text-yellow-800">Seguimento</span>
           </div>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-800 font-medium">
             {parsedReport.recommendations.monitoring?.followUpSchedule?.length ? 'Agendado' : 'Não definido'}
           </p>
         </div>
-        <div className="bg-white p-3 rounded-lg shadow-sm">
+        <div className="bg-white p-3 rounded-lg shadow-sm border border-gray-200">
           <div className="flex items-center space-x-2 mb-2">
-            <Pill className="h-4 w-4 text-green-500" />
-            <span className="font-medium text-green-700">Tratamento</span>
+            <Pill className="h-4 w-4 text-green-600" />
+            <span className="font-medium text-green-800">Tratamento</span>
           </div>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-800 font-medium">
             {parsedReport.recommendations.referrals?.length || 0} encaminhamentos
           </p>
         </div>
@@ -495,7 +495,7 @@ export const StructuredMedicalReportViewer: React.FC<StructuredMedicalReportView
                   <span className="font-bold">{tissueData?.granulation?.percentage || 0}%</span>
                 </div>
                 <Progress value={tissueData?.granulation?.percentage || 0} className="h-3" />
-                <p className="text-sm text-muted-foreground mt-1">{tissueData?.granulation?.quality || 'N/A'}</p>
+                <p className="text-sm text-gray-800 font-medium mt-1">{tissueData?.granulation?.quality || 'N/A'}</p>
               </div>
               
               <div>
@@ -504,7 +504,7 @@ export const StructuredMedicalReportViewer: React.FC<StructuredMedicalReportView
                   <span className="font-bold">{tissueData?.necrotic?.percentage || 0}%</span>
                 </div>
                 <Progress value={tissueData?.necrotic?.percentage || 0} className="h-3" />
-                <p className="text-sm text-muted-foreground mt-1">{tissueData?.necrotic?.type || 'N/A'}</p>
+                <p className="text-sm text-gray-800 font-medium mt-1">{tissueData?.necrotic?.type || 'N/A'}</p>
               </div>
               
               <div>
@@ -715,10 +715,10 @@ export const StructuredMedicalReportViewer: React.FC<StructuredMedicalReportView
     return (
       <Card className="w-full max-w-6xl mx-auto shadow-medium">
         <CardContent className="p-8 text-center">
-          <div className="text-muted-foreground">
+          <div className="text-gray-800">
             <FileText className="mx-auto h-12 w-12 mb-4 text-primary" />
-            <p className="text-lg font-medium text-foreground">Nenhum laudo disponível</p>
-            <p className="text-sm">Faça o upload de uma imagem para gerar o laudo médico</p>
+            <p className="text-lg font-medium text-gray-900">Nenhum laudo disponível</p>
+            <p className="text-sm text-gray-700 font-medium">Faça o upload de uma imagem para gerar o laudo médico</p>
           </div>
         </CardContent>
       </Card>
@@ -1062,7 +1062,7 @@ export const StructuredMedicalReportViewer: React.FC<StructuredMedicalReportView
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <p className="text-sm font-medium text-gray-600">Qualidade da Imagem</p>
+              <p className="text-sm font-semibold text-gray-800">Qualidade da Imagem</p>
               <div className="space-y-1">
                 <p className="text-sm">Resolução: {parsedReport.examination.imageQuality?.resolution || 'N/A'}</p>
                 <p className="text-sm">Foco: {parsedReport.examination.imageQuality?.focus || 'N/A'}</p>
@@ -1072,7 +1072,7 @@ export const StructuredMedicalReportViewer: React.FC<StructuredMedicalReportView
               </div>
             </div>
             <div className="space-y-2">
-              <p className="text-sm font-medium text-gray-600">Aspectos Técnicos</p>
+              <p className="text-sm font-semibold text-gray-800">Aspectos Técnicos</p>
               <div className="space-y-1">
                 <p className="text-sm">Régua: {parsedReport.examination.technicalAspects?.hasRuler ? 'Presente' : 'Ausente'}</p>
                 <p className="text-sm">Régua Visível: {parsedReport.examination.technicalAspects?.rulerVisible ? 'Sim' : 'Não'}</p>
@@ -1183,7 +1183,7 @@ export const StructuredMedicalReportViewer: React.FC<StructuredMedicalReportView
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <p className="text-sm font-medium text-gray-600">Tecido</p>
+                <p className="text-sm font-semibold text-gray-800">Tecido</p>
                 <div className="space-y-1">
                   <p className="text-sm">Bordas: {parsedReport.findings.morphology.edges.definition}</p>
                   <p className="text-sm">Elevação: {parsedReport.findings.morphology.edges.elevation}</p>

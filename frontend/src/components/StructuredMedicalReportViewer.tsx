@@ -528,7 +528,11 @@ export const StructuredMedicalReportViewer: React.FC<StructuredMedicalReportView
                 </div>
                 <div className="flex justify-between">
                   <span>Bordas:</span>
-                  <span className="font-medium">{findings?.morphology?.edges || 'N/A'}</span>
+                  <span className="font-medium">{(() => {
+                    const e = findings?.morphology?.edges as any;
+                    const t = [e?.definition, e?.elevation, e?.epithelialization].filter(Boolean).join(' / ');
+                    return t || 'N/A';
+                  })()}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Exsudato:</span>

@@ -80,7 +80,7 @@ const TestimonialsSection = () => {
         </div>
 
         {/* Statistics */}
-        <div className="bg-gradient-hero rounded-3xl p-12 text-center shadow-strong">
+        <div className="bg-gradient-hero rounded-3xl p-12 text-center shadow-strong contrast-overlay">
           <h3 className="text-3xl font-bold mb-8 text-on-gradient">Resultados que falam por si</h3>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>

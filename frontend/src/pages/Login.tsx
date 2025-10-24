@@ -87,15 +87,15 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
+    <div className="min-h-screen bg-gradient-primary flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8 bg-white/95 dark:bg-gray-900/90 rounded-2xl p-8 shadow-strong border border-primary/10 backdrop-blur-sm">
         <div>
-          <div className="mx-auto h-12 w-12 bg-blue-600 rounded-full flex items-center justify-center">
+          <div className="mx-auto h-12 w-12 bg-primary rounded-full flex items-center justify-center shadow-sm">
             <svg className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-gray-100">
+          <h2 className="mt-6 text-center text-3xl font-extrabold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
             Entrar na sua conta
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-300">
@@ -136,7 +136,7 @@ const Login: React.FC = () => {
               </label>
               <div className="mt-1 relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-gray-400 dark:text-gray-500" />
+                  <Mail className="h-5 w-5 text-primary" />
                 </div>
                 <input
                   id="email"
@@ -148,7 +148,7 @@ const Login: React.FC = () => {
                   onChange={handleChange}
                   className={`appearance-none relative block w-full pl-10 pr-3 py-2 border ${
                     errors.email ? 'border-red-300 dark:border-red-600' : 'border-gray-300 dark:border-gray-600'
-                  } placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
+                  } placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700 rounded-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm`}
                   placeholder="seu@email.com"
                 />
               </div>
@@ -163,7 +163,7 @@ const Login: React.FC = () => {
               </label>
               <div className="mt-1 relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400 dark:text-gray-500" />
+                  <Lock className="h-5 w-5 text-primary" />
                 </div>
                 <input
                   id="password"
@@ -175,7 +175,7 @@ const Login: React.FC = () => {
                   onChange={handleChange}
                   className={`appearance-none relative block w-full pl-10 pr-10 py-2 border ${
                     errors.password ? 'border-red-300 dark:border-red-600' : 'border-gray-300 dark:border-gray-600'
-                  } placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
+                  } placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700 rounded-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm`}
                   placeholder="Sua senha"
                 />
                 <button
@@ -200,7 +200,7 @@ const Login: React.FC = () => {
             <div className="text-sm">
               <Link
                 to="/forgot-password"
-                className="font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
+                className="font-medium text-primary hover:text-primary/90"
               >
                 Esqueceu sua senha?
               </Link>
@@ -212,7 +212,7 @@ const Login: React.FC = () => {
               type="submit"
               isLoading={isSubmitting}
               loadingText="Entrando..."
-              className="w-full py-2 px-4 text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className="w-full py-2 px-4 text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary bg-primary hover:bg-primary/90 text-white shadow-sm hover:shadow-md transition-all"
             >
               Entrar
             </LoadingButton>
@@ -223,7 +223,7 @@ const Login: React.FC = () => {
               Não tem uma conta?{' '}
               <Link
                 to="/register"
-                className="font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
+                className="font-medium text-primary hover:text-primary/90"
               >
                 Cadastre-se aqui
               </Link>

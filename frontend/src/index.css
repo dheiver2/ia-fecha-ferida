@@ -17,19 +17,23 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 205 85% 15%;
 
-    /* Design System - Paleta Casa Fecha Feridas */
-    --primary: 220 85% 32%;        /* #1e3a8a - Azul principal da logomarca */
-    --primary-foreground: 0 0% 98%;
-    --primary-light: 213 93% 68%;   /* #60a5fa - Azul claro da árvore */
-    --primary-dark: 220 91% 20%;    /* Versão mais escura do azul principal */
+    /* Design System - Paleta Vascular One */
+    --brand-coral: 4 100% 62%;      /* #FF4B3E aprox. */
+    --brand-navy: 211 72% 20%;      /* #0E3156 aprox. */
+    --pixel-red: 4 100% 58%;        /* tons digitalizados/pixelados */
 
-    --secondary: 213 100% 96%;      /* Azul muito claro para backgrounds */
-    --secondary-foreground: 220 85% 32%;
+    --primary: var(--brand-coral);
+    --primary-foreground: 0 0% 98%;
+    --primary-light: 4 100% 72%;
+    --primary-dark: 4 92% 50%;
+
+    --secondary: 213 100% 96%;
+    --secondary-foreground: 205 85% 15%;
 
     --muted: 213 50% 95%;
     --muted-foreground: 220 30% 40%;
 
-    --accent: 188 95% 35%;          /* #0891b2 - Verde-azul da árvore */
+    --accent: var(--brand-navy);
     --accent-foreground: 0 0% 98%;
 
     --destructive: 0 84.2% 60.2%;
@@ -37,7 +41,7 @@ All colors MUST be HSL.
 
     --border: 200 30% 85%;
     --input: 200 30% 90%;
-    --ring: 205 85% 35%;
+    --ring: var(--brand-coral);     /* Ring acompanha primária */
 
     /* Medical specific colors - Paleta médica consistente */
     --medical-blue: 205 85% 25%;
@@ -55,10 +59,10 @@ All colors MUST be HSL.
     --medical-info-foreground: 0 0% 100%;
     --medical-neutral: 215 20% 40%;
 
-    /* Gradients Casa Fecha Feridas */
-    --gradient-primary: linear-gradient(135deg, hsl(220 85% 32%) 0%, hsl(213 93% 68%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(220 91% 20%) 0%, hsl(188 95% 35%) 50%, hsl(213 93% 68%) 100%);
-    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(213 100% 98%) 100%);
+    /* Gradients Vascular One */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--brand-coral)) 0%, hsl(var(--brand-navy)) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(211 72% 15%) 0%, hsl(var(--brand-coral)) 50%, hsl(var(--brand-navy)) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(213 100% 97%) 0%, hsl(213 100% 96%) 100%);
 
     /* Shadows */
     --shadow-soft: 0 2px 8px -2px hsl(210 90% 30% / 0.1);
@@ -88,19 +92,19 @@ All colors MUST be HSL.
     --popover: 220 15% 10%;
     --popover-foreground: 210 40% 98%;
 
-    /* Design System - Paleta Casa Fecha Feridas - Modo Escuro */
-    --primary: 213 93% 68%;         /* Azul claro como primário no escuro */
+    /* Design System - Paleta Vascular One - Modo Escuro */
+    --primary: var(--brand-coral);     /* Coral visível no dark */
     --primary-foreground: 220 15% 8%;
-    --primary-light: 213 93% 78%;   /* Versão mais clara */
-    --primary-dark: 213 93% 58%;    /* Versão mais escura */
+    --primary-light: 4 100% 70%;
+    --primary-dark: 4 92% 55%;
 
-    --secondary: 220 15% 15%;       /* Cinza escuro para backgrounds */
+    --secondary: 220 15% 15%;
     --secondary-foreground: 210 40% 98%;
 
     --muted: 220 15% 12%;
-    --muted-foreground: 215 20% 80%;  /* Aumentado para 80% para atender WCAG 2.1 AA */
+    --muted-foreground: 215 20% 80%;
 
-    --accent: 188 95% 45%;          /* Verde-azul mais claro */
+    --accent: 211 55% 55%;           /* Navy mais claro para contraste no dark */
     --accent-foreground: 220 15% 8%;
 
     --destructive: 0 62.8% 30.6%;
@@ -108,14 +112,14 @@ All colors MUST be HSL.
 
     --border: 220 15% 20%;
     --input: 220 15% 18%;
-    --ring: 213 93% 68%;
+    --ring: var(--brand-coral);
 
     /* Medical specific colors - Paleta médica modo escuro */
     --medical-blue: 205 85% 70%;
     --medical-green: 160 75% 65%;
     --medical-red: 0 75% 70%;
     --medical-orange: 35 85% 65%;
-    --medical-gray: 205 15% 82%;      /* Melhor contraste para textos secundários - WCAG AA */
+    --medical-gray: 205 15% 82%;
     --medical-success: 142 75% 55%;
     --medical-success-foreground: 220 15% 8%;
     --medical-warning: 45 90% 65%;
@@ -124,11 +128,11 @@ All colors MUST be HSL.
     --medical-error-foreground: 220 15% 8%;
     --medical-info: 210 90% 65%;
     --medical-info-foreground: 220 15% 8%;
-    --medical-neutral: 215 20% 85%;   /* Melhor contraste para elementos neutros - WCAG AA */
+    --medical-neutral: 215 20% 85%;
 
-    /* Gradients Casa Fecha Feridas - Modo Escuro */
-    --gradient-primary: linear-gradient(135deg, hsl(213 93% 68%) 0%, hsl(188 95% 45%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(220 15% 12%) 0%, hsl(188 95% 35%) 50%, hsl(213 93% 68%) 100%);
+    /* Gradients Vascular One - Modo Escuro */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--brand-coral)) 0%, hsl(211 55% 55%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(220 15% 12%) 0%, hsl(var(--brand-coral)) 50%, hsl(211 55% 55%) 100%);
     --gradient-subtle: linear-gradient(180deg, hsl(220 15% 8%) 0%, hsl(220 15% 12%) 100%);
 
     /* Shadows - Modo Escuro */
@@ -467,3 +471,99 @@ All colors MUST be HSL.
     color: hsl(210 40% 98%) !important;
   }
 }
+
+/* Utilities: melhor contraste sobre gradientes e imagens */
+.text-on-gradient {
+  color: hsl(0 0% 98%);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.55), 0 2px 8px rgba(0,0,0,0.35);
+}
+.dark .text-on-gradient {
+  color: hsl(0 0% 98%);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.75), 0 2px 10px rgba(0,0,0,0.55);
+}
+
+.contrast-overlay {
+  position: relative;
+}
+.contrast-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.12) 100%);
+  pointer-events: none;
+}
+
+  /* Melhor contraste para elementos específicos no modo escuro */
+  .dark .text-gray-500 {
+    color: hsl(215 20% 75%) !important;
+  }
+
+  .dark .text-gray-600 {
+    color: hsl(215 20% 80%) !important;
+  }
+
+  .dark .text-gray-400 {
+    color: hsl(215 20% 70%) !important;
+  }
+
+  .dark .text-gray-700 {
+    color: hsl(215 20% 85%) !important;
+  }
+
+  .dark .text-gray-800 {
+    color: hsl(215 20% 90%) !important;
+  }
+
+  .dark .text-gray-900 {
+    color: hsl(215 20% 95%) !important;
+  }
+
+  .dark .text-slate-600 {
+    color: hsl(215 20% 78%) !important;
+  }
+
+  .dark .text-slate-700 {
+    color: hsl(215 20% 85%) !important;
+  }
+
+  .dark .text-slate-800 {
+    color: hsl(215 20% 90%) !important;
+  }
+
+  .dark .text-slate-900 {
+    color: hsl(215 20% 95%) !important;
+  }
+
+  /* Melhor contraste para textos médicos no modo escuro */
+  .dark .text-slate-300 {
+    color: hsl(215 20% 80%) !important;
+  }
+
+  /* Garantir visibilidade de textos básicos no modo escuro */
+  .dark .text-foreground {
+    color: hsl(210 40% 98%) !important;
+  }
+
+  .dark .text-gray-300 {
+    color: hsl(215 20% 85%) !important;
+  }
+
+  .dark .text-gray-200 {
+    color: hsl(215 20% 90%) !important;
+  }
+
+  .dark .text-gray-100 {
+    color: hsl(215 20% 95%) !important;
+  }
+
+  /* Garantir que o fundo escuro seja aplicado */
+  .dark {
+    background-color: hsl(220 15% 12%) !important;
+    color: hsl(210 40% 98%) !important;
+  }
+
+  .dark body {
+    background-color: hsl(220 15% 12%) !important;
+    color: hsl(210 40% 98%) !important;
+  }

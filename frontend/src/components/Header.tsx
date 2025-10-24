@@ -4,7 +4,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { Menu, X, Heart, Sparkles, User, LogOut, ChevronDown, Home, Activity, History, Video, AlertTriangle } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import logoImage from "@/assets/logo-fecha-ferida.jpg";
+import logoImage from "@/assets/1.png";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -51,14 +51,14 @@ const Header = () => {
             <div className="relative">
               <img 
                 src={logoImage} 
-                alt="Casa Fecha Feridas" 
-                className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg sm:rounded-xl object-cover shadow-md border border-primary/20 group-hover:scale-105 transition-all duration-300"
+                alt="Vascular One" 
+                className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 object-contain rounded-md ring-1 ring-black/5 dark:ring-white/10 drop-shadow-md group-hover:scale-105 transition-all duration-300"
               />
               <div className="absolute -top-0.5 -right-0.5 sm:-top-1 sm:-right-1 w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-green-500 rounded-full shadow-sm"></div>
             </div>
             <div className="hidden sm:block">
               <h1 className="text-base sm:text-lg md:text-xl font-bold text-foreground dark:text-white group-hover:text-primary transition-colors">
-                Casa Fecha Feridas
+                Vascular One
               </h1>
               <p className="text-xs text-muted-foreground font-medium flex items-center gap-1">
                 <Sparkles className="w-3 h-3" />

@@ -149,10 +149,8 @@ const Index = () => {
       <section id="como-funciona" className="py-20 bg-white dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                Como Funciona
-              </span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight">
+              Bem-vindo à Vascular One
             </h2>
             <p className="text-xl text-muted-foreground dark:text-gray-300 leading-relaxed">
               Tecnologia de ponta para análise médica precisa e eficiente
@@ -197,9 +195,9 @@ const Index = () => {
       <BenefitsSection />
 
       {/* Stats Section */}
-      <section className="py-20 bg-gradient-hero text-white">
+      <section className="py-20 bg-gradient-hero">
         <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-6xl mx-auto rounded-3xl p-4 contrast-overlay">
             <div className="grid md:grid-cols-4 gap-8 text-center">
               {[
                 { number: "10K+", label: "Análises Realizadas", icon: <TrendingUp className="w-6 h-6" /> },
@@ -212,8 +210,8 @@ const Index = () => {
                     {stat.icon}
                   </div>
                   <div>
-                    <div className="text-3xl md:text-4xl font-bold mb-2">{stat.number}</div>
-                    <div className="text-white/80 font-medium">{stat.label}</div>
+                    <div className="text-3xl md:text-4xl font-bold mb-2 text-on-gradient">{stat.number}</div>
+                    <div className="font-medium text-on-gradient">{stat.label}</div>
                   </div>
                 </div>
               ))}

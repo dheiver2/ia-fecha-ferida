@@ -12,6 +12,7 @@ export default defineConfig(() => ({
 		//   key: './localhost-key.pem',
 		//   cert: './localhost.pem'
 		// }
+		hmr: { overlay: false },
 	},
 	plugins: [react()],
 	resolve: {

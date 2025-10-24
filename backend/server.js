@@ -11,6 +11,9 @@ require('dotenv').config();
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
+// Importar middlewares de autenticação
+const { authenticateToken, extractRequestInfo } = require('./middleware/auth');
+
 // Importar servidor de sinalização WebRTC
 const SimpleSignalingServer = require('./services/simpleSignalingServer');
 
@@ -165,7 +168,7 @@ app.get('/health', (req, res) => {
 });
 
 // Endpoint principal para análise de feridas
-app.post('/api/analyze', upload.single('image'), async (req, res) => {
+app.post('/api/analyze', authenticateToken, extractRequestInfo, upload.single('image'), async (req, res) => {
 	try {
 		if (!req.file) {
 			return res.status(400).json({
@@ -203,10 +206,38 @@ app.post('/api/analyze', upload.single('image'), async (req, res) => {
 		console.log('Análise recebida do Gemini:', analysis ? 'Sucesso' : 'Falhou');
 		console.log('Tamanho da resposta:', analysis ? analysis.length : 0);
 
+		// Persistir a análise no banco de dados
+		const protocolNumber = `ANL-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+		let analysisText = '';
+		try {
+			analysisText = typeof analysis === 'string' ? analysis : JSON.stringify(analysis);
+		} catch (_) {
+			analysisText = String(analysis);
+		}
+
+		const patientId = (parsedContext && parsedContext.patientId) ? Number(parsedContext.patientId) : null;
+		const lesionLocation = (parsedContext && parsedContext.lesionLocation) ? String(parsedContext.lesionLocation) : null;
+
+		const saved = await prisma.woundAnalysis.create({
+			data: {
+				userId: req.user.id,
+				patientId: patientId,
+				protocolNumber,
+				imageFilename: req.file.filename,
+				imagePath: imagePath,
+				lesionLocation: lesionLocation,
+				patientContext: JSON.stringify(parsedContext || {}),
+				analysisResult: analysisText,
+				status: 'completed'
+			}
+		});
+
 		res.json({
 			success: true,
 			analysis: analysis,
 			imageUrl: `/uploads/${req.file.filename}`,
+			analysis_id: saved.id,
+			protocol_number: saved.protocolNumber,
 			timestamp: new Date().toISOString(),
 		});
 	} catch (error) {

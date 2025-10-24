@@ -36,9 +36,16 @@ export class ApiService {
       console.log('FormData criado, enviando para:', `${this.baseUrl}/api/analyze`);
       console.log('=== FIM DEBUG FRONTEND ===');
 
+      const token = localStorage.getItem('auth_token');
+      const headers: Record<string, string> = {};
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
       const response = await fetch(`${this.baseUrl}/api/analyze`, {
         method: 'POST',
         body: formData,
+        headers,
       });
 
       if (!response.ok) {

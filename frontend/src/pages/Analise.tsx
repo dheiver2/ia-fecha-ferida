@@ -362,7 +362,7 @@ const Analise = () => {
                       <span className="text-xl font-bold">Passo 2: Processando com IA Avançada</span>
                     </div>
                     <p className="text-muted-foreground text-lg">
-                      Analisando sua imagem médica com tecnologia Gemini AI...
+                      Analisando sua imagem médica com IA...
                     </p>
                     <div className="mt-6 w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                       <div className="bg-gradient-to-r from-primary to-accent h-2 rounded-full animate-pulse" style={{width: '75%'}}></div>
@@ -451,7 +451,7 @@ const Analise = () => {
                   <div className="space-y-3 text-sm text-muted-foreground">
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-green-500 dark:text-green-400" />
-                      <span>Análise com Gemini AI</span>
+                      <span>Análise com IA</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-green-500 dark:text-green-400" />

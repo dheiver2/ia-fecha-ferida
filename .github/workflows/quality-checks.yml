@@ -23,6 +23,15 @@ jobs:
         run: |
           npm --prefix frontend run lint
         continue-on-error: true # evitar falha do pipeline até unificarmos ESLint
+      - name: Guard: disallow blue/indigo utility classes in pages
+        run: |
+          if grep -RInE "(^|[\"'\\s])(blue-|indigo-)" frontend/src/pages; then
+            echo "::error::Found disallowed Tailwind classes (blue-/indigo-) in src/pages. Use design tokens (primary/accent/secondary/etc)."
+            grep -RInE "(^|[\"'\\s])(blue-|indigo-)" frontend/src/pages || true
+            exit 1
+          else
+            echo "No disallowed blue/indigo classes in src/pages."
+          fi
       - name: Build (frontend)
         run: npm --prefix frontend run build
 

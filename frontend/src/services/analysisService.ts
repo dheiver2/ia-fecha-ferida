@@ -146,12 +146,22 @@ class AnalysisService {
 
   // Converter dados da API para formato do frontend
   convertToExamRecord(analysis: AnalysisData): any {
+    const normalizedConfidence = (() => {
+      const c = analysis.diagnosis_confidence as number | undefined | null;
+      if (typeof c === 'number') {
+        // Se vier como fração (0-1), converter para porcentagem
+        if (c <= 1) return Math.round(c * 100);
+        return Math.round(c);
+      }
+      return 0;
+    })();
+
     return {
       id: analysis.id.toString(),
       fileName: analysis.image_filename,
       analysisDate: analysis.created_at,
       status: analysis.status as 'completed' | 'pending' | 'error' | 'reviewing' | 'archived' | 'draft',
-      confidence: analysis.diagnosis_confidence,
+      confidence: normalizedConfidence,
       analysisResult: analysis.analysis_result || analysis.diagnosis_primary,
       protocol: analysis.protocol_number,
       patient: analysis.patient_name ? {

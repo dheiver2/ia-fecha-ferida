@@ -540,11 +540,20 @@ const Historico: React.FC = () => {
     }
   };
 
+  // Normaliza confiança para 0–100
+  const safeConfidence = (value: any) => {
+    const n = Number(value);
+    if (!Number.isFinite(n)) return 0;
+    const pct = n <= 1 ? n * 100 : n;
+    return Math.max(0, Math.min(100, Math.round(pct)));
+  };
+
   const getConfidenceColor = (confidence: number) => {
-    if (confidence >= 90) return 'text-green-600 dark:text-green-400';
-    if (confidence >= 80) return 'text-accent';
-    if (confidence >= 70) return 'text-yellow-600 dark:text-yellow-400';
-    return 'text-red-600 dark:text-red-400';
+    const c = safeConfidence(confidence);
+    if (c >= 90) return 'text-medical-success';
+    if (c >= 75) return 'text-medical-info';
+    if (c >= 60) return 'text-medical-warning';
+    return 'text-medical-error';
   };
 
   const toggleStarred = (examId: string) => {
@@ -737,7 +746,7 @@ const Historico: React.FC = () => {
   const advancedStats = useMemo(() => {
     const totalCost = examHistory.reduce((sum, exam) => sum + (exam.billing?.cost || 0), 0);
     const avgConfidence = examHistory.length > 0 
-      ? examHistory.reduce((sum, exam) => sum + exam.confidence, 0) / examHistory.length 
+      ? examHistory.reduce((sum, exam) => sum + safeConfidence(exam.confidence), 0) / examHistory.length 
       : 0;
     
     const statusCounts = examHistory.reduce((acc, exam) => {
@@ -789,7 +798,7 @@ const Historico: React.FC = () => {
     completed: examHistory.filter(e => e.status === 'completed').length,
     pending: examHistory.filter(e => e.status === 'pending').length,
     reviewing: examHistory.filter(e => e.status === 'reviewing').length,
-    avgConfidence: examHistory.length > 0 ? Math.round(examHistory.reduce((acc, e) => acc + e.confidence, 0) / examHistory.length) : 0
+    avgConfidence: examHistory.length > 0 ? Math.round(examHistory.reduce((acc, e) => acc + safeConfidence(e.confidence), 0) / examHistory.length) : 0
   };
 
   // Paginação
@@ -933,7 +942,7 @@ const Historico: React.FC = () => {
                   <Target className="h-6 w-6 lg:h-8 lg:w-8 text-accent flex-shrink-0 ml-2" />
                 </div>
                 <div className="mt-3 lg:mt-4">
-                  <Progress value={advancedStats.avgConfidence} className="h-1.5 lg:h-2" />
+                  <Progress value={safeConfidence(advancedStats.avgConfidence)} className="h-1.5 lg:h-2" />
                 </div>
               </CardContent>
             </Card>
@@ -1519,10 +1528,10 @@ const Historico: React.FC = () => {
                         <td className="p-2 lg:p-4 hidden lg:table-cell">
                           <div className="flex items-center gap-2">
                             <div className="w-12 lg:w-16">
-                              <Progress value={exam.confidence} className="h-1.5 lg:h-2" />
+                              <Progress value={safeConfidence(exam.confidence)} className="h-1.5 lg:h-2" />
                             </div>
                             <span className={`font-medium text-xs lg:text-sm ${getConfidenceColor(exam.confidence)}`}>
-                              {exam.confidence}%
+                              {safeConfidence(exam.confidence)}%
                             </span>
                           </div>
                         </td>
@@ -1657,9 +1666,9 @@ const Historico: React.FC = () => {
                           </div>
 
                           <div className="flex items-center gap-2">
-                            <Progress value={exam.confidence} className="flex-1 h-2" />
+                            <Progress value={safeConfidence(exam.confidence)} className="flex-1 h-2" />
                             <span className={`font-medium text-sm ${getConfidenceColor(exam.confidence)}`}>
-                              {exam.confidence}%
+                              {safeConfidence(exam.confidence)}%
                             </span>
                           </div>
                         </div>

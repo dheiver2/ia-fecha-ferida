@@ -498,13 +498,13 @@ const Historico: React.FC = () => {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'completed':
-        return <CheckCircle className="h-4 w-4 text-green-500" />;
+        return <CheckCircle className="h-4 w-4 text-medical-success" />;
       case 'pending':
-        return <Clock className="h-4 w-4 text-yellow-500" />;
+        return <Clock className="h-4 w-4 text-medical-warning" />;
       case 'reviewing':
         return <Eye className="h-4 w-4 text-accent" />;
       case 'error':
-        return <AlertCircle className="h-4 w-4 text-red-500" />;
+        return <AlertCircle className="h-4 w-4 text-medical-error" />;
       default:
         return <Clock className="h-4 w-4 text-gray-500" />;
     }
@@ -1247,38 +1247,38 @@ const Historico: React.FC = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-r from-green-500 to-green-600 text-white border-0">
+          <Card className="bg-medical-success text-medical-success-foreground border-0">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-green-100 text-sm font-medium">Concluídos</p>
+                  <p className="text-sm font-medium opacity-80">Concluídos</p>
                   <p className="text-3xl font-bold">{stats.completed}</p>
                 </div>
-                <CheckCircle className="h-8 w-8 text-green-200" />
+                <CheckCircle className="h-8 w-8 opacity-90" />
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white border-0">
+          <Card className="bg-medical-warning text-medical-warning-foreground border-0">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-yellow-100 text-sm font-medium">Pendentes</p>
+                  <p className="text-sm font-medium opacity-90">Pendentes</p>
                   <p className="text-3xl font-bold">{stats.pending}</p>
                 </div>
-                <Clock className="h-8 w-8 text-yellow-200" />
+                <Clock className="h-8 w-8 opacity-90" />
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-r from-purple-500 to-purple-600 text-white border-0">
+          <Card className="bg-medical-info text-medical-info-foreground border-0">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-purple-100 text-sm font-medium">Em Revisão</p>
+                  <p className="text-sm font-medium opacity-90">Em Revisão</p>
                   <p className="text-3xl font-bold">{stats.reviewing}</p>
                 </div>
-                <Eye className="h-8 w-8 text-purple-200" />
+                <Eye className="h-8 w-8 opacity-90" />
               </div>
             </CardContent>
           </Card>
@@ -1836,9 +1836,9 @@ const Historico: React.FC = () => {
               <Card 
                 key={notification.id} 
                 className={`border-l-4 shadow-lg ${
-                  notification.type === 'success' ? 'border-l-green-500 bg-green-50' :
-                  notification.type === 'error' ? 'border-l-red-500 bg-red-50' :
-                  notification.type === 'warning' ? 'border-l-yellow-500 bg-yellow-50' :
+                  notification.type === 'success' ? 'border-l-medical-success bg-medical-success/10' :
+                  notification.type === 'error' ? 'border-l-medical-error bg-medical-error/10' :
+                  notification.type === 'warning' ? 'border-l-medical-warning bg-medical-warning/10' :
                   'border-l-medical-info bg-medical-info/10'
                 }`}
               >

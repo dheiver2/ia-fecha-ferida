@@ -79,12 +79,12 @@ export const PatientEntry: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-subtle dark:bg-gradient-subtle flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-6">
         {/* Header */}
         <div className="text-center">
           <div className="flex justify-center mb-4">
-            <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center">
+            <div className="w-16 h-16 bg-accent rounded-full flex items-center justify-center">
               <Video className="w-8 h-8 text-white" />
             </div>
           </div>
@@ -215,15 +215,15 @@ export const PatientEntry: React.FC = () => {
         </Card>
 
         {/* Instruções */}
-        <Card className="bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800">
+        <Card className="bg-secondary border-accent/20 dark:bg-accent/10 dark:border-accent/30">
           <CardContent className="py-4">
             <div className="flex items-start gap-3">
-              <Clock className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5" />
+              <Clock className="w-5 h-5 text-accent dark:text-accent mt-0.5" />
               <div>
-                <h4 className="font-semibold text-blue-800 dark:text-blue-300 mb-2">
+                <h4 className="font-semibold text-accent dark:text-accent mb-2">
                   Como funciona:
                 </h4>
-                <ol className="text-sm text-blue-700 dark:text-blue-400 space-y-1">
+                <ol className="text-sm text-accent dark:text-accent space-y-1">
                   <li>1. Digite seu nome e o código da sala</li>
                   <li>2. Clique em "Entrar na Teleconsulta"</li>
                   <li>3. Permita acesso à câmera e microfone</li>

@@ -179,10 +179,10 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-subtle flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div>
-          <div className="mx-auto h-12 w-12 bg-blue-600 rounded-full flex items-center justify-center">
+          <div className="mx-auto h-12 w-12 bg-accent rounded-full flex items-center justify-center">
             <User className="h-8 w-8 text-white" />
           </div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-gray-100">
@@ -306,10 +306,8 @@ const Register: React.FC = () => {
                     type="text"
                     value={formData.crm}
                     onChange={handleChange}
-                    className={`mt-1 block w-full px-3 py-2 border ${
-                      errors.crm ? 'border-red-300' : 'border-gray-300'
-                    } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
-                    placeholder="123456/SP"
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                    placeholder="123456/UF"
                   />
                   {errors.crm && (
                     <p className="mt-1 text-sm text-red-600">{errors.crm}</p>
@@ -424,7 +422,7 @@ const Register: React.FC = () => {
                   required
                   value={formData.password}
                   onChange={handleChange}
-                  className={`appearance-none relative block w-full pl-10 pr-10 py-2 border ${
+                  className={`appearance-none relative block w-full pl-10 pr-3 py-2 border ${
                     errors.password ? 'border-red-300' : 'border-gray-300'
                   } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
                   placeholder="Mínimo 6 caracteres"
@@ -464,7 +462,7 @@ const Register: React.FC = () => {
                   onChange={handleChange}
                   className={`appearance-none relative block w-full pl-10 pr-10 py-2 border ${
                     errors.confirmPassword ? 'border-red-300' : 'border-gray-300'
-                  } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
+                  } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-primary focus:border-primary sm:text-sm`}
                   placeholder="Confirme sua senha"
                 />
                 <button

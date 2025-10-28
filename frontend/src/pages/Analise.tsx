@@ -170,7 +170,7 @@ const Analise = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div className="min-h-screen bg-gradient-subtle dark:bg-gradient-subtle">
       <Header />
 
       {/* Hero Section otimizado */}
@@ -471,8 +471,8 @@ const Analise = () => {
                 {/* Card de Formatos Suportados */}
                 <Card className="p-4 dark:bg-gray-800/50">
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="p-2 bg-blue-100 dark:bg-blue-900/50 rounded-lg">
-                      <Upload className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                    <div className="p-2 bg-secondary dark:bg-accent/10 rounded-lg">
+                      <Upload className="w-4 h-4 text-accent dark:text-accent" />
                     </div>
                     <h3 className="font-medium text-sm">Formatos Aceitos</h3>
                   </div>

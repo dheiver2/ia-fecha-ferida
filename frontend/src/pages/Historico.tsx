@@ -502,7 +502,7 @@ const Historico: React.FC = () => {
       case 'pending':
         return <Clock className="h-4 w-4 text-yellow-500" />;
       case 'reviewing':
-        return <Eye className="h-4 w-4 text-blue-500" />;
+        return <Eye className="h-4 w-4 text-accent" />;
       case 'error':
         return <AlertCircle className="h-4 w-4 text-red-500" />;
       default:
@@ -517,7 +517,7 @@ const Historico: React.FC = () => {
       case 'pending':
         return <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100 dark:bg-yellow-900 dark:text-yellow-100">Pendente</Badge>;
       case 'reviewing':
-        return <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100 dark:bg-blue-900 dark:text-blue-100">Em Revisão</Badge>;
+        return <Badge className="bg-accent/15 text-accent hover:bg-accent/20 dark:bg-accent/20 dark:text-accent-foreground">Em Revisão</Badge>;
       case 'error':
         return <Badge className="bg-red-100 text-red-800 hover:bg-red-100 dark:bg-red-900 dark:text-red-100">Erro</Badge>;
       default:
@@ -528,13 +528,13 @@ const Historico: React.FC = () => {
   const getPriorityBadge = (priority?: string) => {
     switch (priority) {
       case 'urgent':
-        return <Badge className="bg-red-500 text-white hover:bg-red-600">Urgente</Badge>;
+        return <Badge variant="destructive">Urgente</Badge>;
       case 'high':
-        return <Badge className="bg-orange-500 text-white hover:bg-orange-600">Alta</Badge>;
+        return <Badge variant="default">Alta</Badge>;
       case 'normal':
-        return <Badge className="bg-blue-500 text-white hover:bg-blue-600">Normal</Badge>;
+        return <Badge variant="secondary">Normal</Badge>;
       case 'low':
-        return <Badge className="bg-gray-500 text-white hover:bg-gray-600">Baixa</Badge>;
+        return <Badge variant="outline" className="text-muted-foreground border-muted">Baixa</Badge>;
       default:
         return null;
     }
@@ -542,7 +542,7 @@ const Historico: React.FC = () => {
 
   const getConfidenceColor = (confidence: number) => {
     if (confidence >= 90) return 'text-green-600 dark:text-green-400';
-    if (confidence >= 80) return 'text-blue-600 dark:text-blue-400';
+    if (confidence >= 80) return 'text-accent';
     if (confidence >= 70) return 'text-yellow-600 dark:text-yellow-400';
     return 'text-red-600 dark:text-red-400';
   };
@@ -1235,14 +1235,14 @@ const Historico: React.FC = () => {
 
         {/* Dashboard de estatísticas */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-          <Card className="bg-gradient-to-r from-blue-500 to-blue-600 text-white border-0">
+          <Card className="bg-primary text-primary-foreground border-0">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-blue-100 text-sm font-medium">Total de Exames</p>
+                  <p className="text-white/80 text-sm font-medium">Total de Exames</p>
                   <p className="text-3xl font-bold">{stats.total}</p>
                 </div>
-                <FileText className="h-8 w-8 text-blue-200" />
+                <FileText className="h-8 w-8 text-white/90" />
               </div>
             </CardContent>
           </Card>
@@ -1283,14 +1283,14 @@ const Historico: React.FC = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-r from-indigo-500 to-indigo-600 text-white border-0">
+          <Card className="bg-accent text-accent-foreground border-0">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-indigo-100 text-sm font-medium">Confiança Média</p>
+                  <p className="text-white/80 text-sm font-medium">Confiança Média</p>
                   <p className="text-3xl font-bold">{stats.avgConfidence}%</p>
                 </div>
-                <TrendingUp className="h-8 w-8 text-indigo-200" />
+                <TrendingUp className="h-8 w-8 text-white/90" />
               </div>
             </CardContent>
           </Card>
@@ -1839,7 +1839,7 @@ const Historico: React.FC = () => {
                   notification.type === 'success' ? 'border-l-green-500 bg-green-50' :
                   notification.type === 'error' ? 'border-l-red-500 bg-red-50' :
                   notification.type === 'warning' ? 'border-l-yellow-500 bg-yellow-50' :
-                  'border-l-blue-500 bg-blue-50'
+                  'border-l-medical-info bg-medical-info/10'
                 }`}
               >
                 <CardContent className="p-3 sm:p-4">
@@ -1848,7 +1848,7 @@ const Historico: React.FC = () => {
                       {notification.type === 'success' && <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 mt-0.5 flex-shrink-0" />}
                       {notification.type === 'error' && <XCircle className="h-4 w-4 sm:h-5 sm:w-5 text-red-600 mt-0.5 flex-shrink-0" />}
                       {notification.type === 'warning' && <AlertTriangle className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-600 mt-0.5 flex-shrink-0" />}
-                      {notification.type === 'info' && <Info className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 mt-0.5 flex-shrink-0" />}
+                      {notification.type === 'info' && <Info className="h-4 w-4 sm:h-5 sm:w-5 text-medical-info mt-0.5 flex-shrink-0" />}
                       <div className="min-w-0 flex-1">
                         <p className="font-medium text-xs sm:text-sm truncate">{notification.title}</p>
                         <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2">{notification.message}</p>

@@ -131,7 +131,7 @@ export const GuestVideoCall: React.FC = () => {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
               <div className="flex items-center gap-2">
-                <User className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                <User className="w-4 h-4 text-accent dark:text-accent" />
                 <span className="font-medium text-card-foreground">Médico:</span> <span className="text-card-foreground">{inviteData.doctorName}</span>
               </div>
               <div className="flex items-center gap-2">
@@ -144,8 +144,8 @@ export const GuestVideoCall: React.FC = () => {
               </div>
             </div>
             {inviteData.notes && (
-              <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-800">
-                <p className="text-sm text-blue-800 dark:text-blue-200">
+              <div className="mt-4 p-3 bg-secondary dark:bg-accent/10 rounded-lg border border-accent/30 dark:border-accent/30">
+                <p className="text-sm text-accent dark:text-accent">
                   <strong>Observações:</strong> {inviteData.notes}
                 </p>
               </div>

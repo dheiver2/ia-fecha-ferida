@@ -74,7 +74,7 @@ const Index = () => {
                     </Button>
                   </Link>
                   <Link to="/simples" className="w-full sm:w-auto">
-                    <Button size="lg" className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-2xl shadow-strong hover:shadow-glow transition-all duration-300 hover:scale-105 group min-h-[48px]">
+                    <Button size="lg" className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-accent-foreground font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-2xl shadow-strong hover:shadow-glow transition-all duration-300 hover:scale-105 group min-h-[48px]">
                       Videochamada Rápida
                       <Stethoscope className="w-5 h-5 ml-2 group-hover:scale-110 transition-transform" />
                     </Button>
@@ -163,19 +163,19 @@ const Index = () => {
                 icon: <Brain className="w-8 h-8" />,
                 title: "IA Avançada",
                 description: "Algoritmos de deep learning treinados com milhares de casos clínicos",
-                color: "from-blue-500 to-blue-600"
+                color: "from-primary to-accent"
               },
               {
                 icon: <Stethoscope className="w-8 h-8" />,
                 title: "Análise Médica",
                 description: "Avaliação completa seguindo protocolos médicos internacionais",
-                color: "from-green-500 to-green-600"
+                color: "from-primary to-accent"
               },
               {
                 icon: <Target className="w-8 h-8" />,
                 title: "Precisão Clínica",
                 description: "Resultados validados por especialistas com 94% de precisão",
-                color: "from-purple-500 to-purple-600"
+                color: "from-primary to-accent"
               }
             ].map((feature, index) => (
               <div key={index} className="group relative">
@@ -251,15 +251,15 @@ const Index = () => {
 
               <div className="flex items-center justify-center space-x-8 pt-8">
                 <div className="flex items-center space-x-2 text-sm text-muted-foreground dark:text-gray-300">
-                  <CheckCircle className="w-4 h-4 text-green-500" />
+                  <CheckCircle className="w-4 h-4 text-primary" />
                   <span>Teste grátis por 30 dias</span>
                 </div>
                 <div className="flex items-center space-x-2 text-sm text-muted-foreground dark:text-gray-300">
-                  <Shield className="w-4 h-4 text-blue-500" />
+                  <Shield className="w-4 h-4 text-primary" />
                   <span>Dados 100% seguros</span>
                 </div>
                 <div className="flex items-center space-x-2 text-sm text-muted-foreground dark:text-gray-300">
-                  <Award className="w-4 h-4 text-purple-500" />
+                  <Award className="w-4 h-4 text-primary" />
                   <span>Certificado médico</span>
                 </div>
               </div>

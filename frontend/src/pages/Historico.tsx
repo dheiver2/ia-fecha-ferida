@@ -498,13 +498,13 @@ const Historico: React.FC = () => {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'completed':
-        return <CheckCircle className="h-4 w-4 text-medical-success" />;
+        return <CheckCircle className="h-4 w-4 text-emerald-500" />;
       case 'pending':
-        return <Clock className="h-4 w-4 text-medical-warning" />;
+        return <Clock className="h-4 w-4 text-amber-500" />;
       case 'reviewing':
-        return <Eye className="h-4 w-4 text-accent" />;
+        return <Eye className="h-4 w-4 text-blue-500" />;
       case 'error':
-        return <AlertCircle className="h-4 w-4 text-medical-error" />;
+        return <AlertCircle className="h-4 w-4 text-red-500" />;
       default:
         return <Clock className="h-4 w-4 text-gray-500" />;
     }
@@ -513,13 +513,13 @@ const Historico: React.FC = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'completed':
-        return <Badge className="bg-green-100 text-green-800 hover:bg-green-100 dark:bg-green-900 dark:text-green-100">Concluído</Badge>;
+        return <Badge className="bg-emerald-100 text-emerald-800 hover:bg-emerald-200 border-emerald-200">Concluído</Badge>;
       case 'pending':
-        return <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100 dark:bg-yellow-900 dark:text-yellow-100">Pendente</Badge>;
+        return <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-200 border-amber-200">Pendente</Badge>;
       case 'reviewing':
-        return <Badge className="bg-accent/15 text-accent hover:bg-accent/20 dark:bg-accent/20 dark:text-accent-foreground">Em Revisão</Badge>;
+        return <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200 border-blue-200">Em Revisão</Badge>;
       case 'error':
-        return <Badge className="bg-red-100 text-red-800 hover:bg-red-100 dark:bg-red-900 dark:text-red-100">Erro</Badge>;
+        return <Badge className="bg-red-100 text-red-800 hover:bg-red-200 border-red-200">Erro</Badge>;
       default:
         return <Badge variant="secondary">Desconhecido</Badge>;
     }
@@ -550,10 +550,10 @@ const Historico: React.FC = () => {
 
   const getConfidenceColor = (confidence: number) => {
     const c = safeConfidence(confidence);
-    if (c >= 90) return 'text-medical-success';
-    if (c >= 75) return 'text-medical-info';
-    if (c >= 60) return 'text-medical-warning';
-    return 'text-medical-error';
+    if (c >= 90) return 'text-emerald-600';
+    if (c >= 75) return 'text-blue-600';
+    if (c >= 60) return 'text-amber-600';
+    return 'text-red-600';
   };
 
   const toggleStarred = (examId: string) => {
@@ -808,33 +808,37 @@ const Historico: React.FC = () => {
   const currentExams = filteredExams.slice(startIndex, endIndex);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/20">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-blue-950/20">
       <Header />
       
-      <div className="container mx-auto px-4 pt-24 pb-8 space-y-8">
+      <div className="container mx-auto px-4 pt-24 pb-12 space-y-8 animate-in fade-in duration-500">
         <Breadcrumbs />
         
         {/* Header da página com funcionalidades avançadas */}
         <div className="flex flex-col space-y-4 lg:space-y-0 lg:flex-row lg:items-center lg:justify-between gap-4">
           <div className="flex-1 min-w-0">
-            <h1 className="text-2xl lg:text-3xl font-bold text-foreground flex items-center gap-3">
-              <Database className="h-6 w-6 lg:h-8 lg:w-8 text-primary flex-shrink-0" />
-              <span className="truncate">Gestão Avançada de Análises</span>
+            <h1 className="text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white flex items-center gap-3 tracking-tight">
+              <div className="p-2 bg-blue-600 rounded-lg shadow-lg shadow-blue-600/20">
+                <Database className="h-6 w-6 lg:h-8 lg:w-8 text-white flex-shrink-0" />
+              </div>
+              <span className="truncate bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-300">
+                Gestão de Análises
+              </span>
             </h1>
-            <p className="text-muted-foreground mt-2 flex items-center gap-2 text-sm lg:text-base">
+            <p className="text-slate-500 dark:text-slate-400 mt-2 flex items-center gap-2 text-sm lg:text-base">
               <Layers className="h-4 w-4 flex-shrink-0" />
               <span className="truncate">Sistema inteligente para gerenciamento completo de exames médicos</span>
             </p>
             {selectedExams.length > 0 && (
-              <div className="mt-2 flex items-center gap-2 flex-wrap">
-                <Badge variant="secondary" className="bg-primary/10 text-primary">
+              <div className="mt-3 flex items-center gap-2 flex-wrap animate-in slide-in-from-left-2">
+                <Badge variant="secondary" className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border-blue-200 dark:border-blue-800">
                   {selectedExams.length} exame(s) selecionado(s)
                 </Badge>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={clearSelection}
-                  className="h-6 px-2 text-xs"
+                  className="h-6 px-2 text-xs hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/20"
                 >
                   <XCircle className="h-3 w-3 mr-1" />
                   Limpar
@@ -846,12 +850,12 @@ const Historico: React.FC = () => {
           {/* Controles avançados */}
           <div className="flex flex-wrap items-center gap-2 lg:gap-3 justify-start lg:justify-end">
             {/* Modo de visualização */}
-            <div className="flex items-center bg-secondary/50 rounded-lg p-1">
+            <div className="flex items-center bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-lg p-1 border border-slate-200 dark:border-slate-700 shadow-sm">
               <Button
                 variant={viewMode === 'table' ? 'default' : 'ghost'}
                 size="sm"
                 onClick={() => setViewMode('table')}
-                className="h-8 px-2 lg:px-3"
+                className={`h-8 px-2 lg:px-3 ${viewMode === 'table' ? 'bg-white text-blue-600 shadow-sm dark:bg-slate-700 dark:text-white' : 'text-slate-500 hover:text-slate-900 dark:text-slate-400'}`}
               >
                 <List className="h-4 w-4" />
                 <span className="hidden sm:inline ml-1">Tabela</span>
@@ -860,7 +864,7 @@ const Historico: React.FC = () => {
                 variant={viewMode === 'grid' ? 'default' : 'ghost'}
                 size="sm"
                 onClick={() => setViewMode('grid')}
-                className="h-8 px-2 lg:px-3"
+                className={`h-8 px-2 lg:px-3 ${viewMode === 'grid' ? 'bg-white text-blue-600 shadow-sm dark:bg-slate-700 dark:text-white' : 'text-slate-500 hover:text-slate-900 dark:text-slate-400'}`}
               >
                 <Grid className="h-4 w-4" />
                 <span className="hidden sm:inline ml-1">Grade</span>
@@ -872,7 +876,7 @@ const Historico: React.FC = () => {
               variant="outline"
               size="sm"
               onClick={() => setShowExportDialog(true)}
-              className="flex items-center gap-1 lg:gap-2 px-2 lg:px-3"
+              className="flex items-center gap-1 lg:gap-2 px-2 lg:px-3 bg-white/50 backdrop-blur-sm hover:bg-white/80 dark:bg-slate-800/50 dark:hover:bg-slate-800"
             >
               <Download className="h-4 w-4" />
               <span className="hidden sm:inline">Exportar</span>
@@ -882,7 +886,7 @@ const Historico: React.FC = () => {
               variant="outline"
               size="sm"
               onClick={() => setShowImportDialog(true)}
-              className="flex items-center gap-1 lg:gap-2 px-2 lg:px-3"
+              className="flex items-center gap-1 lg:gap-2 px-2 lg:px-3 bg-white/50 backdrop-blur-sm hover:bg-white/80 dark:bg-slate-800/50 dark:hover:bg-slate-800"
             >
               <Upload className="h-4 w-4" />
               <span className="hidden sm:inline">Importar</span>
@@ -892,17 +896,17 @@ const Historico: React.FC = () => {
               variant="outline"
               size="sm"
               onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-              className="flex items-center gap-2"
+              className={`flex items-center gap-2 bg-white/50 backdrop-blur-sm hover:bg-white/80 dark:bg-slate-800/50 dark:hover:bg-slate-800 ${showAdvancedFilters ? 'border-blue-500 text-blue-600 bg-blue-50/50' : ''}`}
             >
               <Filter className="h-4 w-4" />
-              Filtros Avançados
+              Filtros
             </Button>
 
             <Button
               asChild
               variant="default"
               size="sm"
-              className="bg-primary hover:bg-primary/90 text-primary-foreground flex items-center gap-2"
+              className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/20 flex items-center gap-2 transition-all hover:scale-105"
             >
               <Link to="/analise">
                 <Plus className="h-4 w-4" />
@@ -916,67 +920,75 @@ const Historico: React.FC = () => {
         {showDashboard && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8">
             {/* Estatísticas Principais */}
-            <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
+            <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border-slate-200/60 dark:border-slate-700/60 shadow-sm hover:shadow-md transition-all duration-300 group">
               <CardContent className="p-4 lg:p-6">
                 <div className="flex items-center justify-between">
                   <div className="min-w-0 flex-1">
-                    <p className="text-xs lg:text-sm font-medium text-muted-foreground truncate">Total de Exames</p>
-                    <p className="text-2xl lg:text-3xl font-bold text-primary">{examHistory.length}</p>
+                    <p className="text-xs lg:text-sm font-medium text-slate-500 dark:text-slate-400 truncate">Total de Exames</p>
+                    <p className="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white mt-1">{examHistory.length}</p>
                   </div>
-                  <Activity className="h-6 w-6 lg:h-8 lg:w-8 text-primary flex-shrink-0 ml-2" />
+                  <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                    <Activity className="h-6 w-6 lg:h-8 lg:w-8 text-blue-600 dark:text-blue-400" />
+                  </div>
                 </div>
-                <div className="mt-3 lg:mt-4 flex items-center text-xs lg:text-sm">
-                  <TrendingUp className="h-3 w-3 lg:h-4 lg:w-4 text-green-500 mr-1 flex-shrink-0" />
-                  <span className="text-green-600 truncate">+12% este mês</span>
+                <div className="mt-4 flex items-center text-xs lg:text-sm">
+                  <TrendingUp className="h-3 w-3 lg:h-4 lg:w-4 text-emerald-500 mr-1 flex-shrink-0" />
+                  <span className="text-emerald-600 font-medium truncate">+12% este mês</span>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-br from-accent/10 to-accent/5 border-accent/20">
+            <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border-slate-200/60 dark:border-slate-700/60 shadow-sm hover:shadow-md transition-all duration-300 group">
               <CardContent className="p-4 lg:p-6">
                 <div className="flex items-center justify-between">
                   <div className="min-w-0 flex-1">
-                    <p className="text-xs lg:text-sm font-medium text-muted-foreground truncate">Confiança Média</p>
-                    <p className="text-2xl lg:text-3xl font-bold text-accent">{advancedStats.avgConfidence}%</p>
+                    <p className="text-xs lg:text-sm font-medium text-slate-500 dark:text-slate-400 truncate">Confiança Média</p>
+                    <p className="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white mt-1">{advancedStats.avgConfidence}%</p>
                   </div>
-                  <Target className="h-6 w-6 lg:h-8 lg:w-8 text-accent flex-shrink-0 ml-2" />
+                  <div className="p-3 bg-purple-50 dark:bg-purple-900/20 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                    <Target className="h-6 w-6 lg:h-8 lg:w-8 text-purple-600 dark:text-purple-400" />
+                  </div>
                 </div>
-                <div className="mt-3 lg:mt-4">
-                  <Progress value={safeConfidence(advancedStats.avgConfidence)} className="h-1.5 lg:h-2" />
+                <div className="mt-4">
+                  <Progress value={safeConfidence(advancedStats.avgConfidence)} className="h-1.5 lg:h-2 bg-purple-100 dark:bg-purple-900/30" indicatorClassName="bg-purple-600 dark:bg-purple-400" />
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-br from-destructive/10 to-destructive/5 border-destructive/20">
+            <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border-slate-200/60 dark:border-slate-700/60 shadow-sm hover:shadow-md transition-all duration-300 group">
               <CardContent className="p-4 lg:p-6">
                 <div className="flex items-center justify-between">
                   <div className="min-w-0 flex-1">
-                    <p className="text-xs lg:text-sm font-medium text-muted-foreground truncate">Casos Críticos</p>
-                    <p className="text-2xl lg:text-3xl font-bold text-destructive">{advancedStats.criticalCases}</p>
+                    <p className="text-xs lg:text-sm font-medium text-slate-500 dark:text-slate-400 truncate">Casos Críticos</p>
+                    <p className="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white mt-1">{advancedStats.criticalCases}</p>
                   </div>
-                  <AlertTriangle className="h-6 w-6 lg:h-8 lg:w-8 text-destructive flex-shrink-0 ml-2" />
+                  <div className="p-3 bg-red-50 dark:bg-red-900/20 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                    <AlertTriangle className="h-6 w-6 lg:h-8 lg:w-8 text-red-600 dark:text-red-400" />
+                  </div>
                 </div>
-                <div className="mt-3 lg:mt-4 flex items-center text-xs lg:text-sm">
-                  <Clock className="h-3 w-3 lg:h-4 lg:w-4 text-orange-500 mr-1 flex-shrink-0" />
-                  <span className="text-orange-600">Requer atenção</span>
+                <div className="mt-4 flex items-center text-xs lg:text-sm">
+                  <Clock className="h-3 w-3 lg:h-4 lg:w-4 text-amber-500 mr-1 flex-shrink-0" />
+                  <span className="text-amber-600 font-medium">Requer atenção</span>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-br from-green/10 to-green/5 border-green/20">
+            <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border-slate-200/60 dark:border-slate-700/60 shadow-sm hover:shadow-md transition-all duration-300 group">
               <CardContent className="p-4 lg:p-6">
                 <div className="flex items-center justify-between">
                   <div className="min-w-0 flex-1">
-                    <p className="text-xs lg:text-sm font-medium text-muted-foreground truncate">Taxa de Cicatrização</p>
-                    <p className="text-2xl lg:text-3xl font-bold text-green-600">
+                    <p className="text-xs lg:text-sm font-medium text-slate-500 dark:text-slate-400 truncate">Taxa de Cicatrização</p>
+                    <p className="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white mt-1">
                       {advancedStats.healingRate}%
                     </p>
                   </div>
-                  <CheckCircle2 className="h-6 w-6 lg:h-8 lg:w-8 text-green-600 flex-shrink-0 ml-2" />
+                  <div className="p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                    <CheckCircle2 className="h-6 w-6 lg:h-8 lg:w-8 text-emerald-600 dark:text-emerald-400" />
+                  </div>
                 </div>
-                <div className="mt-3 lg:mt-4 flex items-center text-xs lg:text-sm">
-                  <TrendingUp className="h-3 w-3 lg:h-4 lg:w-4 text-green-500 mr-1 flex-shrink-0" />
-                  <span className="text-green-600 truncate">{advancedStats.healingCases} casos com melhora</span>
+                <div className="mt-4 flex items-center text-xs lg:text-sm">
+                  <TrendingUp className="h-3 w-3 lg:h-4 lg:w-4 text-emerald-500 mr-1 flex-shrink-0" />
+                  <span className="text-emerald-600 font-medium truncate">{advancedStats.healingCases} casos com melhora</span>
                 </div>
               </CardContent>
             </Card>
@@ -985,10 +997,10 @@ const Historico: React.FC = () => {
 
         {/* Filtros Avançados */}
         {showAdvancedFilters && (
-          <Card className="mb-8 border-primary/20">
-            <CardHeader className="bg-gradient-to-r from-primary/5 to-accent/5">
-              <CardTitle className="flex items-center gap-2 text-primary">
-                <Filter className="h-5 w-5" />
+          <Card className="mb-8 border-slate-200/60 dark:border-slate-700/60 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl shadow-sm animate-in slide-in-from-top-4 duration-300">
+            <CardHeader className="border-b border-slate-100 dark:border-slate-700/50 pb-4">
+              <CardTitle className="flex items-center gap-2 text-slate-800 dark:text-slate-100">
+                <Filter className="h-5 w-5 text-blue-600" />
                 Filtros Avançados
               </CardTitle>
               <CardDescription>
@@ -1001,7 +1013,7 @@ const Historico: React.FC = () => {
                 <div className="space-y-2">
                   <Label htmlFor="search">Busca Inteligente</Label>
                   <div className="relative">
-                    <SearchIcon className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <SearchIcon className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
                     <Input
                       id="search"
                       placeholder="Buscar por paciente, protocolo, diagnóstico..."
@@ -1010,7 +1022,7 @@ const Historico: React.FC = () => {
                         setFilters(prev => ({ ...prev, searchTerm: e.target.value }));
                         addToSearchHistory(e.target.value);
                       }}
-                      className="pl-10"
+                      className="pl-10 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 focus:ring-blue-500"
                     />
                   </div>
                   {searchHistory.length > 0 && (
@@ -1020,7 +1032,7 @@ const Historico: React.FC = () => {
                           key={index}
                           variant="ghost"
                           size="sm"
-                          className="h-6 px-2 text-xs"
+                          className="h-6 px-2 text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300"
                           onClick={() => setFilters(prev => ({ ...prev, searchTerm: term }))}
                         >
                           {term}
@@ -1037,7 +1049,7 @@ const Historico: React.FC = () => {
                     value={filters.department || 'all'}
                     onValueChange={(value) => setFilters(prev => ({ ...prev, department: value === 'all' ? undefined : value }))}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700">
                       <SelectValue placeholder="Todos os departamentos" />
                     </SelectTrigger>
                     <SelectContent>
@@ -1058,7 +1070,7 @@ const Historico: React.FC = () => {
                     value={filters.priority}
                     onValueChange={(value) => setFilters(prev => ({ ...prev, priority: value }))}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700">
                       <SelectValue placeholder="Todas as prioridades" />
                     </SelectTrigger>
                     <SelectContent>
@@ -1075,7 +1087,7 @@ const Historico: React.FC = () => {
                 {/* Filtro por Follow-up */}
                 <div className="space-y-2">
                   <Label>Follow-up Necessário</Label>
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 p-2 border border-slate-200 dark:border-slate-700 rounded-md bg-white dark:bg-slate-900">
                     <Checkbox
                       id="followup"
                       checked={filters.followUpRequired || false}
@@ -1083,7 +1095,7 @@ const Historico: React.FC = () => {
                         setFilters(prev => ({ ...prev, followUpRequired: checked as boolean }))
                       }
                     />
-                    <Label htmlFor="followup" className="text-sm">
+                    <Label htmlFor="followup" className="text-sm cursor-pointer">
                       Apenas casos que requerem follow-up
                     </Label>
                   </div>
@@ -1102,9 +1114,9 @@ const Historico: React.FC = () => {
                         ...prev,
                         confidenceRange: { ...prev.confidenceRange, min: parseInt(e.target.value) || 0 }
                       }))}
-                      className="w-20"
+                      className="w-20 bg-white dark:bg-slate-900"
                     />
-                    <span>até</span>
+                    <span className="text-slate-500">até</span>
                     <Input
                       type="number"
                       min="0"
@@ -1114,7 +1126,7 @@ const Historico: React.FC = () => {
                         ...prev,
                         confidenceRange: { ...prev.confidenceRange, max: parseInt(e.target.value) || 100 }
                       }))}
-                      className="w-20"
+                      className="w-20 bg-white dark:bg-slate-900"
                     />
                   </div>
                 </div>
@@ -1127,7 +1139,7 @@ const Historico: React.FC = () => {
                       const savedFilter = savedFilters.find(f => f.name === value);
                       if (savedFilter) loadFilter(savedFilter);
                     }}>
-                      <SelectTrigger className="flex-1">
+                      <SelectTrigger className="flex-1 bg-white dark:bg-slate-900">
                         <SelectValue placeholder="Carregar filtro salvo" />
                       </SelectTrigger>
                       <SelectContent>
@@ -1145,6 +1157,7 @@ const Historico: React.FC = () => {
                         const name = prompt('Nome do filtro:');
                         if (name) saveFilter(name);
                       }}
+                      className="bg-white dark:bg-slate-900"
                     >
                       <Bookmark className="h-4 w-4" />
                     </Button>
@@ -1152,16 +1165,16 @@ const Historico: React.FC = () => {
                 </div>
               </div>
 
-              <div className="flex justify-between items-center mt-6 pt-4 border-t">
+              <div className="flex justify-between items-center mt-6 pt-4 border-t border-slate-100 dark:border-slate-700/50">
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   onClick={clearAllFilters}
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 text-slate-500 hover:text-red-600 hover:bg-red-50"
                 >
                   <FilterX className="h-4 w-4" />
                   Limpar Filtros
                 </Button>
-                <div className="text-sm text-muted-foreground">
+                <div className="text-sm text-slate-500">
                   {filteredExams.length} de {examHistory.length} exames encontrados
                 </div>
               </div>
@@ -1171,28 +1184,28 @@ const Historico: React.FC = () => {
 
         {/* Ações em Lote */}
         {selectedExams.length > 0 && (
-          <Card className="mb-8 border-accent/20 bg-accent/5">
+          <Card className="mb-8 border-blue-200/60 bg-blue-50/50 dark:bg-blue-900/10 backdrop-blur-sm animate-in slide-in-from-top-2">
             <CardContent className="p-4">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between flex-wrap gap-4">
                 <div className="flex items-center gap-4">
-                  <Badge variant="secondary" className="bg-primary/10 text-primary">
+                  <Badge variant="secondary" className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
                     {selectedExams.length} selecionado(s)
                   </Badge>
                   <div className="flex items-center gap-2">
                     <Button
-                      variant="outline"
+                      variant="ghost"
                       size="sm"
                       onClick={selectAllExams}
-                      className="flex items-center gap-2"
+                      className="flex items-center gap-2 hover:bg-blue-100 dark:hover:bg-blue-900/20"
                     >
                       <CheckCircle2 className="h-4 w-4" />
                       Selecionar Todos
                     </Button>
                     <Button
-                      variant="outline"
+                      variant="ghost"
                       size="sm"
                       onClick={clearSelection}
-                      className="flex items-center gap-2"
+                      className="flex items-center gap-2 hover:bg-red-100 dark:hover:bg-red-900/20 hover:text-red-600"
                     >
                       <XCircle className="h-4 w-4" />
                       Limpar Seleção
@@ -1204,7 +1217,7 @@ const Historico: React.FC = () => {
                     variant="outline"
                     size="sm"
                     onClick={bulkExport}
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-2 bg-white dark:bg-slate-800"
                   >
                     <Download className="h-4 w-4" />
                     Exportar
@@ -1213,7 +1226,7 @@ const Historico: React.FC = () => {
                     variant="outline"
                     size="sm"
                     onClick={bulkArchive}
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-2 bg-white dark:bg-slate-800"
                   >
                     <Archive className="h-4 w-4" />
                     Arquivar
@@ -1233,172 +1246,21 @@ const Historico: React.FC = () => {
           </Card>
         )}
 
-        {/* Filtros Médicos Básicos */}
-        <div className="mb-8">
-          <MedicalFilters
-            filters={filters}
-            onFiltersChange={setFilters}
-            onClearFilters={clearAllFilters}
-          />
-        </div>
-
-        {/* Dashboard de estatísticas */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-          <Card className="bg-primary text-primary-foreground border-0">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-white/80 text-sm font-medium">Total de Exames</p>
-                  <p className="text-3xl font-bold">{stats.total}</p>
-                </div>
-                <FileText className="h-8 w-8 text-white/90" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-medical-success text-medical-success-foreground border-0">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium opacity-80">Concluídos</p>
-                  <p className="text-3xl font-bold">{stats.completed}</p>
-                </div>
-                <CheckCircle className="h-8 w-8 opacity-90" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-medical-warning text-medical-warning-foreground border-0">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium opacity-90">Pendentes</p>
-                  <p className="text-3xl font-bold">{stats.pending}</p>
-                </div>
-                <Clock className="h-8 w-8 opacity-90" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-medical-info text-medical-info-foreground border-0">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium opacity-90">Em Revisão</p>
-                  <p className="text-3xl font-bold">{stats.reviewing}</p>
-                </div>
-                <Eye className="h-8 w-8 opacity-90" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-accent text-accent-foreground border-0">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-white/80 text-sm font-medium">Confiança Média</p>
-                  <p className="text-3xl font-bold">{stats.avgConfidence}%</p>
-                </div>
-                <TrendingUp className="h-8 w-8 text-white/90" />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Filtros e busca */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Filter className="h-5 w-5" />
-              Filtros e Busca
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Buscar por protocolo, paciente, médico..."
-                  value={filters.searchTerm}
-                  onChange={(e) => setFilters(prev => ({ ...prev, searchTerm: e.target.value }))}
-                  className="pl-10"
-                />
-              </div>
-
-              <Select value={filters.status} onValueChange={(value) => setFilters(prev => ({ ...prev, status: value as any }))}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todos os Status</SelectItem>
-                  <SelectItem value="completed">Concluído</SelectItem>
-                  <SelectItem value="pending">Pendente</SelectItem>
-                  <SelectItem value="reviewing">Em Revisão</SelectItem>
-                  <SelectItem value="error">Erro</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <Select value={filters.priority} onValueChange={(value) => setFilters(prev => ({ ...prev, priority: value as any }))}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Prioridade" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todas as Prioridades</SelectItem>
-                  <SelectItem value="urgent">Urgente</SelectItem>
-                  <SelectItem value="high">Alta</SelectItem>
-                  <SelectItem value="normal">Normal</SelectItem>
-                  <SelectItem value="low">Baixa</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <div className="text-sm text-muted-foreground">
-                Filtros de data disponíveis nos filtros avançados
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4">
-              <Button
-                variant={filters.starred ? "default" : "outline"}
-                size="sm"
-                onClick={() => setFilters(prev => ({ ...prev, starred: !prev.starred }))}
-              >
-                <Star className={`h-4 w-4 mr-2 ${filters.starred ? 'fill-current' : ''}`} />
-                Apenas Favoritos
-              </Button>
-              
-              <Separator orientation="vertical" className="h-6" />
-              
-              <span className="text-sm text-muted-foreground">
-                {filteredExams.length} de {examHistory.length} exames
-              </span>
-            </div>
-          </CardContent>
-        </Card>
-
         {/* Lista de exames */}
-        <Card className="border-primary/20">
-          <CardHeader className="bg-gradient-to-r from-primary/5 to-accent/5">
+        <Card className="border-slate-200/60 dark:border-slate-700/60 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl shadow-sm overflow-hidden">
+          <CardHeader className="border-b border-slate-100 dark:border-slate-700/50 bg-slate-50/50 dark:bg-slate-800/50">
             <div className="flex items-center justify-between">
-              <CardTitle className="flex items-center gap-2 text-primary">
-                <Database className="h-5 w-5" />
+              <CardTitle className="flex items-center gap-2 text-slate-800 dark:text-slate-100">
+                <Database className="h-5 w-5 text-blue-600" />
                 Análises Médicas
-                <Badge variant="secondary" className="ml-2 bg-primary/10 text-primary">
+                <Badge variant="secondary" className="ml-2 bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
                   {filteredExams.length}
                 </Badge>
               </CardTitle>
               
               <div className="flex items-center gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setViewMode(viewMode === 'table' ? 'grid' : 'table')}
-                  className="flex items-center gap-2"
-                >
-                  {viewMode === 'table' ? <Grid3X3 className="h-4 w-4" /> : <List className="h-4 w-4" />}
-                  {viewMode === 'table' ? 'Grade' : 'Tabela'}
-                </Button>
                 <Select value={itemsPerPage.toString()} onValueChange={(value) => setItemsPerPage(Number(value))}>
-                  <SelectTrigger className="w-20">
+                  <SelectTrigger className="w-20 h-8 bg-white dark:bg-slate-900">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -1413,15 +1275,17 @@ const Historico: React.FC = () => {
           </CardHeader>
           <CardContent className="p-0">
             {currentExams.length === 0 ? (
-              <div className="text-center py-12">
-                <FileImage className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-muted-foreground mb-2">
+              <div className="text-center py-16 px-4">
+                <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <FileImage className="h-8 w-8 text-slate-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
                   Nenhum exame encontrado
                 </h3>
-                <p className="text-muted-foreground mb-4">
-                  Não há exames que correspondam aos filtros selecionados.
+                <p className="text-slate-500 dark:text-slate-400 mb-6 max-w-md mx-auto">
+                  Não há exames que correspondam aos filtros selecionados. Tente ajustar os filtros ou realize uma nova análise.
                 </p>
-                <Button asChild>
+                <Button asChild className="bg-blue-600 hover:bg-blue-700">
                   <Link to="/analise">
                     <Plus className="h-4 w-4 mr-2" />
                     Realizar Nova Análise
@@ -1431,11 +1295,11 @@ const Historico: React.FC = () => {
             ) : viewMode === 'table' ? (
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead className="bg-muted/50 border-b">
+                  <thead className="bg-slate-50/80 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-700">
                     <tr>
-                      <th className="p-2 lg:p-4 text-left">
+                      <th className="p-4 text-left w-12">
                         <Checkbox
-                          checked={selectedExams.length === currentExams.length}
+                          checked={selectedExams.length === currentExams.length && currentExams.length > 0}
                           onCheckedChange={(checked) => {
                             if (checked) {
                               setSelectedExams(currentExams.map(e => e.id));
@@ -1445,42 +1309,42 @@ const Historico: React.FC = () => {
                           }}
                         />
                       </th>
-                      <th className="p-2 lg:p-4 text-left font-medium">Paciente</th>
-                      <th className="p-2 lg:p-4 text-left font-medium hidden sm:table-cell">Protocolo</th>
-                      <th className="p-2 lg:p-4 text-left font-medium hidden md:table-cell">Data</th>
-                      <th className="p-2 lg:p-4 text-left font-medium">Status</th>
-                      <th className="p-2 lg:p-4 text-left font-medium hidden lg:table-cell">Confiança</th>
-                      <th className="p-2 lg:p-4 text-left font-medium hidden xl:table-cell">Departamento</th>
-                      <th className="p-2 lg:p-4 text-left font-medium">Ações</th>
+                      <th className="p-4 text-left font-medium text-slate-500 dark:text-slate-400 text-sm">Paciente</th>
+                      <th className="p-4 text-left font-medium text-slate-500 dark:text-slate-400 text-sm hidden sm:table-cell">Protocolo</th>
+                      <th className="p-4 text-left font-medium text-slate-500 dark:text-slate-400 text-sm hidden md:table-cell">Data</th>
+                      <th className="p-4 text-left font-medium text-slate-500 dark:text-slate-400 text-sm">Status</th>
+                      <th className="p-4 text-left font-medium text-slate-500 dark:text-slate-400 text-sm hidden lg:table-cell">Confiança</th>
+                      <th className="p-4 text-left font-medium text-slate-500 dark:text-slate-400 text-sm hidden xl:table-cell">Departamento</th>
+                      <th className="p-4 text-right font-medium text-slate-500 dark:text-slate-400 text-sm">Ações</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                     {currentExams.map((exam) => (
                       <tr 
                         key={exam.id} 
-                        className={`border-b hover:bg-muted/30 transition-colors ${
-                          selectedExams.includes(exam.id) ? 'bg-primary/5' : ''
+                        className={`hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-colors ${
+                          selectedExams.includes(exam.id) ? 'bg-blue-50/50 dark:bg-blue-900/10' : ''
                         }`}
                       >
-                        <td className="p-2 lg:p-4">
+                        <td className="p-4">
                           <Checkbox
                             checked={selectedExams.includes(exam.id)}
                             onCheckedChange={(checked) => toggleSelectExam(exam.id)}
                           />
                         </td>
-                        <td className="p-2 lg:p-4">
-                          <div className="flex items-center gap-2 lg:gap-3">
+                        <td className="p-4">
+                          <div className="flex items-center gap-3">
                             <div className="flex-shrink-0">
-                              <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                                <User className="h-4 w-4 lg:h-5 lg:w-5 text-primary" />
+                              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/40 dark:to-blue-800/20 flex items-center justify-center border border-blue-200 dark:border-blue-800">
+                                <User className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                               </div>
                             </div>
                             <div className="min-w-0 flex-1">
-                              <p className="font-medium text-sm lg:text-base truncate">{exam.patient?.name || 'Não informado'}</p>
-                              <p className="text-xs lg:text-sm text-muted-foreground truncate sm:hidden">
+                              <p className="font-medium text-slate-900 dark:text-white text-sm truncate">{exam.patient?.name || 'Não informado'}</p>
+                              <p className="text-xs text-slate-500 dark:text-slate-400 truncate sm:hidden">
                                 {exam.protocol}
                               </p>
-                              <p className="text-xs lg:text-sm text-muted-foreground hidden lg:block">
+                              <p className="text-xs text-slate-500 dark:text-slate-400 hidden lg:block">
                                 {exam.patient?.age && exam.patient?.gender ? 
                                   `${exam.patient.age} anos, ${exam.patient.gender}` : 
                                   'Dados não informados'
@@ -1489,71 +1353,73 @@ const Historico: React.FC = () => {
                             </div>
                           </div>
                         </td>
-                        <td className="p-2 lg:p-4 hidden sm:table-cell">
-                          <div className="flex items-center gap-2">
-                            <code className="bg-muted px-2 py-1 rounded text-xs lg:text-sm font-mono truncate max-w-[100px]">
+                        <td className="p-4 hidden sm:table-cell">
+                          <div className="flex items-center gap-2 group">
+                            <code className="bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded text-xs font-mono text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
                               {exam.protocol}
                             </code>
                             <Button
                               variant="ghost"
                               size="sm"
                               onClick={() => copyProtocol(exam.protocol)}
-                              className="p-1 h-auto flex-shrink-0"
+                              className="p-1 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
                             >
                               <Copy className="h-3 w-3" />
                             </Button>
                           </div>
                         </td>
-                        <td className="p-2 lg:p-4 hidden md:table-cell">
+                        <td className="p-4 hidden md:table-cell">
                           <div>
-                            <p className="font-medium text-sm lg:text-base">
+                            <p className="text-sm text-slate-700 dark:text-slate-300">
                               {safeFormatDate(exam.analysisDate, 'dd/MM/yyyy')}
                             </p>
-                            <p className="text-xs lg:text-sm text-muted-foreground">
+                            <p className="text-xs text-slate-500 dark:text-slate-400">
                               {safeFormatDate(exam.analysisDate, 'HH:mm')}
                             </p>
                           </div>
                         </td>
-                        <td className="p-2 lg:p-4">
-                          <div className="flex items-center gap-1 lg:gap-2">
-                            <div className="md:hidden">
-                              {getStatusIcon(exam.status)}
-                            </div>
-                            <div className="hidden md:flex items-center gap-2">
-                              {getStatusIcon(exam.status)}
-                              {getStatusBadge(exam.status)}
-                            </div>
+                        <td className="p-4">
+                          <div className="flex items-center gap-2">
+                            {getStatusBadge(exam.status)}
                           </div>
                         </td>
-                        <td className="p-2 lg:p-4 hidden lg:table-cell">
-                          <div className="flex items-center gap-2">
-                            <div className="w-12 lg:w-16">
-                              <Progress value={safeConfidence(exam.confidence)} className="h-1.5 lg:h-2" />
+                        <td className="p-4 hidden lg:table-cell">
+                          <div className="flex items-center gap-3">
+                            <div className="w-16">
+                              <Progress 
+                                value={safeConfidence(exam.confidence)} 
+                                className="h-1.5 bg-slate-100 dark:bg-slate-800" 
+                                indicatorClassName={
+                                  safeConfidence(exam.confidence) >= 90 ? 'bg-emerald-500' :
+                                  safeConfidence(exam.confidence) >= 70 ? 'bg-blue-500' :
+                                  safeConfidence(exam.confidence) >= 50 ? 'bg-amber-500' : 'bg-red-500'
+                                }
+                              />
                             </div>
-                            <span className={`font-medium text-xs lg:text-sm ${getConfidenceColor(exam.confidence)}`}>
+                            <span className={`font-medium text-xs ${getConfidenceColor(exam.confidence)}`}>
                               {safeConfidence(exam.confidence)}%
                             </span>
                           </div>
                         </td>
-                        <td className="p-2 lg:p-4 hidden xl:table-cell">
-                          <Badge variant="outline" className="text-xs truncate max-w-[80px]">
-                            {exam.department}
+                        <td className="p-4 hidden xl:table-cell">
+                          <Badge variant="outline" className="text-xs font-normal text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700">
+                            {exam.department || 'Geral'}
                           </Badge>
                         </td>
-                        <td className="p-2 lg:p-4">
-                          <div className="flex items-center gap-1">
+                        <td className="p-4 text-right">
+                          <div className="flex items-center justify-end gap-1">
                             <Button
                               variant="ghost"
                               size="sm"
                               onClick={() => toggleStarred(exam.id)}
-                              className="p-1 h-auto"
+                              className="h-8 w-8 p-0 hover:bg-yellow-50 hover:text-yellow-600 dark:hover:bg-yellow-900/20"
                             >
-                              <Star className={`h-4 w-4 ${exam.starred ? 'fill-yellow-400 text-yellow-400' : 'text-muted-foreground'}`} />
+                              <Star className={`h-4 w-4 ${exam.starred ? 'fill-yellow-400 text-yellow-400' : 'text-slate-400'}`} />
                             </Button>
                             
                             <Dialog>
                               <DialogTrigger asChild>
-                                <Button variant="ghost" size="sm" className="p-1 h-auto">
+                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0 hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-900/20">
                                   <Eye className="h-4 w-4" />
                                 </Button>
                               </DialogTrigger>
@@ -1578,15 +1444,11 @@ const Historico: React.FC = () => {
                               </DialogContent>
                             </Dialog>
 
-                            <Button variant="ghost" size="sm" className="p-1 h-auto">
-                              <Download className="h-4 w-4" />
-                            </Button>
-
                             <Button 
                               variant="ghost" 
                               size="sm"
                               onClick={() => deleteExam(exam.id)}
-                              className="p-1 h-auto text-red-600 hover:text-red-700 hover:bg-red-50"
+                              className="h-8 w-8 p-0 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
                             >
                               <Trash2 className="h-4 w-4" />
                             </Button>
@@ -1602,26 +1464,21 @@ const Historico: React.FC = () => {
                 {currentExams.map((exam) => (
                   <Card 
                     key={exam.id} 
-                    className={`hover:shadow-lg transition-all duration-200 cursor-pointer ${
-                      selectedExams.includes(exam.id) ? 'ring-2 ring-primary bg-primary/5' : ''
+                    className={`hover:shadow-lg transition-all duration-300 cursor-pointer group border-slate-200 dark:border-slate-700 ${
+                      selectedExams.includes(exam.id) ? 'ring-2 ring-blue-500 bg-blue-50/30 dark:bg-blue-900/10' : 'bg-white dark:bg-slate-800'
                     }`}
                     onClick={() => toggleSelectExam(exam.id)}
                   >
-                    <CardContent className="p-6">
+                    <CardContent className="p-5">
                       <div className="space-y-4">
                         <div className="flex items-start justify-between">
                           <div className="flex items-center gap-3">
-                            <Checkbox
-                              checked={selectedExams.includes(exam.id)}
-                              onCheckedChange={(checked) => toggleSelectExam(exam.id)}
-                              onClick={(e) => e.stopPropagation()}
-                            />
-                            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                              <User className="h-6 w-6 text-primary" />
+                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/40 dark:to-blue-800/20 flex items-center justify-center border border-blue-200 dark:border-blue-800">
+                              <User className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                             </div>
                             <div>
-                              <h3 className="font-semibold">{exam.patient?.name || 'Não informado'}</h3>
-                              <p className="text-sm text-muted-foreground">
+                              <h3 className="font-semibold text-slate-900 dark:text-white">{exam.patient?.name || 'Não informado'}</h3>
+                              <p className="text-xs text-slate-500 dark:text-slate-400">
                                 {exam.patient?.age && exam.patient?.gender ? 
                                   `${exam.patient.age} anos, ${exam.patient.gender}` : 
                                   'Dados não informados'
@@ -1636,61 +1493,58 @@ const Historico: React.FC = () => {
                               e.stopPropagation();
                               toggleStarred(exam.id);
                             }}
-                            className="p-1 h-auto"
+                            className="h-8 w-8 p-0 hover:bg-yellow-50 hover:text-yellow-600 dark:hover:bg-yellow-900/20"
                           >
-                            <Star className={`h-4 w-4 ${exam.starred ? 'fill-yellow-400 text-yellow-400' : 'text-muted-foreground'}`} />
+                            <Star className={`h-4 w-4 ${exam.starred ? 'fill-yellow-400 text-yellow-400' : 'text-slate-300'}`} />
                           </Button>
                         </div>
 
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-2">
-                            <code className="bg-muted px-2 py-1 rounded text-xs font-mono">
+                        <div className="space-y-3">
+                          <div className="flex items-center justify-between">
+                            <code className="bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded text-xs font-mono text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
                               {exam.protocol}
                             </code>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                copyProtocol(exam.protocol);
-                              }}
-                              className="p-1 h-auto"
-                            >
-                              <Copy className="h-3 w-3" />
-                            </Button>
-                          </div>
-                          
-                          <div className="flex items-center gap-2">
-                            {getStatusIcon(exam.status)}
                             {getStatusBadge(exam.status)}
                           </div>
 
-                          <div className="flex items-center gap-2">
-                            <Progress value={safeConfidence(exam.confidence)} className="flex-1 h-2" />
-                            <span className={`font-medium text-sm ${getConfidenceColor(exam.confidence)}`}>
-                              {safeConfidence(exam.confidence)}%
-                            </span>
+                          <div className="space-y-1">
+                            <div className="flex justify-between text-xs text-slate-500">
+                              <span>Confiança da IA</span>
+                              <span className={getConfidenceColor(exam.confidence)}>{safeConfidence(exam.confidence)}%</span>
+                            </div>
+                            <Progress 
+                              value={safeConfidence(exam.confidence)} 
+                              className="h-1.5 bg-slate-100 dark:bg-slate-800"
+                              indicatorClassName={
+                                safeConfidence(exam.confidence) >= 90 ? 'bg-emerald-500' :
+                                safeConfidence(exam.confidence) >= 70 ? 'bg-blue-500' :
+                                safeConfidence(exam.confidence) >= 50 ? 'bg-amber-500' : 'bg-red-500'
+                              }
+                            />
                           </div>
                         </div>
 
-                        <div className="flex items-center justify-between text-sm text-muted-foreground">
-                          <span>{safeFormatDate(exam.analysisDate, 'dd/MM/yyyy')}</span>
-                          <Badge variant="outline" className="text-xs">
-                            {exam.department}
+                        <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 pt-2 border-t border-slate-100 dark:border-slate-700">
+                          <span className="flex items-center gap-1">
+                            <Calendar className="h-3 w-3" />
+                            {safeFormatDate(exam.analysisDate, 'dd/MM/yyyy')}
+                          </span>
+                          <Badge variant="outline" className="text-[10px] h-5 px-1.5 font-normal border-slate-200 dark:border-slate-700">
+                            {exam.department || 'Geral'}
                           </Badge>
                         </div>
 
-                        <div className="flex items-center gap-2 pt-2 border-t">
+                        <div className="flex items-center gap-2 pt-2">
                           <Dialog>
                             <DialogTrigger asChild>
                               <Button 
                                 variant="outline" 
                                 size="sm" 
-                                className="flex-1"
+                                className="flex-1 h-8 text-xs"
                                 onClick={(e) => e.stopPropagation()}
                               >
-                                <Eye className="h-4 w-4 mr-2" />
-                                Ver
+                                <Eye className="h-3 w-3 mr-1.5" />
+                                Ver Laudo
                               </Button>
                             </DialogTrigger>
                             <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
@@ -1717,9 +1571,10 @@ const Historico: React.FC = () => {
                           <Button 
                             variant="outline" 
                             size="sm"
+                            className="h-8 w-8 p-0"
                             onClick={(e) => e.stopPropagation()}
                           >
-                            <Download className="h-4 w-4" />
+                            <Download className="h-3 w-3" />
                           </Button>
 
                           <Button 
@@ -1729,9 +1584,9 @@ const Historico: React.FC = () => {
                               e.stopPropagation();
                               deleteExam(exam.id);
                             }}
-                            className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                            className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 border-red-200 dark:border-red-900/30"
                           >
-                            <Trash2 className="h-4 w-4" />
+                            <Trash2 className="h-3 w-3" />
                           </Button>
                         </div>
                       </div>
@@ -1743,31 +1598,23 @@ const Historico: React.FC = () => {
             
             {/* Paginação Avançada */}
             {totalPages > 1 && (
-              <div className="border-t bg-muted/20 p-3 lg:p-4">
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-3 lg:gap-4">
-                  <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
-                    <span className="text-center sm:text-left">
-                      Mostrando <span className="font-medium text-foreground">{startIndex + 1}</span> a{' '}
-                      <span className="font-medium text-foreground">{Math.min(endIndex, filteredExams.length)}</span> de{' '}
-                      <span className="font-medium text-foreground">{filteredExams.length}</span> exames
-                    </span>
-                    <Separator orientation="vertical" className="h-4 hidden sm:block" />
-                    <span className="text-center sm:text-left">
-                      Página <span className="font-medium text-foreground">{currentPage}</span> de{' '}
-                      <span className="font-medium text-foreground">{totalPages}</span>
-                    </span>
+              <div className="border-t border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 p-4">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="text-sm text-slate-500 dark:text-slate-400">
+                    Mostrando <span className="font-medium text-slate-900 dark:text-white">{startIndex + 1}</span> a{' '}
+                    <span className="font-medium text-slate-900 dark:text-white">{Math.min(endIndex, filteredExams.length)}</span> de{' '}
+                    <span className="font-medium text-slate-900 dark:text-white">{filteredExams.length}</span> exames
                   </div>
                   
-                  <div className="flex items-center gap-1 sm:gap-2">
+                  <div className="flex items-center gap-1">
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={() => setCurrentPage(1)}
                       disabled={currentPage === 1}
-                      className="hidden md:flex p-1 sm:p-2"
+                      className="h-8 w-8 p-0"
                     >
-                      <ChevronsLeft className="h-3 w-3 sm:h-4 sm:w-4" />
-                      <span className="sr-only">Primeira página</span>
+                      <ChevronsLeft className="h-4 w-4" />
                     </Button>
                     
                     <Button
@@ -1775,25 +1622,22 @@ const Historico: React.FC = () => {
                       size="sm"
                       onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                       disabled={currentPage === 1}
-                      className="p-1 sm:p-2"
+                      className="h-8 w-8 p-0"
                     >
-                      <ChevronLeft className="h-3 w-3 sm:h-4 sm:w-4" />
-                      <span className="sr-only">Página anterior</span>
+                      <ChevronLeft className="h-4 w-4" />
                     </Button>
                     
-                    {/* Números das páginas */}
-                    <div className="flex items-center gap-1">
-                      {Array.from({ length: Math.min(window.innerWidth < 640 ? 3 : 5, totalPages) }, (_, i) => {
+                    <div className="flex items-center gap-1 mx-2">
+                      {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                         let pageNum;
-                        const maxPages = window.innerWidth < 640 ? 3 : 5;
-                        if (totalPages <= maxPages) {
+                        if (totalPages <= 5) {
                           pageNum = i + 1;
-                        } else if (currentPage <= Math.floor(maxPages / 2) + 1) {
+                        } else if (currentPage <= 3) {
                           pageNum = i + 1;
-                        } else if (currentPage >= totalPages - Math.floor(maxPages / 2)) {
-                          pageNum = totalPages - maxPages + 1 + i;
+                        } else if (currentPage >= totalPages - 2) {
+                          pageNum = totalPages - 4 + i;
                         } else {
-                          pageNum = currentPage - Math.floor(maxPages / 2) + i;
+                          pageNum = currentPage - 2 + i;
                         }
                         
                         return (
@@ -1802,7 +1646,7 @@ const Historico: React.FC = () => {
                             variant={currentPage === pageNum ? "default" : "outline"}
                             size="sm"
                             onClick={() => setCurrentPage(pageNum)}
-                            className="w-6 h-6 sm:w-8 sm:h-8 p-0 text-xs sm:text-sm"
+                            className={`h-8 w-8 p-0 ${currentPage === pageNum ? 'bg-blue-600 hover:bg-blue-700' : ''}`}
                           >
                             {pageNum}
                           </Button>
@@ -1815,10 +1659,9 @@ const Historico: React.FC = () => {
                       size="sm"
                       onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                       disabled={currentPage === totalPages}
-                      className="p-1 sm:p-2"
+                      className="h-8 w-8 p-0"
                     >
-                      <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
-                      <span className="sr-only">Próxima página</span>
+                      <ChevronRight className="h-4 w-4" />
                     </Button>
                     
                     <Button
@@ -1826,10 +1669,9 @@ const Historico: React.FC = () => {
                       size="sm"
                       onClick={() => setCurrentPage(totalPages)}
                       disabled={currentPage === totalPages}
-                      className="hidden md:flex p-1 sm:p-2"
+                      className="h-8 w-8 p-0"
                     >
-                      <ChevronsRight className="h-3 w-3 sm:h-4 sm:w-4" />
-                      <span className="sr-only">Última página</span>
+                      <ChevronsRight className="h-4 w-4" />
                     </Button>
                   </div>
                 </div>
@@ -1840,36 +1682,36 @@ const Historico: React.FC = () => {
 
         {/* Sistema de Notificações */}
         {notifications.length > 0 && (
-          <div className="fixed bottom-2 sm:bottom-4 right-2 sm:right-4 left-2 sm:left-auto z-50 space-y-2 max-w-sm sm:max-w-md">
+          <div className="fixed bottom-4 right-4 z-50 space-y-2 max-w-md animate-in slide-in-from-right-4">
             {notifications.map((notification) => (
               <Card 
                 key={notification.id} 
-                className={`border-l-4 shadow-lg ${
-                  notification.type === 'success' ? 'border-l-medical-success bg-medical-success/10' :
-                  notification.type === 'error' ? 'border-l-medical-error bg-medical-error/10' :
-                  notification.type === 'warning' ? 'border-l-medical-warning bg-medical-warning/10' :
-                  'border-l-medical-info bg-medical-info/10'
+                className={`border-l-4 shadow-lg backdrop-blur-xl ${
+                  notification.type === 'success' ? 'border-l-emerald-500 bg-emerald-50/90 dark:bg-emerald-900/20' :
+                  notification.type === 'error' ? 'border-l-red-500 bg-red-50/90 dark:bg-red-900/20' :
+                  notification.type === 'warning' ? 'border-l-amber-500 bg-amber-50/90 dark:bg-amber-900/20' :
+                  'border-l-blue-500 bg-blue-50/90 dark:bg-blue-900/20'
                 }`}
               >
-                <CardContent className="p-3 sm:p-4">
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="flex items-start gap-2 min-w-0 flex-1">
-                      {notification.type === 'success' && <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 mt-0.5 flex-shrink-0" />}
-                      {notification.type === 'error' && <XCircle className="h-4 w-4 sm:h-5 sm:w-5 text-red-600 mt-0.5 flex-shrink-0" />}
-                      {notification.type === 'warning' && <AlertTriangle className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-600 mt-0.5 flex-shrink-0" />}
-                      {notification.type === 'info' && <Info className="h-4 w-4 sm:h-5 sm:w-5 text-medical-info mt-0.5 flex-shrink-0" />}
-                      <div className="min-w-0 flex-1">
-                        <p className="font-medium text-xs sm:text-sm truncate">{notification.title}</p>
-                        <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2">{notification.message}</p>
+                <CardContent className="p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-start gap-3">
+                      {notification.type === 'success' && <CheckCircle className="h-5 w-5 text-emerald-600 mt-0.5" />}
+                      {notification.type === 'error' && <XCircle className="h-5 w-5 text-red-600 mt-0.5" />}
+                      {notification.type === 'warning' && <AlertTriangle className="h-5 w-5 text-amber-600 mt-0.5" />}
+                      {notification.type === 'info' && <Info className="h-5 w-5 text-blue-600 mt-0.5" />}
+                      <div>
+                        <p className="font-medium text-sm text-slate-900 dark:text-white">{notification.title}</p>
+                        <p className="text-sm text-slate-600 dark:text-slate-300 mt-1">{notification.message}</p>
                       </div>
                     </div>
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() => setNotifications(prev => prev.filter(n => n.id !== notification.id))}
-                      className="p-1 h-auto flex-shrink-0"
+                      className="h-6 w-6 p-0 hover:bg-black/5"
                     >
-                      <X className="h-3 w-3 sm:h-4 sm:w-4" />
+                      <X className="h-4 w-4" />
                     </Button>
                   </div>
                 </CardContent>
@@ -1880,17 +1722,17 @@ const Historico: React.FC = () => {
 
         {/* Dialogs de Exportação e Importação */}
         <Dialog open={showExportDialog} onOpenChange={setShowExportDialog}>
-          <DialogContent>
+          <DialogContent className="sm:max-w-md">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
-                <Download className="h-5 w-5" />
+                <Download className="h-5 w-5 text-blue-600" />
                 Exportar Dados
               </DialogTitle>
               <DialogDescription>
                 Selecione o formato e os dados que deseja exportar
               </DialogDescription>
             </DialogHeader>
-            <div className="space-y-4">
+            <div className="space-y-4 py-4">
               <div className="space-y-2">
                 <Label>Formato de Exportação</Label>
                 <Select defaultValue="csv">
@@ -1904,16 +1746,16 @@ const Historico: React.FC = () => {
                   </SelectContent>
                 </Select>
               </div>
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <Label>Dados a Exportar</Label>
                 <div className="space-y-2">
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 p-3 border rounded-lg hover:bg-slate-50 cursor-pointer transition-colors">
                     <Checkbox id="export-selected" defaultChecked />
-                    <Label htmlFor="export-selected">Apenas exames selecionados ({selectedExams.length})</Label>
+                    <Label htmlFor="export-selected" className="cursor-pointer flex-1">Apenas exames selecionados ({selectedExams.length})</Label>
                   </div>
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 p-3 border rounded-lg hover:bg-slate-50 cursor-pointer transition-colors">
                     <Checkbox id="export-all" />
-                    <Label htmlFor="export-all">Todos os exames filtrados ({filteredExams.length})</Label>
+                    <Label htmlFor="export-all" className="cursor-pointer flex-1">Todos os exames filtrados ({filteredExams.length})</Label>
                   </div>
                 </div>
               </div>
@@ -1925,7 +1767,7 @@ const Historico: React.FC = () => {
               <Button onClick={() => {
                 bulkExport();
                 setShowExportDialog(false);
-              }}>
+              }} className="bg-blue-600 hover:bg-blue-700">
                 <Download className="h-4 w-4 mr-2" />
                 Exportar
               </Button>
@@ -1934,35 +1776,34 @@ const Historico: React.FC = () => {
         </Dialog>
 
         <Dialog open={showImportDialog} onOpenChange={setShowImportDialog}>
-          <DialogContent>
+          <DialogContent className="sm:max-w-md">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
-                <Upload className="h-5 w-5" />
+                <Upload className="h-5 w-5 text-blue-600" />
                 Importar Dados
               </DialogTitle>
               <DialogDescription>
                 Faça upload de um arquivo para importar dados de exames
               </DialogDescription>
             </DialogHeader>
-            <div className="space-y-4">
-              <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center">
-                <Upload className="h-8 w-8 text-muted-foreground mx-auto mb-4" />
-                <p className="text-sm text-muted-foreground mb-2">
-                  Arraste e solte um arquivo aqui ou clique para selecionar
+            <div className="space-y-4 py-4">
+              <div className="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-8 text-center hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors cursor-pointer">
+                <div className="w-12 h-12 bg-blue-50 dark:bg-blue-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Upload className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                </div>
+                <p className="text-sm font-medium text-slate-900 dark:text-white mb-1">
+                  Clique para selecionar ou arraste um arquivo
                 </p>
-                <p className="text-xs text-muted-foreground">
-                  Formatos suportados: CSV, JSON
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  Formatos suportados: CSV, JSON (max. 10MB)
                 </p>
-                <Button variant="outline" className="mt-4">
-                  Selecionar Arquivo
-                </Button>
               </div>
             </div>
             <div className="flex justify-end gap-2">
               <Button variant="outline" onClick={() => setShowImportDialog(false)}>
                 Cancelar
               </Button>
-              <Button>
+              <Button className="bg-blue-600 hover:bg-blue-700">
                 <Upload className="h-4 w-4 mr-2" />
                 Importar
               </Button>

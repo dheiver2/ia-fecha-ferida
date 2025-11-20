@@ -916,14 +916,16 @@ const Historico: React.FC = () => {
         {showDashboard && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8">
             {/* Estatísticas Principais */}
-            <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
+            <Card className="border-l-4 border-l-primary shadow-sm hover:shadow-md transition-shadow">
               <CardContent className="p-4 lg:p-6">
                 <div className="flex items-center justify-between">
                   <div className="min-w-0 flex-1">
                     <p className="text-xs lg:text-sm font-medium text-muted-foreground truncate">Total de Exames</p>
-                    <p className="text-2xl lg:text-3xl font-bold text-primary">{examHistory.length}</p>
+                    <p className="text-2xl lg:text-3xl font-bold text-foreground">{examHistory.length}</p>
                   </div>
-                  <Activity className="h-6 w-6 lg:h-8 lg:w-8 text-primary flex-shrink-0 ml-2" />
+                  <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Activity className="h-5 w-5 text-primary" />
+                  </div>
                 </div>
                 <div className="mt-3 lg:mt-4 flex items-center text-xs lg:text-sm">
                   <TrendingUp className="h-3 w-3 lg:h-4 lg:w-4 text-green-500 mr-1 flex-shrink-0" />
@@ -932,14 +934,16 @@ const Historico: React.FC = () => {
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-br from-accent/10 to-accent/5 border-accent/20">
+            <Card className="border-l-4 border-l-accent shadow-sm hover:shadow-md transition-shadow">
               <CardContent className="p-4 lg:p-6">
                 <div className="flex items-center justify-between">
                   <div className="min-w-0 flex-1">
                     <p className="text-xs lg:text-sm font-medium text-muted-foreground truncate">Confiança Média</p>
-                    <p className="text-2xl lg:text-3xl font-bold text-accent">{advancedStats.avgConfidence}%</p>
+                    <p className="text-2xl lg:text-3xl font-bold text-foreground">{advancedStats.avgConfidence}%</p>
                   </div>
-                  <Target className="h-6 w-6 lg:h-8 lg:w-8 text-accent flex-shrink-0 ml-2" />
+                  <div className="h-10 w-10 rounded-full bg-accent/10 flex items-center justify-center">
+                    <Target className="h-5 w-5 text-accent" />
+                  </div>
                 </div>
                 <div className="mt-3 lg:mt-4">
                   <Progress value={safeConfidence(advancedStats.avgConfidence)} className="h-1.5 lg:h-2" />
@@ -947,14 +951,16 @@ const Historico: React.FC = () => {
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-br from-destructive/10 to-destructive/5 border-destructive/20">
+            <Card className="border-l-4 border-l-destructive shadow-sm hover:shadow-md transition-shadow">
               <CardContent className="p-4 lg:p-6">
                 <div className="flex items-center justify-between">
                   <div className="min-w-0 flex-1">
                     <p className="text-xs lg:text-sm font-medium text-muted-foreground truncate">Casos Críticos</p>
-                    <p className="text-2xl lg:text-3xl font-bold text-destructive">{advancedStats.criticalCases}</p>
+                    <p className="text-2xl lg:text-3xl font-bold text-foreground">{advancedStats.criticalCases}</p>
                   </div>
-                  <AlertTriangle className="h-6 w-6 lg:h-8 lg:w-8 text-destructive flex-shrink-0 ml-2" />
+                  <div className="h-10 w-10 rounded-full bg-destructive/10 flex items-center justify-center">
+                    <AlertTriangle className="h-5 w-5 text-destructive" />
+                  </div>
                 </div>
                 <div className="mt-3 lg:mt-4 flex items-center text-xs lg:text-sm">
                   <Clock className="h-3 w-3 lg:h-4 lg:w-4 text-orange-500 mr-1 flex-shrink-0" />
@@ -963,20 +969,22 @@ const Historico: React.FC = () => {
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-br from-green/10 to-green/5 border-green/20">
+            <Card className="border-l-4 border-l-medical-success shadow-sm hover:shadow-md transition-shadow">
               <CardContent className="p-4 lg:p-6">
                 <div className="flex items-center justify-between">
                   <div className="min-w-0 flex-1">
                     <p className="text-xs lg:text-sm font-medium text-muted-foreground truncate">Taxa de Cicatrização</p>
-                    <p className="text-2xl lg:text-3xl font-bold text-green-600">
+                    <p className="text-2xl lg:text-3xl font-bold text-foreground">
                       {advancedStats.healingRate}%
                     </p>
                   </div>
-                  <CheckCircle2 className="h-6 w-6 lg:h-8 lg:w-8 text-green-600 flex-shrink-0 ml-2" />
+                  <div className="h-10 w-10 rounded-full bg-medical-success/10 flex items-center justify-center">
+                    <CheckCircle2 className="h-5 w-5 text-medical-success" />
+                  </div>
                 </div>
                 <div className="mt-3 lg:mt-4 flex items-center text-xs lg:text-sm">
-                  <TrendingUp className="h-3 w-3 lg:h-4 lg:w-4 text-green-500 mr-1 flex-shrink-0" />
-                  <span className="text-green-600 truncate">{advancedStats.healingCases} casos com melhora</span>
+                  <TrendingUp className="h-3 w-3 lg:h-4 lg:w-4 text-medical-success mr-1 flex-shrink-0" />
+                  <span className="text-medical-success truncate">{advancedStats.healingCases} casos com melhora</span>
                 </div>
               </CardContent>
             </Card>
@@ -985,10 +993,10 @@ const Historico: React.FC = () => {
 
         {/* Filtros Avançados */}
         {showAdvancedFilters && (
-          <Card className="mb-8 border-primary/20">
-            <CardHeader className="bg-gradient-to-r from-primary/5 to-accent/5">
-              <CardTitle className="flex items-center gap-2 text-primary">
-                <Filter className="h-5 w-5" />
+          <Card className="mb-8 shadow-sm">
+            <CardHeader className="border-b bg-muted/10 pb-4">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <Filter className="h-5 w-5 text-primary" />
                 Filtros Avançados
               </CardTitle>
               <CardDescription>
@@ -1242,69 +1250,6 @@ const Historico: React.FC = () => {
           />
         </div>
 
-        {/* Dashboard de estatísticas */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-          <Card className="bg-primary text-primary-foreground border-0">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-white/80 text-sm font-medium">Total de Exames</p>
-                  <p className="text-3xl font-bold">{stats.total}</p>
-                </div>
-                <FileText className="h-8 w-8 text-white/90" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-medical-success text-medical-success-foreground border-0">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium opacity-80">Concluídos</p>
-                  <p className="text-3xl font-bold">{stats.completed}</p>
-                </div>
-                <CheckCircle className="h-8 w-8 opacity-90" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-medical-warning text-medical-warning-foreground border-0">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium opacity-90">Pendentes</p>
-                  <p className="text-3xl font-bold">{stats.pending}</p>
-                </div>
-                <Clock className="h-8 w-8 opacity-90" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-medical-info text-medical-info-foreground border-0">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium opacity-90">Em Revisão</p>
-                  <p className="text-3xl font-bold">{stats.reviewing}</p>
-                </div>
-                <Eye className="h-8 w-8 opacity-90" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-accent text-accent-foreground border-0">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-white/80 text-sm font-medium">Confiança Média</p>
-                  <p className="text-3xl font-bold">{stats.avgConfidence}%</p>
-                </div>
-                <TrendingUp className="h-8 w-8 text-white/90" />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
         {/* Filtros e busca */}
         <Card>
           <CardHeader>
@@ -1376,13 +1321,13 @@ const Historico: React.FC = () => {
         </Card>
 
         {/* Lista de exames */}
-        <Card className="border-primary/20">
-          <CardHeader className="bg-gradient-to-r from-primary/5 to-accent/5">
+        <Card className="shadow-sm">
+          <CardHeader className="border-b bg-muted/10 pb-4">
             <div className="flex items-center justify-between">
-              <CardTitle className="flex items-center gap-2 text-primary">
-                <Database className="h-5 w-5" />
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <Database className="h-5 w-5 text-primary" />
                 Análises Médicas
-                <Badge variant="secondary" className="ml-2 bg-primary/10 text-primary">
+                <Badge variant="secondary" className="ml-2">
                   {filteredExams.length}
                 </Badge>
               </CardTitle>

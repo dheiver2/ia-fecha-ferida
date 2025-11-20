@@ -114,13 +114,13 @@ export const PatientEntry: React.FC = () => {
           
           <CardContent className="space-y-6 pt-4">
             {isInviteLink && (
-              <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-900/30 rounded-lg p-4 flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-emerald-600 mt-0.5 flex-shrink-0" />
+              <div className="bg-medical-success/10 dark:bg-medical-success/20 border border-medical-success/20 dark:border-medical-success/30 rounded-lg p-4 flex items-start gap-3">
+                <CheckCircle2 className="w-5 h-5 text-medical-success mt-0.5 flex-shrink-0" />
                 <div>
-                  <h3 className="font-semibold text-emerald-900 dark:text-emerald-100 text-sm">
+                  <h3 className="font-semibold text-medical-success dark:text-medical-success-foreground text-sm">
                     Convite Verificado
                   </h3>
-                  <p className="text-emerald-700 dark:text-emerald-300 text-xs mt-1">
+                  <p className="text-medical-success dark:text-medical-success-foreground text-xs mt-1">
                     Você foi convidado por <strong>{doctorName}</strong> para a sala <strong>{roomId}</strong>
                   </p>
                 </div>

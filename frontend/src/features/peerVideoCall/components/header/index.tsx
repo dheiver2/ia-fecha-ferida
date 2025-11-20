@@ -69,12 +69,12 @@ export default function VideoCallHeader({
 						</p>
 					</div>
 					<div className='flex items-center gap-4'>
-						<Badge variant={isConnected ? 'default' : 'destructive'} className={isConnected ? 'bg-emerald-500 hover:bg-emerald-600' : ''}>{connectionStatus}</Badge>
-						<Badge variant={remoteUserConnected ? 'default' : 'secondary'} className={remoteUserConnected ? 'bg-emerald-500 hover:bg-emerald-600' : ''}>
+						<Badge variant={isConnected ? 'default' : 'destructive'} className={isConnected ? 'bg-medical-success hover:bg-medical-success/90' : ''}>{connectionStatus}</Badge>
+						<Badge variant={remoteUserConnected ? 'default' : 'secondary'} className={remoteUserConnected ? 'bg-medical-success hover:bg-medical-success/90' : ''}>
 							{remoteUserConnected ? 'Usuário Conectado' : 'Aguardando...'}
 						</Badge>
 						{userType === 'doctor' && (
-							<Button onClick={copyInviteLink} variant='outline' size='sm' className='border-emerald-200 text-emerald-700 hover:bg-emerald-50 dark:border-emerald-800 dark:text-emerald-400 dark:hover:bg-emerald-900/20'>
+							<Button onClick={copyInviteLink} variant='outline' size='sm' className='border-medical-success/20 text-medical-success hover:bg-medical-success/10 dark:border-medical-success/30 dark:text-medical-success dark:hover:bg-medical-success/20'>
 								<Copy className='mr-2 h-4 w-4' />
 								Copiar Link
 							</Button>

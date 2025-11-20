@@ -70,7 +70,7 @@ export const AppointmentScheduler: React.FC<AppointmentSchedulerProps> = ({
 
   const statusOptions = [
     { value: 'agendado', label: 'Agendado', color: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 border-blue-200 dark:border-blue-800' },
-    { value: 'confirmado', label: 'Confirmado', color: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800' },
+    { value: 'confirmado', label: 'Confirmado', color: 'bg-medical-success/10 text-medical-success dark:bg-medical-success/20 dark:text-medical-success border-medical-success/20 dark:border-medical-success/30' },
     { value: 'em_andamento', label: 'Em Andamento', color: 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 border-amber-200 dark:border-amber-800' },
     { value: 'concluido', label: 'Concluído', color: 'bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-300 border-slate-200 dark:border-slate-700' },
     { value: 'cancelado', label: 'Cancelado', color: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 border-red-200 dark:border-red-800' }
@@ -186,8 +186,8 @@ export const AppointmentScheduler: React.FC<AppointmentSchedulerProps> = ({
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
-                <CalendarIcon className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+              <div className="p-2 bg-medical-success/10 dark:bg-medical-success/20 rounded-lg">
+                <CalendarIcon className="w-6 h-6 text-medical-success" />
               </div>
               <div>
                 <h2 className="text-xl font-bold text-slate-900 dark:text-white">Agendamento de Consultas</h2>
@@ -215,7 +215,7 @@ export const AppointmentScheduler: React.FC<AppointmentSchedulerProps> = ({
               </div>
               <Button 
                 onClick={() => setIsCreating(true)}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-md shadow-emerald-500/20"
+                className="bg-primary hover:bg-primary-dark text-white shadow-md shadow-primary/20"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Nova Consulta
@@ -257,7 +257,7 @@ export const AppointmentScheduler: React.FC<AppointmentSchedulerProps> = ({
         <Card className="lg:col-span-2 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-slate-200 dark:border-slate-800 shadow-lg">
           <CardHeader>
             <CardTitle className="text-lg font-semibold text-slate-900 dark:text-white flex items-center gap-2">
-              <Clock className="w-5 h-5 text-emerald-500" />
+              <Clock className="w-5 h-5 text-medical-success" />
               Consultas - {format(selectedDate, "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
             </CardTitle>
           </CardHeader>
@@ -272,7 +272,7 @@ export const AppointmentScheduler: React.FC<AppointmentSchedulerProps> = ({
                   <Button 
                     variant="link" 
                     onClick={() => setIsCreating(true)}
-                    className="text-emerald-600 dark:text-emerald-400 mt-2"
+                    className="text-primary mt-2"
                   >
                     Agendar agora
                   </Button>
@@ -283,7 +283,7 @@ export const AppointmentScheduler: React.FC<AppointmentSchedulerProps> = ({
                   .map((appointment) => (
                     <div 
                       key={appointment.id} 
-                      className="group border border-slate-200 dark:border-slate-800 rounded-xl p-5 hover:shadow-md transition-all duration-200 bg-white dark:bg-slate-900/50 hover:border-emerald-200 dark:hover:border-emerald-800/50"
+                      className="group border border-slate-200 dark:border-slate-800 rounded-xl p-5 hover:shadow-md transition-all duration-200 bg-white dark:bg-slate-900/50 hover:border-medical-success/20 dark:hover:border-medical-success/30"
                     >
                       <div className="flex justify-between items-start">
                         <div className="flex-1">
@@ -322,7 +322,7 @@ export const AppointmentScheduler: React.FC<AppointmentSchedulerProps> = ({
                             variant="outline"
                             size="icon"
                             onClick={() => setEditingAppointment(appointment)}
-                            className="h-8 w-8 rounded-lg hover:bg-emerald-50 hover:text-emerald-600 dark:hover:bg-emerald-900/20 dark:hover:text-emerald-400"
+                            className="h-8 w-8 rounded-lg hover:bg-medical-success/10 hover:text-medical-success dark:hover:bg-medical-success/20 dark:hover:text-medical-success"
                           >
                             <Edit className="w-4 h-4" />
                           </Button>
@@ -350,7 +350,7 @@ export const AppointmentScheduler: React.FC<AppointmentSchedulerProps> = ({
           <Card className="w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-2xl animate-in zoom-in-95 duration-200">
             <CardHeader className="border-b border-slate-100 dark:border-slate-800 sticky top-0 bg-white dark:bg-slate-900 z-10">
               <CardTitle className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                <Plus className="w-5 h-5 text-emerald-500" />
+                <Plus className="w-5 h-5 text-medical-success" />
                 Nova Consulta
               </CardTitle>
             </CardHeader>
@@ -363,7 +363,7 @@ export const AppointmentScheduler: React.FC<AppointmentSchedulerProps> = ({
                     value={newAppointment.patientName}
                     onChange={(e) => setNewAppointment(prev => ({ ...prev, patientName: e.target.value }))}
                     placeholder="Digite o nome do paciente"
-                    className="border-slate-200 dark:border-slate-700 focus:ring-emerald-500"
+                    className="border-slate-200 dark:border-slate-700 focus:ring-primary"
                   />
                 </div>
                 <div className="space-y-2">
@@ -373,7 +373,7 @@ export const AppointmentScheduler: React.FC<AppointmentSchedulerProps> = ({
                     value={newAppointment.patientId}
                     onChange={(e) => setNewAppointment(prev => ({ ...prev, patientId: e.target.value }))}
                     placeholder="ID do paciente (opcional)"
-                    className="border-slate-200 dark:border-slate-700 focus:ring-emerald-500"
+                    className="border-slate-200 dark:border-slate-700 focus:ring-primary"
                   />
                 </div>
                 <div className="space-y-2">
@@ -459,20 +459,20 @@ export const AppointmentScheduler: React.FC<AppointmentSchedulerProps> = ({
               </div>
               <div className="space-y-2">
                 <Label htmlFor="notes" className="text-slate-700 dark:text-slate-300">Observações</Label>
-                <Textarea
+                  <Textarea
                   id="notes"
                   value={newAppointment.notes}
                   onChange={(e) => setNewAppointment(prev => ({ ...prev, notes: e.target.value }))}
                   placeholder="Observações sobre a consulta..."
                   rows={3}
-                  className="border-slate-200 dark:border-slate-700 focus:ring-emerald-500 resize-none"
+                  className="border-slate-200 dark:border-slate-700 focus:ring-primary resize-none"
                 />
               </div>
               <div className="flex gap-3 justify-end pt-4 border-t border-slate-100 dark:border-slate-800">
                 <Button variant="outline" onClick={() => setIsCreating(false)} className="border-slate-200 dark:border-slate-700">
                   Cancelar
                 </Button>
-                <Button onClick={createAppointment} className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-500/20">
+                <Button onClick={createAppointment} className="bg-primary hover:bg-primary-dark text-white shadow-lg shadow-primary/20">
                   Agendar Consulta
                 </Button>
               </div>
@@ -487,7 +487,7 @@ export const AppointmentScheduler: React.FC<AppointmentSchedulerProps> = ({
           <Card className="w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-2xl animate-in zoom-in-95 duration-200">
             <CardHeader className="border-b border-slate-100 dark:border-slate-800 sticky top-0 bg-white dark:bg-slate-900 z-10">
               <CardTitle className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                <Edit className="w-5 h-5 text-emerald-500" />
+                <Edit className="w-5 h-5 text-medical-success" />
                 Editar Consulta
               </CardTitle>
             </CardHeader>
@@ -499,7 +499,7 @@ export const AppointmentScheduler: React.FC<AppointmentSchedulerProps> = ({
                     id="edit-patient-name"
                     value={editingAppointment.patientName}
                     onChange={(e) => setEditingAppointment(prev => prev ? { ...prev, patientName: e.target.value } : null)}
-                    className="border-slate-200 dark:border-slate-700 focus:ring-emerald-500"
+                    className="border-slate-200 dark:border-slate-700 focus:ring-primary"
                   />
                 </div>
                 <div className="space-y-2">
@@ -526,19 +526,19 @@ export const AppointmentScheduler: React.FC<AppointmentSchedulerProps> = ({
               </div>
               <div className="space-y-2">
                 <Label htmlFor="edit-notes" className="text-slate-700 dark:text-slate-300">Observações</Label>
-                <Textarea
+                  <Textarea
                   id="edit-notes"
                   value={editingAppointment.notes}
                   onChange={(e) => setEditingAppointment(prev => prev ? { ...prev, notes: e.target.value } : null)}
                   rows={3}
-                  className="border-slate-200 dark:border-slate-700 focus:ring-emerald-500 resize-none"
+                  className="border-slate-200 dark:border-slate-700 focus:ring-primary resize-none"
                 />
               </div>
               <div className="flex gap-3 justify-end pt-4 border-t border-slate-100 dark:border-slate-800">
                 <Button variant="outline" onClick={() => setEditingAppointment(null)} className="border-slate-200 dark:border-slate-700">
                   Cancelar
                 </Button>
-                <Button onClick={updateAppointment} className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-500/20">
+                <Button onClick={updateAppointment} className="bg-primary hover:bg-primary-dark text-white shadow-lg shadow-primary/20">
                   Salvar Alterações
                 </Button>
               </div>

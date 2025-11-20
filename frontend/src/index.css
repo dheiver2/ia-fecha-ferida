@@ -20,7 +20,6 @@ All colors MUST be HSL.
     /* Design System - Paleta VascularOne */
     --brand-coral: 4 100% 62%;      /* #FF4B3E aprox. */
     --brand-navy: 211 72% 20%;      /* #0E3156 aprox. */
-    --brand-emerald: 161 94% 30%;   /* #059669 Emerald 600 */
     --pixel-red: 4 100% 58%;        /* tons digitalizados/pixelados */
 
     --primary: var(--brand-coral);
@@ -46,7 +45,7 @@ All colors MUST be HSL.
 
     /* Medical specific colors - Paleta médica consistente */
     --medical-blue: 205 85% 25%;
-    --medical-green: var(--brand-emerald);
+    --medical-green: 142 70% 30%;   /* Generic Medical Green */
     --medical-red: 0 75% 45%;
     --medical-orange: 35 85% 40%;
     --medical-gray: 205 15% 35%;

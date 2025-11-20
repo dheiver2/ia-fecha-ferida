@@ -460,7 +460,7 @@ const Analise = () => {
             <div className="mb-12 animate-in slide-in-from-bottom-8 duration-700">
               <div className="max-w-6xl mx-auto">
                 <Card className="overflow-hidden shadow-2xl border-0 bg-white dark:bg-gray-800 rounded-3xl">
-                  <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-6 border-b border-green-100 dark:border-green-900/30">
+                  <div className="bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 p-6 border-b border-green-100 dark:border-green-900/30">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-4">
                             <div className="p-3 bg-green-100 dark:bg-green-900/50 rounded-full">

@@ -123,7 +123,7 @@ export const GuestVideoCall: React.FC = () => {
             <div>
               <h1 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
                 Sala de Teleconsulta
-                <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800">
+                <Badge variant="outline" className="bg-medical-success/10 text-medical-success border-medical-success/20 dark:bg-medical-success/20 dark:text-medical-success dark:border-medical-success/30">
                   <Wifi className="w-3 h-3 mr-1" /> Ao Vivo
                 </Badge>
               </h1>
@@ -167,7 +167,7 @@ export const GuestVideoCall: React.FC = () => {
                   </div>
 
                   <div className="flex items-start gap-3 p-3 rounded-lg bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800">
-                    <User className="w-5 h-5 text-emerald-600 dark:text-emerald-400 mt-0.5" />
+                    <User className="w-5 h-5 text-primary dark:text-primary-light mt-0.5" />
                     <div>
                       <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Paciente</p>
                       <p className="font-semibold text-slate-900 dark:text-white">{inviteData.patientName}</p>
@@ -194,7 +194,7 @@ export const GuestVideoCall: React.FC = () => {
 
                 <div className="pt-4 border-t border-slate-100 dark:border-slate-700/50">
                   <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 justify-center">
-                    <Shield className="w-3 h-3 text-emerald-500" />
+                    <Shield className="w-3 h-3 text-medical-success" />
                     <span>Conexão criptografada de ponta a ponta</span>
                   </div>
                 </div>

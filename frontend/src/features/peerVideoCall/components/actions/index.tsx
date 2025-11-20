@@ -84,7 +84,7 @@ export default function VideoActions({ localStream, userType, socket, remoteStre
 							size="lg"
 							onClick={toggleVideo}
 							disabled={!localStream}
-							className={isVideoEnabled ? "bg-emerald-600 hover:bg-emerald-700 text-white" : ""}
+							className={isVideoEnabled ? "bg-medical-success hover:bg-medical-success/90 text-white" : ""}
 						>
 							{isVideoEnabled ? (
 								<Video className="w-5 h-5 mr-2" />
@@ -99,7 +99,7 @@ export default function VideoActions({ localStream, userType, socket, remoteStre
 							size="lg"
 							onClick={toggleAudio}
 							disabled={!localStream}
-							className={isAudioEnabled ? "bg-emerald-600 hover:bg-emerald-700 text-white" : ""}
+							className={isAudioEnabled ? "bg-medical-success hover:bg-medical-success/90 text-white" : ""}
 						>
 							{isAudioEnabled ? (
 								<Mic className="w-5 h-5 mr-2" />

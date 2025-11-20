@@ -44,26 +44,26 @@ const Header = () => {
 
   return (
     <header className="fixed top-4 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8 transition-all duration-300">
-      <div className="mx-auto max-w-7xl bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-white/20 dark:border-gray-700/30 shadow-lg rounded-2xl transition-all duration-300 hover:shadow-xl hover:bg-white/90 dark:hover:bg-gray-900/90">
+      <div className="mx-auto max-w-7xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-white/20 dark:border-slate-700/30 shadow-lg shadow-slate-200/20 dark:shadow-black/20 rounded-2xl transition-all duration-300 hover:shadow-xl hover:bg-white/90 dark:hover:bg-slate-900/90">
         <div className="px-4 sm:px-6 py-3">
           <div className="flex items-center justify-between">
             {/* Logo Section - Reorganizado */}
             <Link to="/" className="flex items-center space-x-3 group">
               <div className="relative">
-                <div className="absolute inset-0 bg-primary/20 rounded-xl blur-md group-hover:blur-lg transition-all duration-300"></div>
+                <div className="absolute inset-0 bg-emerald-500/20 rounded-xl blur-md group-hover:blur-lg transition-all duration-300"></div>
                 <img 
                   src={logoImage} 
                   alt="Vascular One" 
                   className="relative w-10 h-10 sm:w-11 sm:h-11 object-contain rounded-xl shadow-sm group-hover:scale-105 transition-transform duration-300"
                 />
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-gray-900 shadow-sm animate-pulse"></div>
+                <div className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white dark:border-slate-900 shadow-sm animate-pulse"></div>
               </div>
               <div className="hidden sm:block">
-                <h1 className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300 group-hover:from-primary group-hover:to-primary-dark transition-all duration-300">
+                <h1 className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-300 group-hover:from-emerald-600 group-hover:to-emerald-500 transition-all duration-300">
                   Vascular One
                 </h1>
-                <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold flex items-center gap-1">
-                  <Sparkles className="w-3 h-3 text-primary" />
+                <p className="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold flex items-center gap-1">
+                  <Sparkles className="w-3 h-3 text-emerald-500" />
                   AI Medical Analysis
                 </p>
               </div>
@@ -78,8 +78,8 @@ const Header = () => {
                     to="/analise"
                     className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
                       isActivePage('/analise') 
-                        ? 'text-primary bg-primary/10 shadow-sm ring-1 ring-primary/20' 
-                        : 'text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-primary/5'
+                        ? 'text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 shadow-sm ring-1 ring-emerald-200 dark:ring-emerald-800' 
+                        : 'text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/10'
                     }`}
                   >
                     <Activity className="h-4 w-4" />
@@ -89,8 +89,8 @@ const Header = () => {
                     to="/historico"
                     className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
                       isActivePage('/historico') 
-                        ? 'text-primary bg-primary/10 shadow-sm ring-1 ring-primary/20' 
-                        : 'text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-primary/5'
+                        ? 'text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 shadow-sm ring-1 ring-emerald-200 dark:ring-emerald-800' 
+                        : 'text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/10'
                     }`}
                   >
                     <History className="h-4 w-4" />
@@ -100,8 +100,8 @@ const Header = () => {
                     to="/teleconsulta"
                     className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
                       isActivePage('/teleconsulta') 
-                        ? 'text-primary bg-primary/10 shadow-sm ring-1 ring-primary/20' 
-                        : 'text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-primary/5'
+                        ? 'text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 shadow-sm ring-1 ring-emerald-200 dark:ring-emerald-800' 
+                        : 'text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/10'
                     }`}
                   >
                     <Video className="h-4 w-4" />
@@ -111,8 +111,8 @@ const Header = () => {
                     to="/alertas"
                     className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
                       isActivePage('/alertas') 
-                        ? 'text-primary bg-primary/10 shadow-sm ring-1 ring-primary/20' 
-                        : 'text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-primary/5'
+                        ? 'text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 shadow-sm ring-1 ring-emerald-200 dark:ring-emerald-800' 
+                        : 'text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/10'
                     }`}
                   >
                     <AlertTriangle className="h-4 w-4" />
@@ -125,7 +125,7 @@ const Header = () => {
                   <a
                     key={index}
                     href={item.href}
-                    className="px-4 py-2 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-primary/5 transition-all duration-200"
+                    className="px-4 py-2 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/10 transition-all duration-200"
                   >
                     {item.label}
                   </a>
@@ -138,12 +138,12 @@ const Header = () => {
               {user ? (
                 <>
                   {/* User Info - Mais compacta */}
-                  <div className="flex items-center space-x-3 pl-4 border-l border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center space-x-3 pl-4 border-l border-slate-200 dark:border-slate-700">
                     <div className="flex flex-col items-end">
-                      <p className="text-sm font-semibold text-foreground dark:text-gray-200 leading-none">{user?.name}</p>
-                      <p className="text-xs text-muted-foreground dark:text-gray-400 capitalize mt-1">{user?.role}</p>
+                      <p className="text-sm font-semibold text-slate-900 dark:text-slate-200 leading-none">{user?.name}</p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 capitalize mt-1">{user?.role}</p>
                     </div>
-                    <div className="w-9 h-9 bg-gradient-to-br from-primary to-primary-dark rounded-full flex items-center justify-center shadow-md ring-2 ring-white dark:ring-gray-800">
+                    <div className="w-9 h-9 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-full flex items-center justify-center shadow-md ring-2 ring-white dark:ring-slate-800">
                       <User className="w-4 h-4 text-white" />
                     </div>
                   </div>
@@ -156,7 +156,7 @@ const Header = () => {
                     onClick={handleLogout}
                     variant="ghost" 
                     size="icon"
-                    className="rounded-full text-gray-500 hover:text-red-600 hover:bg-red-50 dark:text-gray-400 dark:hover:text-red-400 dark:hover:bg-red-950/20 transition-colors"
+                    className="rounded-full text-slate-500 hover:text-red-600 hover:bg-red-50 dark:text-slate-400 dark:hover:text-red-400 dark:hover:bg-red-950/20 transition-colors"
                   >
                     <LogOut className="w-4 h-4" />
                   </Button>
@@ -166,16 +166,16 @@ const Header = () => {
                   {/* Theme Toggle para não logados */}
                   <ThemeToggle />
                   
-                  <div className="h-6 w-px bg-gray-200 dark:bg-gray-700 mx-2"></div>
+                  <div className="h-6 w-px bg-slate-200 dark:bg-slate-700 mx-2"></div>
 
                   {/* Botões para usuários não autenticados - Mais limpos */}
                   <Link to="/login">
-                    <Button variant="ghost" className="text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-primary/5 font-medium rounded-xl">
+                    <Button variant="ghost" className="text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/10 font-medium rounded-xl">
                       Entrar
                     </Button>
                   </Link>
                   <Link to="/register">
-                    <Button className="bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-medium px-5 py-2 rounded-xl shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-300 transform hover:-translate-y-0.5">
+                    <Button className="bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-medium px-5 py-2 rounded-xl shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-all duration-300 transform hover:-translate-y-0.5">
                       Cadastrar
                     </Button>
                   </Link>
@@ -190,7 +190,7 @@ const Header = () => {
                 variant="ghost"
                 size="icon"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800"
+                className="rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800"
                 aria-label={isMenuOpen ? "Fechar menu" : "Abrir menu"}
               >
                 {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -200,18 +200,18 @@ const Header = () => {
   
           {/* Mobile Navigation - Otimizada */}
           {isMenuOpen && (
-            <div className="md:hidden mt-4 pt-4 border-t border-gray-100 dark:border-gray-800 animate-accordion-down">
+            <div className="md:hidden mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 animate-accordion-down">
               <nav className="flex flex-col space-y-2">
                 {user ? (
                   <>
                     {/* User Info Mobile - Mais compacta */}
-                    <div className="flex items-center space-x-3 px-4 py-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-gray-100 dark:border-gray-700 mb-4">
-                      <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-dark rounded-full flex items-center justify-center shadow-md">
+                    <div className="flex items-center space-x-3 px-4 py-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700 mb-4">
+                      <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-full flex items-center justify-center shadow-md">
                         <User className="w-5 h-5 text-white" />
                       </div>
                       <div>
-                        <p className="font-semibold text-foreground dark:text-gray-200">{user?.name}</p>
-                        <p className="text-xs text-muted-foreground dark:text-gray-400 capitalize">{user?.role}</p>
+                        <p className="font-semibold text-slate-900 dark:text-slate-200">{user?.name}</p>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 capitalize">{user?.role}</p>
                       </div>
                     </div>
                     
@@ -220,8 +220,8 @@ const Header = () => {
                       to="/analise"
                       className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-200 ${
                         isActivePage('/analise') 
-                          ? 'text-primary bg-primary/10 shadow-sm' 
-                          : 'text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-primary/5'
+                          ? 'text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 shadow-sm' 
+                          : 'text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/10'
                       }`}
                       onClick={() => setIsMenuOpen(false)}
                     >
@@ -232,8 +232,8 @@ const Header = () => {
                       to="/historico"
                       className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-200 ${
                         isActivePage('/historico') 
-                          ? 'text-primary bg-primary/10 shadow-sm' 
-                          : 'text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-primary/5'
+                          ? 'text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 shadow-sm' 
+                          : 'text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/10'
                       }`}
                       onClick={() => setIsMenuOpen(false)}
                     >
@@ -244,8 +244,8 @@ const Header = () => {
                       to="/teleconsulta"
                       className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-200 ${
                         isActivePage('/teleconsulta') 
-                          ? 'text-primary bg-primary/10 shadow-sm' 
-                          : 'text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-primary/5'
+                          ? 'text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 shadow-sm' 
+                          : 'text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/10'
                       }`}
                       onClick={() => setIsMenuOpen(false)}
                     >
@@ -256,8 +256,8 @@ const Header = () => {
                       to="/alertas"
                       className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-200 ${
                         isActivePage('/alertas') 
-                          ? 'text-primary bg-primary/10 shadow-sm' 
-                          : 'text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-primary/5'
+                          ? 'text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 shadow-sm' 
+                          : 'text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/10'
                       }`}
                       onClick={() => setIsMenuOpen(false)}
                     >
@@ -268,7 +268,7 @@ const Header = () => {
                     {/* Botões de ação mobile */}
                     <div className="pt-4 space-y-3">
                       <Link to="/analise" onClick={() => setIsMenuOpen(false)}>
-                        <Button className="w-full bg-gradient-to-r from-primary to-primary-dark text-white font-medium py-3 rounded-xl shadow-lg shadow-primary/20">
+                        <Button className="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 text-white font-medium py-3 rounded-xl shadow-lg shadow-emerald-500/20">
                           <Heart className="w-4 h-4 mr-2" />
                           Começar Análise
                         </Button>
@@ -280,7 +280,7 @@ const Header = () => {
                           setIsMenuOpen(false);
                         }}
                         variant="ghost" 
-                        className="w-full text-gray-500 hover:text-red-600 hover:bg-red-50 dark:text-gray-400 dark:hover:text-red-400 dark:hover:bg-red-950/20 rounded-xl"
+                        className="w-full text-slate-500 hover:text-red-600 hover:bg-red-50 dark:text-slate-400 dark:hover:text-red-400 dark:hover:bg-red-950/20 rounded-xl"
                       >
                         <LogOut className="w-4 h-4 mr-2" />
                         Sair
@@ -294,7 +294,7 @@ const Header = () => {
                       <a 
                         key={index}
                         href={item.href} 
-                        className="px-4 py-3 rounded-xl font-medium text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-primary/5 transition-all duration-200"
+                        className="px-4 py-3 rounded-xl font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/10 transition-all duration-200"
                         onClick={() => setIsMenuOpen(false)}
                       >
                         {item.label}
@@ -304,12 +304,12 @@ const Header = () => {
                     {/* Botões para usuários não autenticados - Mobile */}
                     <div className="space-y-3 pt-4">
                       <Link to="/login" onClick={() => setIsMenuOpen(false)}>
-                        <Button variant="ghost" className="w-full text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-primary/5 font-medium rounded-xl">
+                        <Button variant="ghost" className="w-full text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/10 font-medium rounded-xl">
                           Entrar
                         </Button>
                       </Link>
                       <Link to="/register" onClick={() => setIsMenuOpen(false)}>
-                        <Button className="w-full bg-gradient-to-r from-primary to-primary-dark text-white font-medium py-3 rounded-xl shadow-lg shadow-primary/20">
+                        <Button className="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 text-white font-medium py-3 rounded-xl shadow-lg shadow-emerald-500/20">
                           Cadastrar
                         </Button>
                       </Link>

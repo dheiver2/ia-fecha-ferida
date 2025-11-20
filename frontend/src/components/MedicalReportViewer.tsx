@@ -201,17 +201,17 @@ export const MedicalReportViewer: React.FC<MedicalReportViewerProps> = ({
     const sectionContent = lines.slice(1).join('\n'); // Remove o título
     
     return (
-      <div className={`${bgColor} p-5 rounded-xl border-l-4 ${borderColor} shadow-sm hover:shadow-md transition-shadow duration-200`}>
+      <div className={`${bgColor} p-5 rounded-xl border-l-4 ${borderColor} shadow-sm hover:shadow-md transition-all duration-200 backdrop-blur-sm`}>
         <div className="flex items-start space-x-3">
           <div className="flex-shrink-0 mt-1">
             {icon}
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="text-lg font-bold text-foreground dark:text-slate-200 mb-3 flex items-center">
-                      {title}
-                    </h3>
-            <div className="prose prose-sm max-w-none">
-              <div className="text-sm text-foreground leading-relaxed whitespace-pre-wrap">
+            <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-3 flex items-center">
+              {title}
+            </h3>
+            <div className="prose prose-sm max-w-none dark:prose-invert">
+              <div className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-wrap">
                 {sectionContent}
               </div>
             </div>
@@ -228,17 +228,17 @@ export const MedicalReportViewer: React.FC<MedicalReportViewerProps> = ({
     // Determinar cor de urgência
     const getUrgencyColor = () => {
       switch (structuredData.urgency) {
-        case 'critical': return 'text-red-600 bg-red-50 border-red-200';
-        case 'urgent': return 'text-orange-600 bg-orange-50 border-orange-200';
-        default: return 'text-green-600 bg-green-50 border-green-200';
+        case 'critical': return 'text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800';
+        case 'urgent': return 'text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/20 border-orange-200 dark:border-orange-800';
+        default: return 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800';
       }
     };
 
     const getUrgencyIcon = () => {
       switch (structuredData.urgency) {
-        case 'critical': return <AlertCircle className="h-5 w-5 text-red-600" />;
-        case 'urgent': return <AlertTriangle className="h-5 w-5 text-orange-600" />;
-        default: return <CheckCircle className="h-5 w-5 text-green-600" />;
+        case 'critical': return <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400" />;
+        case 'urgent': return <AlertTriangle className="h-5 w-5 text-orange-600 dark:text-orange-400" />;
+        default: return <CheckCircle className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />;
       }
     };
     
@@ -247,7 +247,7 @@ export const MedicalReportViewer: React.FC<MedicalReportViewerProps> = ({
         {/* Status e Confiança */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Status de Urgência */}
-          <div className={`p-4 rounded-lg border ${getUrgencyColor()}`}>
+          <div className={`p-4 rounded-lg border ${getUrgencyColor()} backdrop-blur-sm`}>
             <div className="flex items-center space-x-2">
               {getUrgencyIcon()}
               <div>
@@ -263,12 +263,12 @@ export const MedicalReportViewer: React.FC<MedicalReportViewerProps> = ({
           </div>
 
           {/* Qualidade da Análise */}
-          <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-4 rounded-lg backdrop-blur-sm">
             <div className="flex items-center space-x-2">
-              <Award className="h-5 w-5 text-blue-600" />
+              <Award className="h-5 w-5 text-blue-600 dark:text-blue-400" />
               <div>
-                <p className="font-semibold text-sm text-blue-800">Análise por IA Avançada</p>
-                <p className="text-xs text-blue-600">Processamento com validação médica</p>
+                <p className="font-semibold text-sm text-blue-800 dark:text-blue-300">Análise por IA Avançada</p>
+                <p className="text-xs text-blue-600 dark:text-blue-400">Processamento com validação médica</p>
               </div>
             </div>
           </div>
@@ -279,87 +279,85 @@ export const MedicalReportViewer: React.FC<MedicalReportViewerProps> = ({
           {renderSection(
             "Impressão Diagnóstica",
             structuredData.diagnosticImpression,
-            <Target className="h-5 w-5 text-primary" />,
-            "bg-gradient-to-r from-primary/5 to-primary/10",
-            "border-primary"
+            <Target className="h-5 w-5 text-blue-600 dark:text-blue-400" />,
+            "bg-blue-50/50 dark:bg-blue-900/10",
+            "border-blue-500 dark:border-blue-400"
           )}
 
           {renderSection(
             "Achados Específicos",
             structuredData.specificFindings,
-            <Eye className="h-5 w-5 text-blue-600" />,
-            "bg-gradient-to-r from-blue-50 to-blue-100/50",
-            "border-blue-500"
+            <Eye className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />,
+            "bg-indigo-50/50 dark:bg-indigo-900/10",
+            "border-indigo-500 dark:border-indigo-400"
           )}
 
           {renderSection(
             "Análise Morfológica Sistemática",
             structuredData.morphologicalAnalysis,
-            <Activity className="h-5 w-5 text-green-600" />,
-            "bg-gradient-to-r from-green-50 to-green-100/50",
-            "border-green-500"
+            <Activity className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />,
+            "bg-emerald-50/50 dark:bg-emerald-900/10",
+            "border-emerald-500 dark:border-emerald-400"
           )}
 
           {renderSection(
             "Estruturas Anatômicas Identificadas",
             structuredData.anatomicalStructures,
-            <MapPin className="h-5 w-5 text-purple-600" />,
-            "bg-gradient-to-r from-purple-50 to-purple-100/50",
-            "border-purple-500"
+            <MapPin className="h-5 w-5 text-purple-600 dark:text-purple-400" />,
+            "bg-purple-50/50 dark:bg-purple-900/10",
+            "border-purple-500 dark:border-purple-400"
           )}
 
           {renderSection(
             "Recomendações Clínicas",
             structuredData.clinicalRecommendations,
-            <Clipboard className="h-5 w-5 text-orange-600" />,
-            "bg-gradient-to-r from-orange-50 to-orange-100/50",
-            "border-orange-500"
+            <Clipboard className="h-5 w-5 text-amber-600 dark:text-amber-400" />,
+            "bg-amber-50/50 dark:bg-amber-900/10",
+            "border-amber-500 dark:border-amber-400"
           )}
 
           {renderSection(
             "Técnica e Qualidade do Exame",
             structuredData.technique,
-            <Shield className="h-5 w-5 text-indigo-600" />,
-            "bg-gradient-to-r from-indigo-50 to-indigo-100/50",
-            "border-indigo-500"
+            <Shield className="h-5 w-5 text-slate-600 dark:text-slate-400" />,
+            "bg-slate-50/50 dark:bg-slate-900/10",
+            "border-slate-500 dark:border-slate-400"
           )}
-
-
 
           {renderSection(
             "Limitações e Observações",
             structuredData.limitations,
-            <AlertTriangle className="h-5 w-5 text-yellow-600" />,
-            "bg-gradient-to-r from-yellow-50 to-yellow-100/50",
-            "border-yellow-500"
+            <AlertTriangle className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />,
+            "bg-yellow-50/50 dark:bg-yellow-900/10",
+            "border-yellow-500 dark:border-yellow-400"
           )}
 
           {renderSection(
             "Aspectos Médico-Legais e Éticos",
             structuredData.legalAspects,
-            <Shield className="h-5 w-5 text-red-600" />,
-            "bg-gradient-to-r from-red-50 to-red-100/50",
-            "border-red-500"
+            <Shield className="h-5 w-5 text-red-600 dark:text-red-400" />,
+            "bg-red-50/50 dark:bg-red-900/10",
+            "border-red-500 dark:border-red-400"
           )}
 
           {renderSection(
             "Controle de Qualidade",
             structuredData.qualityControl,
-            <CheckCircle className="h-5 w-5 text-teal-600" />,
-            "bg-gradient-to-r from-teal-50 to-teal-100/50",
-            "border-teal-500"
+            <CheckCircle className="h-5 w-5 text-teal-600 dark:text-teal-400" />,
+            "bg-teal-50/50 dark:bg-teal-900/10",
+            "border-teal-500 dark:border-teal-400"
           )}
         </div>
 
         {/* Resumo Executivo */}
         {!structuredData.diagnosticImpression && (
-          <div className="bg-gradient-to-r from-slate-50 to-slate-100 p-6 rounded-xl border border-slate-200">
-            <h3 className="text-lg font-bold text-foreground mb-4 flex items-center space-x-2">
-              <FileText className="h-5 w-5 text-primary" />
+          <div className="bg-slate-50/50 dark:bg-slate-900/20 p-6 rounded-xl border border-slate-200 dark:border-slate-700 backdrop-blur-sm">
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center space-x-2">
+              <FileText className="h-5 w-5 text-blue-600 dark:text-blue-400" />
               <span>Resumo da Análise</span>
             </h3>
-            <div className="prose prose-sm max-w-none">
-              <div className="text-sm text-foreground leading-relaxed whitespace-pre-wrap">
+            <div className="prose prose-sm max-w-none dark:prose-invert">
+              <div className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-wrap">
                 {content.split('\n\n').slice(0, 3).map((paragraph, index) => {
                   if (paragraph.trim()) {
                     return (
@@ -380,7 +378,7 @@ export const MedicalReportViewer: React.FC<MedicalReportViewerProps> = ({
 
   return (
     <div className="w-full max-w-6xl mx-auto">
-      <Card className="shadow-2xl border-0 overflow-hidden bg-white">
+      <Card className="shadow-2xl border-0 overflow-hidden bg-white dark:bg-slate-900">
         <CardContent className="p-0">
           {/* Header Profissional Melhorado */}
           <div className="bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900 text-white relative overflow-hidden">
@@ -397,7 +395,7 @@ export const MedicalReportViewer: React.FC<MedicalReportViewerProps> = ({
                     <h1 className="text-3xl font-bold tracking-tight mb-1">LAUDO MÉDICO DIGITAL</h1>
                     <p className="text-blue-200 text-base font-semibold">Casa Fecha Feridas - Centro de Excelência</p>
                     <p className="text-blue-300/90 text-sm mt-1 flex items-center space-x-2">
-                      <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                      <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
                       <span>Sistema de Diagnóstico Assistido por IA Avançada</span>
                     </p>
                   </div>
@@ -434,11 +432,11 @@ export const MedicalReportViewer: React.FC<MedicalReportViewerProps> = ({
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-8">
                   <div className="flex items-center space-x-3">
-                    <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse shadow-lg shadow-green-400/50"></div>
-                    <span className="text-green-200 font-semibold text-sm">Sistema Operacional</span>
+                    <div className="w-3 h-3 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400/50"></div>
+                    <span className="text-emerald-200 font-semibold text-sm">Sistema Operacional</span>
                   </div>
                   <div className="flex items-center space-x-3">
-                    <Award className="h-5 w-5 text-yellow-300" />
+                    <Award className="h-5 w-5 text-amber-300" />
                     <span className="text-blue-200 font-semibold text-sm">Certificado CFM nº 2.314/2022</span>
                   </div>
                   <div className="flex items-center space-x-3">
@@ -457,54 +455,54 @@ export const MedicalReportViewer: React.FC<MedicalReportViewerProps> = ({
 
           {/* Informações do Paciente - Layout Profissional Melhorado */}
           {patientData && (
-            <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-blue-50 border-b-2 border-blue-200">
+            <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-blue-50 dark:from-slate-800 dark:via-slate-800/50 dark:to-slate-800 border-b-2 border-blue-200 dark:border-blue-800">
               <div className="p-6">
                 <div className="flex items-center justify-between mb-5">
                   <h2 className="text-xl font-bold text-slate-800 dark:text-slate-200 flex items-center space-x-3">
-                    <div className="bg-blue-100 p-2 rounded-lg">
-                      <User className="h-6 w-6 text-blue-600" />
+                    <div className="bg-blue-100 dark:bg-blue-900/50 p-2 rounded-lg">
+                      <User className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                     </div>
                     <span>DADOS DO PACIENTE</span>
                   </h2>
-                  <div className="bg-blue-100 px-3 py-1 rounded-full">
-                    <p className="text-xs font-semibold text-blue-800">CONFIDENCIAL</p>
+                  <div className="bg-blue-100 dark:bg-blue-900/50 px-3 py-1 rounded-full">
+                    <p className="text-xs font-semibold text-blue-800 dark:text-blue-300">CONFIDENCIAL</p>
                   </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <div className="bg-white/80 backdrop-blur-sm p-4 rounded-xl border border-blue-200/60 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="bg-white/80 dark:bg-slate-700/50 backdrop-blur-sm p-4 rounded-xl border border-blue-200/60 dark:border-blue-700/30 shadow-sm hover:shadow-md transition-shadow">
                     <div className="flex items-center space-x-2 mb-2">
                       <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                      <p className="text-xs text-slate-600 font-semibold uppercase tracking-wide">Nome do Paciente</p>
+                      <p className="text-xs text-slate-600 dark:text-slate-400 font-semibold uppercase tracking-wide">Nome do Paciente</p>
                     </div>
-                    <p className="text-base font-bold text-slate-800">
+                    <p className="text-base font-bold text-slate-800 dark:text-white">
                       {patientData.name || 'Paciente não identificado'}
                     </p>
                   </div>
                   {patientData.age && (
-                    <div className="bg-white/80 backdrop-blur-sm p-4 rounded-xl border border-blue-200/60 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="bg-white/80 dark:bg-slate-700/50 backdrop-blur-sm p-4 rounded-xl border border-blue-200/60 dark:border-blue-700/30 shadow-sm hover:shadow-md transition-shadow">
                       <div className="flex items-center space-x-2 mb-2">
-                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                        <p className="text-xs text-slate-600 font-semibold uppercase tracking-wide">Idade</p>
+                        <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                        <p className="text-xs text-slate-600 dark:text-slate-400 font-semibold uppercase tracking-wide">Idade</p>
                       </div>
-                      <p className="text-base font-bold text-slate-800">{patientData.age}</p>
+                      <p className="text-base font-bold text-slate-800 dark:text-white">{patientData.age}</p>
                     </div>
                   )}
                   {patientData.protocol && (
-                    <div className="bg-white/80 backdrop-blur-sm p-4 rounded-xl border border-blue-200/60 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="bg-white/80 dark:bg-slate-700/50 backdrop-blur-sm p-4 rounded-xl border border-blue-200/60 dark:border-blue-700/30 shadow-sm hover:shadow-md transition-shadow">
                       <div className="flex items-center space-x-2 mb-2">
                         <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                        <p className="text-xs text-slate-600 font-semibold uppercase tracking-wide">Protocolo</p>
+                        <p className="text-xs text-slate-600 dark:text-slate-400 font-semibold uppercase tracking-wide">Protocolo</p>
                       </div>
-                      <p className="text-base font-bold text-slate-800 font-mono">{patientData.protocol}</p>
+                      <p className="text-base font-bold text-slate-800 dark:text-white font-mono">{patientData.protocol}</p>
                     </div>
                   )}
                   {patientData.gender && (
-                    <div className="bg-white/80 backdrop-blur-sm p-4 rounded-xl border border-blue-200/60 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="bg-white/80 dark:bg-slate-700/50 backdrop-blur-sm p-4 rounded-xl border border-blue-200/60 dark:border-blue-700/30 shadow-sm hover:shadow-md transition-shadow">
                       <div className="flex items-center space-x-2 mb-2">
-                        <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                        <p className="text-xs text-slate-600 font-semibold uppercase tracking-wide">Sexo</p>
+                        <div className="w-2 h-2 bg-amber-500 rounded-full"></div>
+                        <p className="text-xs text-slate-600 dark:text-slate-400 font-semibold uppercase tracking-wide">Sexo</p>
                       </div>
-                      <p className="text-base font-bold text-slate-800">{patientData.gender}</p>
+                      <p className="text-base font-bold text-slate-800 dark:text-white">{patientData.gender}</p>
                     </div>
                   )}
                 </div>
@@ -513,9 +511,9 @@ export const MedicalReportViewer: React.FC<MedicalReportViewerProps> = ({
           )}
 
           {/* Conteúdo do Laudo - Layout Profissional */}
-          <div className="bg-gradient-to-b from-white to-gray-50">
+          <div className="bg-gradient-to-b from-white to-slate-50 dark:from-slate-900 dark:to-slate-950">
             <div className="p-8">
-              <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+              <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
                 <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-4">
                   <h3 className="text-xl font-bold text-white flex items-center space-x-3">
                     <FileText className="h-6 w-6" />
@@ -539,15 +537,15 @@ export const MedicalReportViewer: React.FC<MedicalReportViewerProps> = ({
           </div>
 
           {/* Footer Profissional com Avisos Legais */}
-          <div className="bg-gradient-to-r from-red-50 via-orange-50 to-red-50 border-t-4 border-red-500">
+          <div className="bg-gradient-to-r from-red-50 via-orange-50 to-red-50 dark:from-red-900/20 dark:via-orange-900/20 dark:to-red-900/20 border-t-4 border-red-500">
             <div className="p-6">
               <div className="flex items-start space-x-4">
-                <div className="bg-red-100 p-3 rounded-full">
-                  <AlertTriangle className="h-6 w-6 text-red-600" />
+                <div className="bg-red-100 dark:bg-red-900/50 p-3 rounded-full">
+                  <AlertTriangle className="h-6 w-6 text-red-600 dark:text-red-400" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-lg font-bold text-red-800 mb-2">AVISOS MÉDICO-LEGAIS IMPORTANTES</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-700">
+                  <h3 className="text-lg font-bold text-red-800 dark:text-red-300 mb-2">AVISOS MÉDICO-LEGAIS IMPORTANTES</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-700 dark:text-slate-300">
                     <div className="space-y-2">
                       <div className="flex items-start space-x-2">
                         <div className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2 flex-shrink-0"></div>
@@ -569,8 +567,8 @@ export const MedicalReportViewer: React.FC<MedicalReportViewerProps> = ({
                       </div>
                     </div>
                   </div>
-                  <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
-                    <p className="text-xs text-amber-800 font-medium">
+                  <div className="mt-4 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
+                    <p className="text-xs text-amber-800 dark:text-amber-300 font-medium">
                       <strong>Assinatura Digital:</strong> Este documento requer assinatura digital do médico laudador para validade legal
                     </p>
                   </div>
@@ -603,10 +601,10 @@ export const MedicalReportViewer: React.FC<MedicalReportViewerProps> = ({
                     </p>
                   </div>
                   <div className="text-center">
-                    <div className="bg-green-500/20 p-3 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
-                      <CheckCircle className="h-8 w-8 text-green-400" />
+                    <div className="bg-emerald-500/20 p-3 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
+                      <CheckCircle className="h-8 w-8 text-emerald-400" />
                     </div>
-                    <h4 className="font-bold text-green-300 mb-2">CERTIFICAÇÃO</h4>
+                    <h4 className="font-bold text-emerald-300 mb-2">CERTIFICAÇÃO</h4>
                     <p className="text-sm text-slate-300">
                       Sistema certificado CFM nº 2.314/2022.
                     </p>
@@ -626,7 +624,7 @@ export const MedicalReportViewer: React.FC<MedicalReportViewerProps> = ({
                     </span>
                     <span>•</span>
                     <span className="flex items-center space-x-1">
-                      <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                      <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
                       <span>Versão 2.1.0</span>
                     </span>
                     <span>•</span>

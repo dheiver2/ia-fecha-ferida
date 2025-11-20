@@ -186,68 +186,83 @@ ID da Prescrição: ${prescription.id}
   };
 
   return (
-    <Card className="w-full max-w-4xl mx-auto">
-      <CardHeader>
+    <Card className="w-full max-w-4xl mx-auto bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-slate-200 dark:border-slate-800 shadow-xl">
+      <CardHeader className="border-b border-slate-100 dark:border-slate-800 pb-6">
         <CardTitle className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <FileText className="w-5 h-5" />
-            Prescrição Eletrônica
-            <Badge variant={prescription.status === 'draft' ? 'secondary' : 'default'}>
-              {prescription.status === 'draft' ? 'Rascunho' : 
-               prescription.status === 'issued' ? 'Emitida' : 'Enviada'}
-            </Badge>
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
+              <FileText className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+            </div>
+            <div>
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white">Prescrição Eletrônica</h2>
+              <div className="flex items-center gap-2 mt-1">
+                <Badge variant={prescription.status === 'draft' ? 'secondary' : 'default'} className={
+                  prescription.status === 'draft' 
+                    ? 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400' 
+                    : prescription.status === 'issued'
+                    ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400'
+                    : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
+                }>
+                  {prescription.status === 'draft' ? 'Rascunho' : 
+                   prescription.status === 'issued' ? 'Emitida' : 'Enviada'}
+                </Badge>
+                <span className="text-xs text-slate-400">ID: {prescription.id}</span>
+              </div>
+            </div>
           </div>
           <div className="flex gap-2">
-            <Button variant="outline" onClick={downloadPrescription}>
+            <Button variant="outline" onClick={downloadPrescription} className="border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800">
               <Download className="w-4 h-4 mr-2" />
               Download
             </Button>
-            <Button onClick={savePrescription}>
+            <Button onClick={savePrescription} variant="outline" className="border-emerald-200 text-emerald-700 hover:bg-emerald-50 dark:border-emerald-800 dark:text-emerald-400 dark:hover:bg-emerald-900/20">
               Salvar
             </Button>
-            <Button onClick={sendPrescription} className="bg-green-600 hover:bg-green-700">
+            <Button onClick={sendPrescription} className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-500/20">
               <Send className="w-4 h-4 mr-2" />
               Enviar
             </Button>
           </div>
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-8 p-6">
         {/* Informações do cabeçalho */}
-        <div className="bg-blue-50 p-4 rounded-lg">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <h3 className="font-semibold text-blue-900">Paciente</h3>
-              <p className="text-blue-700">{prescription.patientName}</p>
-              <p className="text-blue-600 text-sm">ID: {prescription.patientId}</p>
+        <div className="bg-slate-50 dark:bg-slate-800/50 p-6 rounded-xl border border-slate-100 dark:border-slate-700">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="space-y-1">
+              <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Paciente</h3>
+              <p className="text-lg font-bold text-slate-900 dark:text-white">{prescription.patientName}</p>
+              <p className="text-slate-600 dark:text-slate-300 text-sm font-mono bg-white dark:bg-slate-900 px-2 py-1 rounded inline-block border border-slate-200 dark:border-slate-700">ID: {prescription.patientId}</p>
             </div>
-            <div>
-              <h3 className="font-semibold text-blue-900">Médico</h3>
-              <p className="text-blue-700">{prescription.doctorName}</p>
-              <p className="text-blue-600 text-sm">{prescription.doctorCRM}</p>
+            <div className="space-y-1 md:text-right">
+              <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Médico Responsável</h3>
+              <p className="text-lg font-bold text-slate-900 dark:text-white">{prescription.doctorName}</p>
+              <p className="text-emerald-600 dark:text-emerald-400 text-sm font-medium">{prescription.doctorCRM}</p>
             </div>
           </div>
-          <div className="mt-2">
-            <p className="text-blue-600 text-sm">
-              Data: {prescription.date.toLocaleDateString('pt-BR')} às {prescription.date.toLocaleTimeString('pt-BR')}
-            </p>
+          <div className="mt-6 pt-4 border-t border-slate-200 dark:border-slate-700 flex justify-between items-center text-sm text-slate-500 dark:text-slate-400">
+            <span>Data da Prescrição</span>
+            <span className="font-mono">{prescription.date.toLocaleDateString('pt-BR')} às {prescription.date.toLocaleTimeString('pt-BR')}</span>
           </div>
         </div>
 
         {/* Adicionar medicamento */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Adicionar Medicamento</CardTitle>
+        <Card className="border-slate-200 dark:border-slate-800 shadow-sm">
+          <CardHeader className="bg-slate-50/50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800">
+            <CardTitle className="text-base font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+              <Plus className="w-4 h-4 text-emerald-500" />
+              Adicionar Medicamento
+            </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="medication-name">Medicamento</Label>
+          <CardContent className="p-6 space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label htmlFor="medication-name" className="text-slate-700 dark:text-slate-300">Medicamento</Label>
                 <Select
                   value={currentMedication.name}
                   onValueChange={(value) => setCurrentMedication(prev => ({ ...prev, name: value }))}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="border-slate-200 dark:border-slate-700 focus:ring-emerald-500">
                     <SelectValue placeholder="Selecione ou digite o medicamento" />
                   </SelectTrigger>
                   <SelectContent>
@@ -257,22 +272,23 @@ ID da Prescrição: ${prescription.id}
                   </SelectContent>
                 </Select>
               </div>
-              <div>
-                <Label htmlFor="dosage">Dosagem</Label>
+              <div className="space-y-2">
+                <Label htmlFor="dosage" className="text-slate-700 dark:text-slate-300">Dosagem</Label>
                 <Input
                   id="dosage"
                   value={currentMedication.dosage}
                   onChange={(e) => setCurrentMedication(prev => ({ ...prev, dosage: e.target.value }))}
                   placeholder="Ex: 1 comprimido"
+                  className="border-slate-200 dark:border-slate-700 focus:ring-emerald-500"
                 />
               </div>
-              <div>
-                <Label htmlFor="frequency">Frequência</Label>
+              <div className="space-y-2">
+                <Label htmlFor="frequency" className="text-slate-700 dark:text-slate-300">Frequência</Label>
                 <Select
                   value={currentMedication.frequency}
                   onValueChange={(value) => setCurrentMedication(prev => ({ ...prev, frequency: value }))}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="border-slate-200 dark:border-slate-700 focus:ring-emerald-500">
                     <SelectValue placeholder="Selecione a frequência" />
                   </SelectTrigger>
                   <SelectContent>
@@ -282,97 +298,112 @@ ID da Prescrição: ${prescription.id}
                   </SelectContent>
                 </Select>
               </div>
-              <div>
-                <Label htmlFor="duration">Duração</Label>
+              <div className="space-y-2">
+                <Label htmlFor="duration" className="text-slate-700 dark:text-slate-300">Duração</Label>
                 <Input
                   id="duration"
                   value={currentMedication.duration}
                   onChange={(e) => setCurrentMedication(prev => ({ ...prev, duration: e.target.value }))}
                   placeholder="Ex: 7 dias"
+                  className="border-slate-200 dark:border-slate-700 focus:ring-emerald-500"
                 />
               </div>
             </div>
-            <div>
-              <Label htmlFor="instructions">Instruções Especiais</Label>
+            <div className="space-y-2">
+              <Label htmlFor="instructions" className="text-slate-700 dark:text-slate-300">Instruções Especiais</Label>
               <Textarea
                 id="instructions"
                 value={currentMedication.instructions}
                 onChange={(e) => setCurrentMedication(prev => ({ ...prev, instructions: e.target.value }))}
                 placeholder="Ex: Tomar com alimentos, evitar álcool..."
                 rows={2}
+                className="border-slate-200 dark:border-slate-700 focus:ring-emerald-500 resize-none"
               />
             </div>
-            <Button onClick={addMedication} className="w-full">
+            <Button onClick={addMedication} className="w-full bg-slate-900 hover:bg-slate-800 text-white dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200">
               <Plus className="w-4 h-4 mr-2" />
-              Adicionar Medicamento
+              Adicionar à Prescrição
             </Button>
           </CardContent>
         </Card>
 
         {/* Lista de medicamentos */}
         {prescription.medications.length > 0 && (
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Medicamentos Prescritos</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {prescription.medications.map((medication, index) => (
-                  <div key={medication.id} className="border rounded-lg p-4">
-                    <div className="flex justify-between items-start">
-                      <div className="flex-1">
-                        <h4 className="font-semibold text-lg">
-                          {index + 1}. {medication.name}
+          <div className="space-y-4">
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <div className="w-1 h-6 bg-emerald-500 rounded-full"></div>
+              Medicamentos Prescritos
+            </h3>
+            <div className="grid gap-4">
+              {prescription.medications.map((medication, index) => (
+                <div key={medication.id} className="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 hover:shadow-md hover:border-emerald-200 dark:hover:border-emerald-800 transition-all duration-200">
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <span className="flex items-center justify-center w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 text-xs font-bold">
+                          {index + 1}
+                        </span>
+                        <h4 className="font-bold text-lg text-slate-900 dark:text-white">
+                          {medication.name}
                         </h4>
-                        <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-2 text-sm">
-                          <div>
-                            <span className="font-medium">Dosagem:</span> {medication.dosage}
-                          </div>
-                          <div>
-                            <span className="font-medium">Frequência:</span> {medication.frequency}
-                          </div>
-                          <div>
-                            <span className="font-medium">Duração:</span> {medication.duration}
-                          </div>
-                        </div>
-                        {medication.instructions && (
-                          <div className="mt-2 text-sm">
-                            <span className="font-medium">Instruções:</span> {medication.instructions}
-                          </div>
-                        )}
                       </div>
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => removeMedication(medication.id)}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
+                      
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-3 pl-9">
+                        <div className="bg-slate-50 dark:bg-slate-800/50 p-2 rounded-lg">
+                          <span className="text-xs text-slate-500 dark:text-slate-400 block uppercase tracking-wider mb-1">Dosagem</span>
+                          <span className="font-medium text-slate-700 dark:text-slate-300">{medication.dosage}</span>
+                        </div>
+                        <div className="bg-slate-50 dark:bg-slate-800/50 p-2 rounded-lg">
+                          <span className="text-xs text-slate-500 dark:text-slate-400 block uppercase tracking-wider mb-1">Frequência</span>
+                          <span className="font-medium text-slate-700 dark:text-slate-300">{medication.frequency}</span>
+                        </div>
+                        <div className="bg-slate-50 dark:bg-slate-800/50 p-2 rounded-lg">
+                          <span className="text-xs text-slate-500 dark:text-slate-400 block uppercase tracking-wider mb-1">Duração</span>
+                          <span className="font-medium text-slate-700 dark:text-slate-300">{medication.duration}</span>
+                        </div>
+                      </div>
+                      
+                      {medication.instructions && (
+                        <div className="mt-3 pl-9">
+                          <p className="text-sm text-slate-600 dark:text-slate-400 italic">
+                            <span className="font-medium not-italic text-slate-700 dark:text-slate-300">Instruções:</span> {medication.instructions}
+                          </p>
+                        </div>
+                      )}
                     </div>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => removeMedication(medication.id)}
+                      className="text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
                   </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+                </div>
+              ))}
+            </div>
+          </div>
         )}
 
         {/* Instruções gerais */}
-        <div>
-          <Label htmlFor="general-instructions">Instruções Gerais</Label>
+        <div className="space-y-2">
+          <Label htmlFor="general-instructions" className="text-slate-700 dark:text-slate-300 font-semibold">Instruções Gerais</Label>
           <Textarea
             id="general-instructions"
             value={prescription.generalInstructions}
             onChange={(e) => setPrescription(prev => ({ ...prev, generalInstructions: e.target.value }))}
             placeholder="Instruções gerais para o paciente..."
             rows={4}
+            className="border-slate-200 dark:border-slate-700 focus:ring-emerald-500 resize-none bg-slate-50 dark:bg-slate-800/30"
           />
         </div>
 
-        <Separator />
+        <Separator className="bg-slate-200 dark:bg-slate-800" />
 
-        <div className="text-sm text-muted-foreground">
-          <p>ID da Prescrição: {prescription.id}</p>
+        <div className="text-sm text-slate-500 dark:text-slate-400 text-center">
           <p>Esta prescrição foi gerada eletronicamente e possui validade legal.</p>
+          <p className="text-xs mt-1 opacity-70">Documento assinado digitalmente conforme MP 2.200-2/2001</p>
         </div>
       </CardContent>
     </Card>

@@ -19,18 +19,18 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ className }) => {
   const pathnames = location.pathname.split('/').filter((x) => x);
 
   const breadcrumbNameMap: Record<string, { name: string; icon: React.ReactNode }> = {
-    '': { name: 'Início', icon: <Home className="h-4 w-4" /> },
-    'analise': { name: 'Análise', icon: <FileText className="h-4 w-4" /> },
-    'historico': { name: 'Histórico', icon: <History className="h-4 w-4" /> },
-    'perfil': { name: 'Perfil', icon: <User className="h-4 w-4" /> },
+    '': { name: 'Início', icon: <Home className="h-4 w-4 text-emerald-600 dark:text-emerald-400" /> },
+    'analise': { name: 'Análise', icon: <FileText className="h-4 w-4 text-emerald-600 dark:text-emerald-400" /> },
+    'historico': { name: 'Histórico', icon: <History className="h-4 w-4 text-emerald-600 dark:text-emerald-400" /> },
+    'perfil': { name: 'Perfil', icon: <User className="h-4 w-4 text-emerald-600 dark:text-emerald-400" /> },
   };
 
   return (
-    <Breadcrumb className={className}>
+    <Breadcrumb className={`${className} bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm px-4 py-2 rounded-xl border border-slate-200/50 dark:border-slate-800/50`}>
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
-            <Link to="/" className="flex items-center gap-2">
+            <Link to="/" className="flex items-center gap-2 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
               {breadcrumbNameMap[''].icon}
               {breadcrumbNameMap[''].name}
             </Link>
@@ -44,16 +44,16 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ className }) => {
 
           return (
             <React.Fragment key={pathname}>
-              <BreadcrumbSeparator />
+              <BreadcrumbSeparator className="text-slate-400 dark:text-slate-600" />
               <BreadcrumbItem>
                 {isLast ? (
-                  <BreadcrumbPage className="flex items-center gap-2">
+                  <BreadcrumbPage className="flex items-center gap-2 font-semibold text-emerald-700 dark:text-emerald-400">
                     {breadcrumbInfo.icon}
                     {breadcrumbInfo.name}
                   </BreadcrumbPage>
                 ) : (
                   <BreadcrumbLink asChild>
-                    <Link to={routeTo} className="flex items-center gap-2">
+                    <Link to={routeTo} className="flex items-center gap-2 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                       {breadcrumbInfo.icon}
                       {breadcrumbInfo.name}
                     </Link>

@@ -10,7 +10,8 @@ import {
   AlertCircle,
   Mail,
   MessageSquare,
-  Phone
+  Phone,
+  Trash2
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -139,35 +140,25 @@ export const NotificationSystem: React.FC<NotificationSystemProps> = ({
   const getNotificationIcon = (type: Notification['type']) => {
     switch (type) {
       case 'invite_sent':
-        return <Mail className="w-4 h-4 text-blue-500" />;
+        return <Mail className="w-4 h-4 text-blue-500 dark:text-blue-400" />;
       case 'invite_accepted':
-        return <CheckCircle className="w-4 h-4 text-green-500" />;
+        return <CheckCircle className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />;
       case 'invite_declined':
-        return <X className="w-4 h-4 text-red-500" />;
+        return <X className="w-4 h-4 text-red-500 dark:text-red-400" />;
       case 'reminder':
-        return <Clock className="w-4 h-4 text-yellow-500" />;
+        return <Clock className="w-4 h-4 text-amber-500 dark:text-amber-400" />;
       case 'error':
-        return <AlertCircle className="w-4 h-4 text-red-500" />;
+        return <AlertCircle className="w-4 h-4 text-red-500 dark:text-red-400" />;
       default:
-        return <Bell className="w-4 h-4 text-gray-500" />;
+        return <Bell className="w-4 h-4 text-slate-500 dark:text-slate-400" />;
     }
   };
 
-  const getNotificationColor = (type: Notification['type']) => {
-    switch (type) {
-      case 'invite_sent':
-        return 'border-l-blue-500 bg-blue-50';
-      case 'invite_accepted':
-        return 'border-l-green-500 bg-green-50';
-      case 'invite_declined':
-        return 'border-l-red-500 bg-red-50';
-      case 'reminder':
-        return 'border-l-yellow-500 bg-yellow-50';
-      case 'error':
-        return 'border-l-red-500 bg-red-50';
-      default:
-        return 'border-l-gray-500 bg-gray-50';
-    }
+  const getNotificationStyles = (type: Notification['type'], read: boolean) => {
+    const baseStyles = "p-4 border-b border-slate-100 dark:border-slate-800 transition-all duration-200 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer relative group";
+    const readStyles = read ? "bg-white dark:bg-slate-900 opacity-70" : "bg-blue-50/30 dark:bg-blue-900/10";
+    
+    return `${baseStyles} ${readStyles}`;
   };
 
   const handleNotificationClick = (notification: Notification) => {
@@ -205,140 +196,162 @@ export const NotificationSystem: React.FC<NotificationSystemProps> = ({
     <div className="relative">
       {/* Botão de Notificações */}
       <Button
-        variant="outline"
-        size="sm"
+        variant="ghost"
+        size="icon"
         onClick={() => setIsOpen(!isOpen)}
-        className="relative"
+        className="relative rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300"
       >
-        <Bell className="w-4 h-4" />
+        <Bell className="w-5 h-5" />
         {unreadCount > 0 && (
-          <Badge 
-            variant="destructive" 
-            className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs"
-          >
-            {unreadCount > 9 ? '9+' : unreadCount}
-          </Badge>
+          <span className="absolute top-1 right-1 flex h-3 w-3">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500 border-2 border-white dark:border-slate-900"></span>
+          </span>
         )}
       </Button>
 
       {/* Painel de Notificações */}
       {isOpen && (
-        <div className="absolute right-0 top-full mt-2 w-80 max-h-96 bg-white border rounded-lg shadow-lg z-50 overflow-hidden">
-          {/* Header */}
-          <div className="p-3 border-b bg-gray-50 flex items-center justify-between">
-            <h3 className="font-semibold text-sm">Notificações</h3>
-            <div className="flex gap-2">
-              {unreadCount > 0 && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={markAllAsRead}
-                  className="text-xs h-6 px-2"
-                >
-                  Marcar todas como lidas
-                </Button>
-              )}
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsOpen(false)}
-                className="h-6 w-6 p-0"
-              >
-                <X className="w-3 h-3" />
-              </Button>
-            </div>
-          </div>
-
-          {/* Lista de Notificações */}
-          <div className="max-h-80 overflow-y-auto">
-            {notifications.length === 0 ? (
-              <div className="p-4 text-center text-gray-500 text-sm">
-                Nenhuma notificação
+        <>
+          <div 
+            className="fixed inset-0 z-40" 
+            onClick={() => setIsOpen(false)}
+          />
+          <div className="absolute right-0 top-full mt-2 w-80 sm:w-96 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-2xl z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            {/* Header */}
+            <div className="p-4 border-b border-slate-100 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm flex items-center justify-between sticky top-0 z-10">
+              <div className="flex items-center space-x-2">
+                <h3 className="font-semibold text-sm text-slate-900 dark:text-white">Notificações</h3>
+                {unreadCount > 0 && (
+                  <Badge variant="secondary" className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 text-xs px-1.5 py-0 h-5">
+                    {unreadCount} novas
+                  </Badge>
+                )}
               </div>
-            ) : (
-              notifications.map((notification) => (
-                <div
-                  key={notification.id}
-                  className={`p-3 border-b border-l-4 cursor-pointer hover:bg-gray-50 transition-colors ${
-                    getNotificationColor(notification.type)
-                  } ${!notification.read ? 'bg-opacity-100' : 'bg-opacity-50'}`}
-                  onClick={() => handleNotificationClick(notification)}
-                >
-                  <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0 mt-0.5">
-                      {getNotificationIcon(notification.type)}
-                    </div>
-                    
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between">
-                        <h4 className={`text-sm font-medium ${!notification.read ? 'text-gray-900' : 'text-gray-600'}`}>
-                          {notification.title}
-                        </h4>
-                        {!notification.read && (
-                          <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
-                        )}
+              <div className="flex gap-1">
+                {unreadCount > 0 && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={markAllAsRead}
+                    className="text-xs h-7 px-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                  >
+                    Marcar todas como lidas
+                  </Button>
+                )}
+              </div>
+            </div>
+
+            {/* Lista de Notificações */}
+            <div className="max-h-[calc(100vh-200px)] sm:max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-slate-700">
+              {notifications.length === 0 ? (
+                <div className="p-8 text-center flex flex-col items-center justify-center text-slate-500 dark:text-slate-400">
+                  <div className="bg-slate-100 dark:bg-slate-800 p-3 rounded-full mb-3">
+                    <Bell className="w-6 h-6 text-slate-400 dark:text-slate-500" />
+                  </div>
+                  <p className="text-sm font-medium">Nenhuma notificação</p>
+                  <p className="text-xs mt-1 opacity-70">Você está em dia com tudo!</p>
+                </div>
+              ) : (
+                notifications.map((notification) => (
+                  <div
+                    key={notification.id}
+                    className={getNotificationStyles(notification.type, notification.read)}
+                    onClick={() => handleNotificationClick(notification)}
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className={`flex-shrink-0 mt-1 p-2 rounded-full ${
+                        !notification.read 
+                          ? 'bg-white dark:bg-slate-800 shadow-sm ring-1 ring-slate-200 dark:ring-slate-700' 
+                          : 'bg-slate-100 dark:bg-slate-800/50'
+                      }`}>
+                        {getNotificationIcon(notification.type)}
                       </div>
                       
-                      <p className={`text-xs mt-1 ${!notification.read ? 'text-gray-700' : 'text-gray-500'}`}>
-                        {notification.message}
-                      </p>
-                      
-                      <p className="text-xs text-gray-400 mt-1">
-                        {format(notification.timestamp, "dd/MM 'às' HH:mm", { locale: ptBR })}
-                      </p>
-
-                      {/* Ações específicas */}
-                      {notification.actionData && (
-                        <div className="flex gap-1 mt-2">
-                          {notification.actionData.patientPhone && (
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="h-6 px-2 text-xs"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                window.open(`https://wa.me/${notification.actionData?.patientPhone?.replace(/\D/g, '')}`, '_blank');
-                              }}
-                            >
-                              <MessageSquare className="w-3 h-3 mr-1" />
-                              WhatsApp
-                            </Button>
-                          )}
-                          {notification.actionData.patientEmail && (
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="h-6 px-2 text-xs"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                window.open(`mailto:${notification.actionData?.patientEmail}`, '_blank');
-                              }}
-                            >
-                              <Mail className="w-3 h-3 mr-1" />
-                              Email
-                            </Button>
-                          )}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between mb-1">
+                          <h4 className={`text-sm font-semibold ${!notification.read ? 'text-slate-900 dark:text-white' : 'text-slate-600 dark:text-slate-400'}`}>
+                            {notification.title}
+                          </h4>
+                          <span className="text-[10px] text-slate-400 whitespace-nowrap ml-2">
+                            {format(notification.timestamp, "HH:mm", { locale: ptBR })}
+                          </span>
                         </div>
-                      )}
-                    </div>
+                        
+                        <p className={`text-xs leading-relaxed ${!notification.read ? 'text-slate-700 dark:text-slate-300' : 'text-slate-500 dark:text-slate-500'}`}>
+                          {notification.message}
+                        </p>
 
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        removeNotification(notification.id);
-                      }}
-                      className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                      <X className="w-3 h-3" />
-                    </Button>
+                        {/* Ações específicas */}
+                        {notification.actionData && (
+                          <div className="flex gap-2 mt-3">
+                            {notification.actionData.patientPhone && (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="h-7 px-2.5 text-xs border-slate-200 dark:border-slate-700 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 hover:border-emerald-200 dark:hover:border-emerald-800 transition-colors"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  window.open(`https://wa.me/${notification.actionData?.patientPhone?.replace(/\D/g, '')}`, '_blank');
+                                }}
+                              >
+                                <MessageSquare className="w-3 h-3 mr-1.5" />
+                                WhatsApp
+                              </Button>
+                            )}
+                            {notification.actionData.patientEmail && (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="h-7 px-2.5 text-xs border-slate-200 dark:border-slate-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-200 dark:hover:border-blue-800 transition-colors"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  window.open(`mailto:${notification.actionData?.patientEmail}`, '_blank');
+                                }}
+                              >
+                                <Mail className="w-3 h-3 mr-1.5" />
+                                Email
+                              </Button>
+                            )}
+                          </div>
+                        )}
+                      </div>
+
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          removeNotification(notification.id);
+                        }}
+                        className="absolute top-2 right-2 p-1.5 rounded-md text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 opacity-0 group-hover:opacity-100 transition-all"
+                        title="Remover notificação"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                    
+                    {!notification.read && (
+                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 dark:bg-blue-400 rounded-l"></div>
+                    )}
                   </div>
-                </div>
-              ))
+                ))
+              )}
+            </div>
+            
+            {/* Footer */}
+            {notifications.length > 0 && (
+              <div className="p-2 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800 text-center">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="text-xs text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 w-full h-8"
+                  onClick={() => setNotifications([])}
+                >
+                  Limpar todas as notificações
+                </Button>
+              </div>
             )}
           </div>
-        </div>
+        </>
       )}
     </div>
   );

@@ -87,40 +87,45 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-primary flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white/95 dark:bg-gray-900/90 rounded-2xl p-8 shadow-strong border border-primary/10 backdrop-blur-sm">
+    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 bg-gradient-to-b from-blue-50/50 to-white dark:from-gray-900 dark:to-gray-950 -z-20"></div>
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 -z-10"></div>
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent/5 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4 -z-10"></div>
+
+      <div className="max-w-md w-full space-y-8 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/50 dark:border-gray-700/50 relative z-10">
         <div>
-          <div className="mx-auto h-12 w-12 bg-primary rounded-full flex items-center justify-center shadow-sm">
+          <div className="mx-auto h-16 w-16 bg-gradient-to-br from-primary to-accent rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20 transform rotate-3 hover:rotate-0 transition-transform duration-300">
             <svg className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            Entrar na sua conta
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-foreground dark:text-white tracking-tight">
+            Bem-vindo de volta
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-300">
-            Sistema de Análise de Feridas com IA
+          <p className="mt-2 text-center text-sm text-muted-foreground dark:text-gray-400">
+            Acesse sua conta Vascular One
           </p>
         </div>
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           {message && (
-            <div className={`rounded-md p-4 ${
+            <div className={`rounded-xl p-4 ${
               message.type === 'success' 
-                ? 'bg-green-50 border border-green-200' 
-                : 'bg-red-50 border border-red-200'
-            }`}>
+                ? 'bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-900/30' 
+                : 'bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/30'
+            } animate-in fade-in slide-in-from-top-2`}>
               <div className="flex">
                 <div className="flex-shrink-0">
                   {message.type === 'success' ? (
-                    <CheckCircle className="h-5 w-5 text-green-400" />
+                    <CheckCircle className="h-5 w-5 text-green-500 dark:text-green-400" />
                   ) : (
-                    <AlertCircle className="h-5 w-5 text-red-400" />
+                    <AlertCircle className="h-5 w-5 text-red-500 dark:text-red-400" />
                   )}
                 </div>
                 <div className="ml-3">
-                  <p className={`text-sm ${
-                    message.type === 'success' ? 'text-green-800' : 'text-red-800'
+                  <p className={`text-sm font-medium ${
+                    message.type === 'success' ? 'text-green-800 dark:text-green-300' : 'text-red-800 dark:text-red-300'
                   }`}>
                     {message.text}
                   </p>
@@ -129,14 +134,14 @@ const Login: React.FC = () => {
             </div>
           )}
 
-          <div className="space-y-4">
+          <div className="space-y-5">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                 Email
               </label>
-              <div className="mt-1 relative">
+              <div className="relative group">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-primary" />
+                  <Mail className="h-5 w-5 text-gray-400 group-focus-within:text-primary transition-colors" />
                 </div>
                 <input
                   id="email"
@@ -146,24 +151,24 @@ const Login: React.FC = () => {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className={`appearance-none relative block w-full pl-10 pr-3 py-2 border ${
-                    errors.email ? 'border-red-300 dark:border-red-600' : 'border-gray-300 dark:border-gray-600'
-                  } placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700 rounded-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm`}
+                  className={`block w-full pl-10 pr-3 py-3 border ${
+                    errors.email ? 'border-red-300 dark:border-red-600' : 'border-gray-200 dark:border-gray-700'
+                  } rounded-xl text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800/50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white dark:focus:bg-gray-800 transition-all duration-200 sm:text-sm`}
                   placeholder="seu@email.com"
                 />
               </div>
               {errors.email && (
-                <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+                <p className="mt-1 text-sm text-red-500 font-medium animate-in slide-in-from-top-1">{errors.email}</p>
               )}
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                 Senha
               </label>
-              <div className="mt-1 relative">
+              <div className="relative group">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-primary" />
+                  <Lock className="h-5 w-5 text-gray-400 group-focus-within:text-primary transition-colors" />
                 </div>
                 <input
                   id="password"
@@ -173,9 +178,9 @@ const Login: React.FC = () => {
                   required
                   value={formData.password}
                   onChange={handleChange}
-                  className={`appearance-none relative block w-full pl-10 pr-10 py-2 border ${
-                    errors.password ? 'border-red-300 dark:border-red-600' : 'border-gray-300 dark:border-gray-600'
-                  } placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700 rounded-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm`}
+                  className={`block w-full pl-10 pr-10 py-3 border ${
+                    errors.password ? 'border-red-300 dark:border-red-600' : 'border-gray-200 dark:border-gray-700'
+                  } rounded-xl text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800/50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white dark:focus:bg-gray-800 transition-all duration-200 sm:text-sm`}
                   placeholder="Sua senha"
                 />
                 <button
@@ -184,14 +189,14 @@ const Login: React.FC = () => {
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
-                    <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300" />
+                    <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors" />
                   ) : (
-                    <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300" />
+                    <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors" />
                   )}
                 </button>
               </div>
               {errors.password && (
-                <p className="mt-1 text-sm text-red-600">{errors.password}</p>
+                <p className="mt-1 text-sm text-red-500 font-medium animate-in slide-in-from-top-1">{errors.password}</p>
               )}
             </div>
           </div>
@@ -200,7 +205,7 @@ const Login: React.FC = () => {
             <div className="text-sm">
               <Link
                 to="/forgot-password"
-                className="font-medium text-primary hover:text-primary/90"
+                className="font-medium text-primary hover:text-primary-dark transition-colors"
               >
                 Esqueceu sua senha?
               </Link>
@@ -212,7 +217,7 @@ const Login: React.FC = () => {
               type="submit"
               isLoading={isSubmitting}
               loadingText="Entrando..."
-              className="w-full py-2 px-4 text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary bg-primary hover:bg-primary/90 text-white shadow-sm hover:shadow-md transition-all"
+              className="w-full py-3.5 px-4 text-sm font-bold rounded-xl text-white bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary shadow-lg shadow-primary/25 hover:shadow-primary/40 transform hover:-translate-y-0.5 transition-all duration-200"
             >
               Entrar
             </LoadingButton>
@@ -223,9 +228,9 @@ const Login: React.FC = () => {
               Não tem uma conta?{' '}
               <Link
                 to="/register"
-                className="font-medium text-primary hover:text-primary/90"
+                className="font-bold text-primary hover:text-primary-dark transition-colors"
               >
-                Cadastre-se aqui
+                Cadastre-se gratuitamente
               </Link>
             </p>
           </div>

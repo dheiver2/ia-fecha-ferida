@@ -172,51 +172,56 @@ ${doctorName}`;
   };
 
   return (
-    <Card className="w-full max-w-2xl">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Link2 className="w-5 h-5" />
+    <Card className="w-full max-w-2xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-slate-200 dark:border-slate-800 shadow-xl">
+      <CardHeader className="border-b border-slate-100 dark:border-slate-800 pb-6">
+        <CardTitle className="flex items-center gap-3 text-slate-900 dark:text-white">
+          <div className="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
+            <Link2 className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+          </div>
           Gerar Convite para Teleconsulta
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-6 p-6">
         {/* Informações do Paciente */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <Label htmlFor="patientName">Nome do Paciente</Label>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <Label htmlFor="patientName" className="text-slate-700 dark:text-slate-300">Nome do Paciente</Label>
             <Input
               id="patientName"
               value={inviteData.patientName || ''}
               onChange={(e) => setInviteData(prev => ({ ...prev, patientName: e.target.value }))}
               placeholder="Digite o nome do paciente"
+              className="border-slate-200 dark:border-slate-700 focus:ring-emerald-500"
             />
           </div>
           
-          <div>
-            <Label htmlFor="patientEmail">Email do Paciente</Label>
+          <div className="space-y-2">
+            <Label htmlFor="patientEmail" className="text-slate-700 dark:text-slate-300">Email do Paciente</Label>
             <Input
               id="patientEmail"
               type="email"
               value={inviteData.patientEmail || ''}
               onChange={(e) => setInviteData(prev => ({ ...prev, patientEmail: e.target.value }))}
               placeholder="email@exemplo.com"
+              className="border-slate-200 dark:border-slate-700 focus:ring-emerald-500"
             />
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <Label htmlFor="patientPhone">Telefone/WhatsApp</Label>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <Label htmlFor="patientPhone" className="text-slate-700 dark:text-slate-300">Telefone/WhatsApp</Label>
             <Input
               id="patientPhone"
               value={inviteData.patientPhone || ''}
               onChange={(e) => setInviteData(prev => ({ ...prev, patientPhone: e.target.value }))}
               placeholder="(11) 99999-9999"
+              className="border-slate-200 dark:border-slate-700 focus:ring-emerald-500"
             />
           </div>
           
-          <div>
-            <Label htmlFor="duration">Duração (minutos)</Label>
+          <div className="space-y-2">
+            <Label htmlFor="duration" className="text-slate-700 dark:text-slate-300">Duração (minutos)</Label>
             <Input
               id="duration"
               type="number"
@@ -224,30 +229,33 @@ ${doctorName}`;
               onChange={(e) => setInviteData(prev => ({ ...prev, duration: parseInt(e.target.value) }))}
               min="15"
               max="120"
+              className="border-slate-200 dark:border-slate-700 focus:ring-emerald-500"
             />
           </div>
         </div>
 
         {/* Data e Hora */}
-        <div>
-          <Label htmlFor="scheduledTime">Data e Hora da Consulta</Label>
+        <div className="space-y-2">
+          <Label htmlFor="scheduledTime" className="text-slate-700 dark:text-slate-300">Data e Hora da Consulta</Label>
           <Input
             id="scheduledTime"
             type="datetime-local"
             value={inviteData.scheduledTime ? format(inviteData.scheduledTime, "yyyy-MM-dd'T'HH:mm") : ''}
             onChange={(e) => setInviteData(prev => ({ ...prev, scheduledTime: new Date(e.target.value) }))}
+            className="border-slate-200 dark:border-slate-700 focus:ring-emerald-500"
           />
         </div>
 
         {/* Observações */}
-        <div>
-          <Label htmlFor="notes">Observações (opcional)</Label>
+        <div className="space-y-2">
+          <Label htmlFor="notes" className="text-slate-700 dark:text-slate-300">Observações (opcional)</Label>
           <Textarea
             id="notes"
             value={inviteData.notes || ''}
             onChange={(e) => setInviteData(prev => ({ ...prev, notes: e.target.value }))}
             placeholder="Instruções especiais, preparação necessária, etc."
             rows={3}
+            className="border-slate-200 dark:border-slate-700 focus:ring-emerald-500 resize-none bg-slate-50 dark:bg-slate-800/30"
           />
         </div>
 
@@ -255,17 +263,17 @@ ${doctorName}`;
         <Button 
           onClick={generateInviteLink}
           disabled={isGenerating || !inviteData.patientName}
-          className="w-full"
+          className="w-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-500/20 h-12 text-lg"
           size="lg"
         >
           {isGenerating ? (
             <>
-              <Clock className="w-4 h-4 mr-2 animate-spin" />
+              <Clock className="w-5 h-5 mr-2 animate-spin" />
               Gerando Convite...
             </>
           ) : (
             <>
-              <Link2 className="w-4 h-4 mr-2" />
+              <Link2 className="w-5 h-5 mr-2" />
               Gerar Link de Convite
             </>
           )}
@@ -273,10 +281,12 @@ ${doctorName}`;
 
         {/* Link Gerado */}
         {generatedLink && (
-          <div className="space-y-4 p-4 bg-green-50 rounded-lg border border-green-200">
-            <div className="flex items-center gap-2">
-              <CheckCircle className="w-5 h-5 text-green-600" />
-              <span className="font-semibold text-green-800">Convite Gerado com Sucesso!</span>
+          <div className="space-y-4 p-6 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-100 dark:border-emerald-800 animate-in fade-in slide-in-from-top-4 duration-300">
+            <div className="flex items-center gap-3">
+              <div className="p-1 bg-emerald-100 dark:bg-emerald-800 rounded-full">
+                <CheckCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+              </div>
+              <span className="font-semibold text-emerald-800 dark:text-emerald-200">Convite Gerado com Sucesso!</span>
             </div>
             
             {/* Link */}
@@ -284,13 +294,13 @@ ${doctorName}`;
               <Input
                 value={generatedLink}
                 readOnly
-                className="flex-1"
+                className="flex-1 bg-white dark:bg-slate-900 border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300"
               />
               <Button
                 variant="outline"
                 size="sm"
                 onClick={copyToClipboard}
-                className={copied ? 'bg-green-100 border-green-300' : ''}
+                className={`border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 ${copied ? 'bg-emerald-100 dark:bg-emerald-900/50' : 'bg-white dark:bg-slate-900'}`}
               >
                 {copied ? (
                   <CheckCircle className="w-4 h-4" />
@@ -307,7 +317,7 @@ ${doctorName}`;
                   variant="outline"
                   size="sm"
                   onClick={shareWhatsApp}
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 bg-white dark:bg-slate-900"
                 >
                   <MessageSquare className="w-4 h-4" />
                   WhatsApp
@@ -319,7 +329,7 @@ ${doctorName}`;
                   variant="outline"
                   size="sm"
                   onClick={shareEmail}
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 bg-white dark:bg-slate-900"
                 >
                   <Mail className="w-4 h-4" />
                   Email
@@ -334,7 +344,7 @@ ${doctorName}`;
                   text: generateInviteMessage(),
                   url: generatedLink 
                 })}
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 bg-white dark:bg-slate-900"
               >
                 <Share2 className="w-4 h-4" />
                 Compartilhar
@@ -342,21 +352,21 @@ ${doctorName}`;
             </div>
 
             {/* Resumo do Convite */}
-            <div className="text-sm text-gray-600 space-y-1">
+            <div className="text-sm text-slate-600 dark:text-slate-400 space-y-2 pt-2 border-t border-emerald-100 dark:border-emerald-800/50">
               <div className="flex items-center gap-2">
-                <User className="w-4 h-4" />
-                <span>Paciente: {inviteData.patientName}</span>
+                <User className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                <span>Paciente: <strong className="text-slate-800 dark:text-slate-200">{inviteData.patientName}</strong></span>
               </div>
               {inviteData.scheduledTime && (
                 <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4" />
+                  <Calendar className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                   <span>
                     {format(inviteData.scheduledTime, "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}
                   </span>
                 </div>
               )}
               <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4" />
+                <Clock className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                 <span>Duração: {inviteData.duration} minutos</span>
               </div>
             </div>

@@ -90,8 +90,7 @@ import {
   Search as SearchIcon,
   Bookmark,
   BookmarkCheck,
-  X,
-  Sparkles
+  X
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -809,391 +808,632 @@ const Historico: React.FC = () => {
   const currentExams = filteredExams.slice(startIndex, endIndex);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/20">
       <Header />
       
-      <div className="container mx-auto px-4 pt-24 pb-12 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="container mx-auto px-4 pt-24 pb-8 space-y-8">
         <Breadcrumbs />
         
         {/* Header da página com funcionalidades avançadas */}
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 p-8 text-white shadow-2xl">
-          <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
-          <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-white/10 blur-3xl"></div>
-          <div className="absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-white/10 blur-3xl"></div>
-          
-          <div className="relative flex flex-col space-y-6 lg:space-y-0 lg:flex-row lg:items-end lg:justify-between gap-6">
-            <div className="flex-1 min-w-0 space-y-2">
-              <div className="flex items-center gap-2 text-blue-100 mb-2">
-                <Database className="h-5 w-5" />
-                <span className="text-sm font-medium uppercase tracking-wider">Gestão de Dados</span>
+        <div className="flex flex-col space-y-4 lg:space-y-0 lg:flex-row lg:items-center lg:justify-between gap-4">
+          <div className="flex-1 min-w-0">
+            <h1 className="text-2xl lg:text-3xl font-bold text-foreground flex items-center gap-3">
+              <Database className="h-6 w-6 lg:h-8 lg:w-8 text-primary flex-shrink-0" />
+              <span className="truncate">Gestão Avançada de Análises</span>
+            </h1>
+            <p className="text-muted-foreground mt-2 flex items-center gap-2 text-sm lg:text-base">
+              <Layers className="h-4 w-4 flex-shrink-0" />
+              <span className="truncate">Sistema inteligente para gerenciamento completo de exames médicos</span>
+            </p>
+            {selectedExams.length > 0 && (
+              <div className="mt-2 flex items-center gap-2 flex-wrap">
+                <Badge variant="secondary" className="bg-primary/10 text-primary">
+                  {selectedExams.length} exame(s) selecionado(s)
+                </Badge>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={clearSelection}
+                  className="h-6 px-2 text-xs"
+                >
+                  <XCircle className="h-3 w-3 mr-1" />
+                  Limpar
+                </Button>
               </div>
-              <h1 className="text-3xl lg:text-4xl font-bold text-white flex items-center gap-3">
-                Histórico de Análises
-              </h1>
-              <p className="text-blue-100 max-w-2xl text-lg">
-                Gerencie, filtre e analise todo o histórico de exames médicos com ferramentas avançadas de IA.
-              </p>
-              
-              {selectedExams.length > 0 && (
-                <div className="pt-4 flex items-center gap-3 animate-in fade-in slide-in-from-left-4">
-                  <div className="bg-white/20 backdrop-blur-md rounded-full px-4 py-1.5 flex items-center gap-2 border border-white/30">
-                    <CheckCircle2 className="h-4 w-4 text-green-300" />
-                    <span className="font-medium">{selectedExams.length} selecionados</span>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={clearSelection}
-                    className="text-white hover:bg-white/20 hover:text-white"
-                  >
-                    Limpar
-                  </Button>
-                </div>
-              )}
-            </div>
-            
-            {/* Controles principais */}
-            <div className="flex flex-wrap items-center gap-3">
+            )}
+          </div>
+          
+          {/* Controles avançados */}
+          <div className="flex flex-wrap items-center gap-2 lg:gap-3 justify-start lg:justify-end">
+            {/* Modo de visualização */}
+            <div className="flex items-center bg-secondary/50 rounded-lg p-1">
               <Button
-                variant="outline"
-                onClick={() => setShowExportDialog(true)}
-                className="bg-white/10 border-white/20 text-white hover:bg-white/20 hover:text-white backdrop-blur-sm"
+                variant={viewMode === 'table' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => setViewMode('table')}
+                className="h-8 px-2 lg:px-3"
               >
-                <Download className="h-4 w-4 mr-2" />
-                Exportar
+                <List className="h-4 w-4" />
+                <span className="hidden sm:inline ml-1">Tabela</span>
               </Button>
+              <Button
+                variant={viewMode === 'grid' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => setViewMode('grid')}
+                className="h-8 px-2 lg:px-3"
+              >
+                <Grid className="h-4 w-4" />
+                <span className="hidden sm:inline ml-1">Grade</span>
+              </Button>
+            </div>
 
-              <Button
-                asChild
-                className="bg-white text-indigo-600 hover:bg-blue-50 shadow-lg border-0 font-semibold"
-              >
-                <Link to="/analise">
-                  <Plus className="h-4 w-4 mr-2" />
-                  Nova Análise
-                </Link>
-              </Button>
-            </div>
+            {/* Ações rápidas */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowExportDialog(true)}
+              className="flex items-center gap-1 lg:gap-2 px-2 lg:px-3"
+            >
+              <Download className="h-4 w-4" />
+              <span className="hidden sm:inline">Exportar</span>
+            </Button>
+
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowImportDialog(true)}
+              className="flex items-center gap-1 lg:gap-2 px-2 lg:px-3"
+            >
+              <Upload className="h-4 w-4" />
+              <span className="hidden sm:inline">Importar</span>
+            </Button>
+
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+              className="flex items-center gap-2"
+            >
+              <Filter className="h-4 w-4" />
+              Filtros Avançados
+            </Button>
+
+            <Button
+              asChild
+              variant="default"
+              size="sm"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground flex items-center gap-2"
+            >
+              <Link to="/analise">
+                <Plus className="h-4 w-4" />
+                Nova Análise
+              </Link>
+            </Button>
           </div>
         </div>
 
         {/* Dashboard Avançado */}
         {showDashboard && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8">
             {/* Estatísticas Principais */}
-            <Card className="group relative overflow-hidden border-0 bg-white/50 dark:bg-slate-900/50 backdrop-blur-xl shadow-lg hover:shadow-xl transition-all duration-300">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <CardContent className="p-6 relative">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="p-3 rounded-2xl bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
-                    <Activity className="h-6 w-6" />
+            <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
+              <CardContent className="p-4 lg:p-6">
+                <div className="flex items-center justify-between">
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs lg:text-sm font-medium text-muted-foreground truncate">Total de Exames</p>
+                    <p className="text-2xl lg:text-3xl font-bold text-primary">{examHistory.length}</p>
                   </div>
-                  <span className="flex items-center text-xs font-medium text-green-600 bg-green-100 dark:bg-green-900/30 px-2 py-1 rounded-full">
-                    <TrendingUp className="h-3 w-3 mr-1" />
-                    +12%
-                  </span>
+                  <Activity className="h-6 w-6 lg:h-8 lg:w-8 text-primary flex-shrink-0 ml-2" />
                 </div>
-                <div className="space-y-1">
-                  <p className="text-sm font-medium text-muted-foreground">Total de Exames</p>
-                  <p className="text-3xl font-bold text-slate-900 dark:text-white">{examHistory.length}</p>
+                <div className="mt-3 lg:mt-4 flex items-center text-xs lg:text-sm">
+                  <TrendingUp className="h-3 w-3 lg:h-4 lg:w-4 text-green-500 mr-1 flex-shrink-0" />
+                  <span className="text-green-600 truncate">+12% este mês</span>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="group relative overflow-hidden border-0 bg-white/50 dark:bg-slate-900/50 backdrop-blur-xl shadow-lg hover:shadow-xl transition-all duration-300">
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <CardContent className="p-6 relative">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="p-3 rounded-2xl bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400">
-                    <Target className="h-6 w-6" />
+            <Card className="bg-gradient-to-br from-accent/10 to-accent/5 border-accent/20">
+              <CardContent className="p-4 lg:p-6">
+                <div className="flex items-center justify-between">
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs lg:text-sm font-medium text-muted-foreground truncate">Confiança Média</p>
+                    <p className="text-2xl lg:text-3xl font-bold text-accent">{advancedStats.avgConfidence}%</p>
                   </div>
-                  <Progress value={safeConfidence(advancedStats.avgConfidence)} className="w-16 h-1.5" />
+                  <Target className="h-6 w-6 lg:h-8 lg:w-8 text-accent flex-shrink-0 ml-2" />
                 </div>
-                <div className="space-y-1">
-                  <p className="text-sm font-medium text-muted-foreground">Confiança Média</p>
-                  <p className="text-3xl font-bold text-slate-900 dark:text-white">{advancedStats.avgConfidence}%</p>
+                <div className="mt-3 lg:mt-4">
+                  <Progress value={safeConfidence(advancedStats.avgConfidence)} className="h-1.5 lg:h-2" />
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="group relative overflow-hidden border-0 bg-white/50 dark:bg-slate-900/50 backdrop-blur-xl shadow-lg hover:shadow-xl transition-all duration-300">
-              <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-red-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <CardContent className="p-6 relative">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="p-3 rounded-2xl bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400">
-                    <AlertTriangle className="h-6 w-6" />
+            <Card className="bg-gradient-to-br from-destructive/10 to-destructive/5 border-destructive/20">
+              <CardContent className="p-4 lg:p-6">
+                <div className="flex items-center justify-between">
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs lg:text-sm font-medium text-muted-foreground truncate">Casos Críticos</p>
+                    <p className="text-2xl lg:text-3xl font-bold text-destructive">{advancedStats.criticalCases}</p>
                   </div>
-                  <span className="flex items-center text-xs font-medium text-orange-600 bg-orange-100 dark:bg-orange-900/30 px-2 py-1 rounded-full">
-                    Atenção
-                  </span>
+                  <AlertTriangle className="h-6 w-6 lg:h-8 lg:w-8 text-destructive flex-shrink-0 ml-2" />
                 </div>
-                <div className="space-y-1">
-                  <p className="text-sm font-medium text-muted-foreground">Casos Críticos</p>
-                  <p className="text-3xl font-bold text-slate-900 dark:text-white">{advancedStats.criticalCases}</p>
+                <div className="mt-3 lg:mt-4 flex items-center text-xs lg:text-sm">
+                  <Clock className="h-3 w-3 lg:h-4 lg:w-4 text-orange-500 mr-1 flex-shrink-0" />
+                  <span className="text-orange-600">Requer atenção</span>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="group relative overflow-hidden border-0 bg-white/50 dark:bg-slate-900/50 backdrop-blur-xl shadow-lg hover:shadow-xl transition-all duration-300">
-              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-teal-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <CardContent className="p-6 relative">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="p-3 rounded-2xl bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400">
-                    <Sparkles className="h-6 w-6" />
+            <Card className="bg-gradient-to-br from-green/10 to-green/5 border-green/20">
+              <CardContent className="p-4 lg:p-6">
+                <div className="flex items-center justify-between">
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs lg:text-sm font-medium text-muted-foreground truncate">Taxa de Cicatrização</p>
+                    <p className="text-2xl lg:text-3xl font-bold text-green-600">
+                      {advancedStats.healingRate}%
+                    </p>
                   </div>
-                  <span className="flex items-center text-xs font-medium text-emerald-600 bg-emerald-100 dark:bg-emerald-900/30 px-2 py-1 rounded-full">
-                    {advancedStats.healingCases} casos
-                  </span>
+                  <CheckCircle2 className="h-6 w-6 lg:h-8 lg:w-8 text-green-600 flex-shrink-0 ml-2" />
                 </div>
-                <div className="space-y-1">
-                  <p className="text-sm font-medium text-muted-foreground">Taxa de Cicatrização</p>
-                  <p className="text-3xl font-bold text-slate-900 dark:text-white">{advancedStats.healingRate}%</p>
+                <div className="mt-3 lg:mt-4 flex items-center text-xs lg:text-sm">
+                  <TrendingUp className="h-3 w-3 lg:h-4 lg:w-4 text-green-500 mr-1 flex-shrink-0" />
+                  <span className="text-green-600 truncate">{advancedStats.healingCases} casos com melhora</span>
                 </div>
               </CardContent>
             </Card>
           </div>
         )}
 
-        {/* Barra de Ferramentas e Filtros */}
-        <div className="sticky top-20 z-30 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm p-4 transition-all duration-300">
-          <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
-            <div className="relative w-full lg:w-96 group">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
-              <Input
-                placeholder="Buscar por paciente, protocolo, médico..."
-                value={filters.searchTerm}
-                onChange={(e) => setFilters(prev => ({ ...prev, searchTerm: e.target.value }))}
-                className="pl-10 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-primary/20 transition-all"
-              />
-            </div>
+        {/* Filtros Avançados */}
+        {showAdvancedFilters && (
+          <Card className="mb-8 border-primary/20">
+            <CardHeader className="bg-gradient-to-r from-primary/5 to-accent/5">
+              <CardTitle className="flex items-center gap-2 text-primary">
+                <Filter className="h-5 w-5" />
+                Filtros Avançados
+              </CardTitle>
+              <CardDescription>
+                Configure filtros personalizados para análise detalhada dos dados
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-4 lg:p-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+                {/* Busca Inteligente */}
+                <div className="space-y-2">
+                  <Label htmlFor="search">Busca Inteligente</Label>
+                  <div className="relative">
+                    <SearchIcon className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      id="search"
+                      placeholder="Buscar por paciente, protocolo, diagnóstico..."
+                      value={filters.searchTerm}
+                      onChange={(e) => {
+                        setFilters(prev => ({ ...prev, searchTerm: e.target.value }));
+                        addToSearchHistory(e.target.value);
+                      }}
+                      className="pl-10"
+                    />
+                  </div>
+                  {searchHistory.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mt-2">
+                      {searchHistory.slice(0, 5).map((term, index) => (
+                        <Button
+                          key={index}
+                          variant="ghost"
+                          size="sm"
+                          className="h-6 px-2 text-xs"
+                          onClick={() => setFilters(prev => ({ ...prev, searchTerm: term }))}
+                        >
+                          {term}
+                        </Button>
+                      ))}
+                    </div>
+                  )}
+                </div>
 
-            <div className="flex items-center gap-2 w-full lg:w-auto overflow-x-auto pb-2 lg:pb-0">
-              <Button
-                variant={showAdvancedFilters ? "secondary" : "ghost"}
-                size="sm"
-                onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-                className="flex items-center gap-2 whitespace-nowrap"
-              >
-                <Filter className="h-4 w-4" />
-                Filtros
-                {(filters.status !== 'all' || filters.priority !== 'all') && (
-                  <span className="h-2 w-2 rounded-full bg-primary"></span>
-                )}
-              </Button>
+                {/* Filtro por Departamento */}
+                <div className="space-y-2">
+                  <Label>Departamento</Label>
+                  <Select
+                    value={filters.department || 'all'}
+                    onValueChange={(value) => setFilters(prev => ({ ...prev, department: value === 'all' ? undefined : value }))}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Todos os departamentos" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Todos os departamentos</SelectItem>
+                      {Object.keys(advancedStats.departmentCounts).map(dept => (
+                        <SelectItem key={dept} value={dept}>
+                          {dept} ({advancedStats.departmentCounts[dept]})
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-              <div className="h-6 w-px bg-slate-200 dark:bg-slate-700 mx-2"></div>
+                {/* Filtro por Prioridade */}
+                <div className="space-y-2">
+                  <Label>Prioridade</Label>
+                  <Select
+                    value={filters.priority}
+                    onValueChange={(value) => setFilters(prev => ({ ...prev, priority: value }))}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Todas as prioridades" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Todas as prioridades</SelectItem>
+                      <SelectItem value="critical">Crítica</SelectItem>
+                      <SelectItem value="urgent">Urgente</SelectItem>
+                      <SelectItem value="high">Alta</SelectItem>
+                      <SelectItem value="normal">Normal</SelectItem>
+                      <SelectItem value="low">Baixa</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-              <div className="flex bg-slate-100 dark:bg-slate-800 rounded-lg p-1">
-                <Button
-                  variant={viewMode === 'table' ? 'white' : 'ghost'}
-                  size="sm"
-                  onClick={() => setViewMode('table')}
-                  className={`h-8 px-3 ${viewMode === 'table' ? 'bg-white dark:bg-slate-700 shadow-sm' : ''}`}
-                >
-                  <List className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant={viewMode === 'grid' ? 'white' : 'ghost'}
-                  size="sm"
-                  onClick={() => setViewMode('grid')}
-                  className={`h-8 px-3 ${viewMode === 'grid' ? 'bg-white dark:bg-slate-700 shadow-sm' : ''}`}
-                >
-                  <Grid className="h-4 w-4" />
-                </Button>
+                {/* Filtro por Follow-up */}
+                <div className="space-y-2">
+                  <Label>Follow-up Necessário</Label>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="followup"
+                      checked={filters.followUpRequired || false}
+                      onCheckedChange={(checked) => 
+                        setFilters(prev => ({ ...prev, followUpRequired: checked as boolean }))
+                      }
+                    />
+                    <Label htmlFor="followup" className="text-sm">
+                      Apenas casos que requerem follow-up
+                    </Label>
+                  </div>
+                </div>
+
+                {/* Filtro por Confiança */}
+                <div className="space-y-2">
+                  <Label>Nível de Confiança (%)</Label>
+                  <div className="flex items-center space-x-2">
+                    <Input
+                      type="number"
+                      min="0"
+                      max="100"
+                      value={filters.confidenceRange?.min || 0}
+                      onChange={(e) => setFilters(prev => ({
+                        ...prev,
+                        confidenceRange: { ...prev.confidenceRange, min: parseInt(e.target.value) || 0 }
+                      }))}
+                      className="w-20"
+                    />
+                    <span>até</span>
+                    <Input
+                      type="number"
+                      min="0"
+                      max="100"
+                      value={filters.confidenceRange?.max || 100}
+                      onChange={(e) => setFilters(prev => ({
+                        ...prev,
+                        confidenceRange: { ...prev.confidenceRange, max: parseInt(e.target.value) || 100 }
+                      }))}
+                      className="w-20"
+                    />
+                  </div>
+                </div>
+
+                {/* Filtros Salvos */}
+                <div className="space-y-2">
+                  <Label>Filtros Salvos</Label>
+                  <div className="flex gap-2">
+                    <Select onValueChange={(value) => {
+                      const savedFilter = savedFilters.find(f => f.name === value);
+                      if (savedFilter) loadFilter(savedFilter);
+                    }}>
+                      <SelectTrigger className="flex-1">
+                        <SelectValue placeholder="Carregar filtro salvo" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {savedFilters.map(filter => (
+                          <SelectItem key={filter.name} value={filter.name}>
+                            {filter.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        const name = prompt('Nome do filtro:');
+                        if (name) saveFilter(name);
+                      }}
+                    >
+                      <Bookmark className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
               </div>
 
-              <Select value={itemsPerPage.toString()} onValueChange={(value) => setItemsPerPage(Number(value))}>
-                <SelectTrigger className="w-[70px] h-9">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="10">10</SelectItem>
-                  <SelectItem value="25">25</SelectItem>
-                  <SelectItem value="50">50</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          {/* Painel de Filtros Expansível */}
-          {showAdvancedFilters && (
-            <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 animate-in slide-in-from-top-2">
-              <div className="space-y-2">
-                <Label className="text-xs font-medium text-muted-foreground uppercase">Status</Label>
-                <Select value={filters.status} onValueChange={(value) => setFilters(prev => ({ ...prev, status: value as any }))}>
-                  <SelectTrigger className="bg-slate-50 dark:bg-slate-800">
-                    <SelectValue placeholder="Status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Todos</SelectItem>
-                    <SelectItem value="completed">Concluído</SelectItem>
-                    <SelectItem value="pending">Pendente</SelectItem>
-                    <SelectItem value="reviewing">Em Revisão</SelectItem>
-                    <SelectItem value="error">Erro</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-xs font-medium text-muted-foreground uppercase">Prioridade</Label>
-                <Select value={filters.priority} onValueChange={(value) => setFilters(prev => ({ ...prev, priority: value as any }))}>
-                  <SelectTrigger className="bg-slate-50 dark:bg-slate-800">
-                    <SelectValue placeholder="Prioridade" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Todas</SelectItem>
-                    <SelectItem value="urgent">Urgente</SelectItem>
-                    <SelectItem value="high">Alta</SelectItem>
-                    <SelectItem value="normal">Normal</SelectItem>
-                    <SelectItem value="low">Baixa</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-xs font-medium text-muted-foreground uppercase">Departamento</Label>
-                <Select
-                  value={filters.department || 'all'}
-                  onValueChange={(value) => setFilters(prev => ({ ...prev, department: value === 'all' ? undefined : value }))}
-                >
-                  <SelectTrigger className="bg-slate-50 dark:bg-slate-800">
-                    <SelectValue placeholder="Todos" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Todos</SelectItem>
-                    {Object.keys(advancedStats.departmentCounts).map(dept => (
-                      <SelectItem key={dept} value={dept}>{dept}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="flex items-end">
+              <div className="flex justify-between items-center mt-6 pt-4 border-t">
                 <Button
                   variant="outline"
                   onClick={clearAllFilters}
-                  className="w-full border-dashed text-muted-foreground hover:text-foreground"
+                  className="flex items-center gap-2"
                 >
-                  <FilterX className="h-4 w-4 mr-2" />
+                  <FilterX className="h-4 w-4" />
                   Limpar Filtros
                 </Button>
+                <div className="text-sm text-muted-foreground">
+                  {filteredExams.length} de {examHistory.length} exames encontrados
+                </div>
               </div>
-            </div>
-          )}
-        </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Ações em Lote */}
         {selectedExams.length > 0 && (
-          <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white px-6 py-3 rounded-full shadow-2xl flex items-center gap-4 animate-in slide-in-from-bottom-10 fade-in duration-300">
-            <span className="font-medium text-sm">{selectedExams.length} selecionados</span>
-            <div className="h-4 w-px bg-white/20"></div>
-            <div className="flex items-center gap-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={bulkExport}
-                className="text-white hover:bg-white/20 h-8 px-3 rounded-full"
-              >
-                <Download className="h-4 w-4 mr-2" />
-                Exportar
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={bulkArchive}
-                className="text-white hover:bg-white/20 h-8 px-3 rounded-full"
-              >
-                <Archive className="h-4 w-4 mr-2" />
-                Arquivar
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={bulkDelete}
-                className="text-red-300 hover:bg-red-500/20 hover:text-red-200 h-8 px-3 rounded-full"
-              >
-                <Trash2 className="h-4 w-4 mr-2" />
-                Excluir
-              </Button>
-            </div>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={clearSelection}
-              className="h-6 w-6 rounded-full hover:bg-white/20 ml-2"
-            >
-              <X className="h-4 w-4" />
-            </Button>
-          </div>
+          <Card className="mb-8 border-accent/20 bg-accent/5">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <Badge variant="secondary" className="bg-primary/10 text-primary">
+                    {selectedExams.length} selecionado(s)
+                  </Badge>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={selectAllExams}
+                      className="flex items-center gap-2"
+                    >
+                      <CheckCircle2 className="h-4 w-4" />
+                      Selecionar Todos
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={clearSelection}
+                      className="flex items-center gap-2"
+                    >
+                      <XCircle className="h-4 w-4" />
+                      Limpar Seleção
+                    </Button>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={bulkExport}
+                    className="flex items-center gap-2"
+                  >
+                    <Download className="h-4 w-4" />
+                    Exportar
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={bulkArchive}
+                    className="flex items-center gap-2"
+                  >
+                    <Archive className="h-4 w-4" />
+                    Arquivar
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={bulkDelete}
+                    className="flex items-center gap-2"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    Excluir
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         )}
 
-        {/* Lista de exames */}
-        <Card className="border-0 shadow-xl bg-white/50 dark:bg-slate-900/50 backdrop-blur-xl overflow-hidden">
-          <CardHeader className="border-b border-slate-100 dark:border-slate-800 p-6">
-            <div className="flex items-center justify-between">
-              <div className="space-y-1">
-                <CardTitle className="flex items-center gap-2 text-xl font-bold">
-                  Análises Médicas
-                  <Badge variant="secondary" className="ml-2 bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
-                    {filteredExams.length}
-                  </Badge>
-                </CardTitle>
-                <CardDescription>
-                  Lista completa de exames e laudos médicos
-                </CardDescription>
+        {/* Filtros Médicos Básicos */}
+        <div className="mb-8">
+          <MedicalFilters
+            filters={filters}
+            onFiltersChange={setFilters}
+            onClearFilters={clearAllFilters}
+          />
+        </div>
+
+        {/* Dashboard de estatísticas */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+          <Card className="bg-primary text-primary-foreground border-0">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-white/80 text-sm font-medium">Total de Exames</p>
+                  <p className="text-3xl font-bold">{stats.total}</p>
+                </div>
+                <FileText className="h-8 w-8 text-white/90" />
               </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-medical-success text-medical-success-foreground border-0">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium opacity-80">Concluídos</p>
+                  <p className="text-3xl font-bold">{stats.completed}</p>
+                </div>
+                <CheckCircle className="h-8 w-8 opacity-90" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-medical-warning text-medical-warning-foreground border-0">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium opacity-90">Pendentes</p>
+                  <p className="text-3xl font-bold">{stats.pending}</p>
+                </div>
+                <Clock className="h-8 w-8 opacity-90" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-medical-info text-medical-info-foreground border-0">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium opacity-90">Em Revisão</p>
+                  <p className="text-3xl font-bold">{stats.reviewing}</p>
+                </div>
+                <Eye className="h-8 w-8 opacity-90" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-accent text-accent-foreground border-0">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-white/80 text-sm font-medium">Confiança Média</p>
+                  <p className="text-3xl font-bold">{stats.avgConfidence}%</p>
+                </div>
+                <TrendingUp className="h-8 w-8 text-white/90" />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Filtros e busca */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Filter className="h-5 w-5" />
+              Filtros e Busca
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="relative">
+                <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Buscar por protocolo, paciente, médico..."
+                  value={filters.searchTerm}
+                  onChange={(e) => setFilters(prev => ({ ...prev, searchTerm: e.target.value }))}
+                  className="pl-10"
+                />
+              </div>
+
+              <Select value={filters.status} onValueChange={(value) => setFilters(prev => ({ ...prev, status: value as any }))}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todos os Status</SelectItem>
+                  <SelectItem value="completed">Concluído</SelectItem>
+                  <SelectItem value="pending">Pendente</SelectItem>
+                  <SelectItem value="reviewing">Em Revisão</SelectItem>
+                  <SelectItem value="error">Erro</SelectItem>
+                </SelectContent>
+              </Select>
+
+              <Select value={filters.priority} onValueChange={(value) => setFilters(prev => ({ ...prev, priority: value as any }))}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Prioridade" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todas as Prioridades</SelectItem>
+                  <SelectItem value="urgent">Urgente</SelectItem>
+                  <SelectItem value="high">Alta</SelectItem>
+                  <SelectItem value="normal">Normal</SelectItem>
+                  <SelectItem value="low">Baixa</SelectItem>
+                </SelectContent>
+              </Select>
+
+              <div className="text-sm text-muted-foreground">
+                Filtros de data disponíveis nos filtros avançados
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <Button
+                variant={filters.starred ? "default" : "outline"}
+                size="sm"
+                onClick={() => setFilters(prev => ({ ...prev, starred: !prev.starred }))}
+              >
+                <Star className={`h-4 w-4 mr-2 ${filters.starred ? 'fill-current' : ''}`} />
+                Apenas Favoritos
+              </Button>
+              
+              <Separator orientation="vertical" className="h-6" />
+              
+              <span className="text-sm text-muted-foreground">
+                {filteredExams.length} de {examHistory.length} exames
+              </span>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Lista de exames */}
+        <Card className="border-primary/20">
+          <CardHeader className="bg-gradient-to-r from-primary/5 to-accent/5">
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center gap-2 text-primary">
+                <Database className="h-5 w-5" />
+                Análises Médicas
+                <Badge variant="secondary" className="ml-2 bg-primary/10 text-primary">
+                  {filteredExams.length}
+                </Badge>
+              </CardTitle>
               
               <div className="flex items-center gap-2">
-                <Select value={sortField} onValueChange={(value) => setSortField(value as SortField)}>
-                  <SelectTrigger className="w-[180px] bg-white dark:bg-slate-800">
-                    <SelectValue placeholder="Ordenar por" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="analysisDate">Data da Análise</SelectItem>
-                    <SelectItem value="patient">Nome do Paciente</SelectItem>
-                    <SelectItem value="confidence">Confiança da IA</SelectItem>
-                    <SelectItem value="status">Status</SelectItem>
-                  </SelectContent>
-                </Select>
-                
                 <Button
                   variant="outline"
-                  size="icon"
-                  onClick={() => setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc')}
-                  className="bg-white dark:bg-slate-800"
+                  size="sm"
+                  onClick={() => setViewMode(viewMode === 'table' ? 'grid' : 'table')}
+                  className="flex items-center gap-2"
                 >
-                  {sortDirection === 'asc' ? <SortAsc className="h-4 w-4" /> : <SortDesc className="h-4 w-4" />}
+                  {viewMode === 'table' ? <Grid3X3 className="h-4 w-4" /> : <List className="h-4 w-4" />}
+                  {viewMode === 'table' ? 'Grade' : 'Tabela'}
                 </Button>
+                <Select value={itemsPerPage.toString()} onValueChange={(value) => setItemsPerPage(Number(value))}>
+                  <SelectTrigger className="w-20">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="5">5</SelectItem>
+                    <SelectItem value="10">10</SelectItem>
+                    <SelectItem value="25">25</SelectItem>
+                    <SelectItem value="50">50</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
           </CardHeader>
           <CardContent className="p-0">
             {currentExams.length === 0 ? (
-              <div className="text-center py-16 px-4">
-                <div className="w-20 h-20 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <FileImage className="h-10 w-10 text-slate-400" />
-                </div>
-                <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-2">
+              <div className="text-center py-12">
+                <FileImage className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-muted-foreground mb-2">
                   Nenhum exame encontrado
                 </h3>
-                <p className="text-slate-500 dark:text-slate-400 max-w-md mx-auto mb-8">
-                  Não encontramos nenhum exame com os filtros selecionados. Tente ajustar sua busca ou limpar os filtros.
+                <p className="text-muted-foreground mb-4">
+                  Não há exames que correspondam aos filtros selecionados.
                 </p>
-                <Button onClick={clearAllFilters} variant="outline" className="mr-4">
-                  Limpar Filtros
-                </Button>
-                <Button asChild className="bg-blue-600 hover:bg-blue-700 text-white">
+                <Button asChild>
                   <Link to="/analise">
                     <Plus className="h-4 w-4 mr-2" />
-                    Nova Análise
+                    Realizar Nova Análise
                   </Link>
                 </Button>
               </div>
             ) : viewMode === 'table' ? (
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead className="bg-slate-50/50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800">
+                  <thead className="bg-muted/50 border-b">
                     <tr>
-                      <th className="p-4 w-[50px]">
+                      <th className="p-2 lg:p-4 text-left">
                         <Checkbox
                           checked={selectedExams.length === currentExams.length}
                           onCheckedChange={(checked) => {
@@ -1205,112 +1445,115 @@ const Historico: React.FC = () => {
                           }}
                         />
                       </th>
-                      <th className="p-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Paciente</th>
-                      <th className="p-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider hidden sm:table-cell">Protocolo</th>
-                      <th className="p-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider hidden md:table-cell">Data</th>
-                      <th className="p-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
-                      <th className="p-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider hidden lg:table-cell">Confiança</th>
-                      <th className="p-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider hidden xl:table-cell">Departamento</th>
-                      <th className="p-4 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">Ações</th>
+                      <th className="p-2 lg:p-4 text-left font-medium">Paciente</th>
+                      <th className="p-2 lg:p-4 text-left font-medium hidden sm:table-cell">Protocolo</th>
+                      <th className="p-2 lg:p-4 text-left font-medium hidden md:table-cell">Data</th>
+                      <th className="p-2 lg:p-4 text-left font-medium">Status</th>
+                      <th className="p-2 lg:p-4 text-left font-medium hidden lg:table-cell">Confiança</th>
+                      <th className="p-2 lg:p-4 text-left font-medium hidden xl:table-cell">Departamento</th>
+                      <th className="p-2 lg:p-4 text-left font-medium">Ações</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                  <tbody>
                     {currentExams.map((exam) => (
                       <tr 
                         key={exam.id} 
-                        className={`group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors ${
-                          selectedExams.includes(exam.id) ? 'bg-blue-50/50 dark:bg-blue-900/10' : ''
+                        className={`border-b hover:bg-muted/30 transition-colors ${
+                          selectedExams.includes(exam.id) ? 'bg-primary/5' : ''
                         }`}
                       >
-                        <td className="p-4">
+                        <td className="p-2 lg:p-4">
                           <Checkbox
                             checked={selectedExams.includes(exam.id)}
                             onCheckedChange={(checked) => toggleSelectExam(exam.id)}
                           />
                         </td>
-                        <td className="p-4">
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900 dark:to-indigo-900 flex items-center justify-center text-blue-700 dark:text-blue-300 font-semibold text-sm">
-                              {exam.patient?.name?.charAt(0) || 'P'}
+                        <td className="p-2 lg:p-4">
+                          <div className="flex items-center gap-2 lg:gap-3">
+                            <div className="flex-shrink-0">
+                              <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                                <User className="h-4 w-4 lg:h-5 lg:w-5 text-primary" />
+                              </div>
                             </div>
-                            <div className="min-w-0">
-                              <p className="font-medium text-slate-900 dark:text-white truncate">{exam.patient?.name || 'Não informado'}</p>
-                              <p className="text-xs text-slate-500 truncate">
+                            <div className="min-w-0 flex-1">
+                              <p className="font-medium text-sm lg:text-base truncate">{exam.patient?.name || 'Não informado'}</p>
+                              <p className="text-xs lg:text-sm text-muted-foreground truncate sm:hidden">
+                                {exam.protocol}
+                              </p>
+                              <p className="text-xs lg:text-sm text-muted-foreground hidden lg:block">
                                 {exam.patient?.age && exam.patient?.gender ? 
-                                  `${exam.patient.age} anos • ${exam.patient.gender}` : 
+                                  `${exam.patient.age} anos, ${exam.patient.gender}` : 
                                   'Dados não informados'
                                 }
                               </p>
                             </div>
                           </div>
                         </td>
-                        <td className="p-4 hidden sm:table-cell">
-                          <div className="flex items-center gap-2 group/copy">
-                            <code className="bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded text-xs font-mono text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
+                        <td className="p-2 lg:p-4 hidden sm:table-cell">
+                          <div className="flex items-center gap-2">
+                            <code className="bg-muted px-2 py-1 rounded text-xs lg:text-sm font-mono truncate max-w-[100px]">
                               {exam.protocol}
                             </code>
                             <Button
                               variant="ghost"
-                              size="icon"
+                              size="sm"
                               onClick={() => copyProtocol(exam.protocol)}
-                              className="h-6 w-6 opacity-0 group-hover/copy:opacity-100 transition-opacity"
+                              className="p-1 h-auto flex-shrink-0"
                             >
                               <Copy className="h-3 w-3" />
                             </Button>
                           </div>
                         </td>
-                        <td className="p-4 hidden md:table-cell">
-                          <div className="flex flex-col">
-                            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                        <td className="p-2 lg:p-4 hidden md:table-cell">
+                          <div>
+                            <p className="font-medium text-sm lg:text-base">
                               {safeFormatDate(exam.analysisDate, 'dd/MM/yyyy')}
-                            </span>
-                            <span className="text-xs text-slate-500 flex items-center gap-1">
-                              <Clock className="h-3 w-3" />
+                            </p>
+                            <p className="text-xs lg:text-sm text-muted-foreground">
                               {safeFormatDate(exam.analysisDate, 'HH:mm')}
-                            </span>
+                            </p>
                           </div>
                         </td>
-                        <td className="p-4">
-                          <div className="flex items-center gap-2">
-                            {getStatusBadge(exam.status)}
-                          </div>
-                        </td>
-                        <td className="p-4 hidden lg:table-cell">
-                          <div className="flex items-center gap-3">
-                            <div className="w-24 h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-                              <div 
-                                className={`h-full rounded-full ${
-                                  safeConfidence(exam.confidence) >= 90 ? 'bg-green-500' :
-                                  safeConfidence(exam.confidence) >= 70 ? 'bg-blue-500' :
-                                  safeConfidence(exam.confidence) >= 50 ? 'bg-yellow-500' : 'bg-red-500'
-                                }`}
-                                style={{ width: `${safeConfidence(exam.confidence)}%` }}
-                              />
+                        <td className="p-2 lg:p-4">
+                          <div className="flex items-center gap-1 lg:gap-2">
+                            <div className="md:hidden">
+                              {getStatusIcon(exam.status)}
                             </div>
-                            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                            <div className="hidden md:flex items-center gap-2">
+                              {getStatusIcon(exam.status)}
+                              {getStatusBadge(exam.status)}
+                            </div>
+                          </div>
+                        </td>
+                        <td className="p-2 lg:p-4 hidden lg:table-cell">
+                          <div className="flex items-center gap-2">
+                            <div className="w-12 lg:w-16">
+                              <Progress value={safeConfidence(exam.confidence)} className="h-1.5 lg:h-2" />
+                            </div>
+                            <span className={`font-medium text-xs lg:text-sm ${getConfidenceColor(exam.confidence)}`}>
                               {safeConfidence(exam.confidence)}%
                             </span>
                           </div>
                         </td>
-                        <td className="p-4 hidden xl:table-cell">
-                          <Badge variant="outline" className="font-normal">
-                            {exam.department || 'Geral'}
+                        <td className="p-2 lg:p-4 hidden xl:table-cell">
+                          <Badge variant="outline" className="text-xs truncate max-w-[80px]">
+                            {exam.department}
                           </Badge>
                         </td>
-                        <td className="p-4 text-right">
-                          <div className="flex items-center justify-end gap-1">
+                        <td className="p-2 lg:p-4">
+                          <div className="flex items-center gap-1">
                             <Button
                               variant="ghost"
-                              size="icon"
+                              size="sm"
                               onClick={() => toggleStarred(exam.id)}
-                              className="h-8 w-8 text-slate-400 hover:text-yellow-400"
+                              className="p-1 h-auto"
                             >
-                              <Star className={`h-4 w-4 ${exam.starred ? 'fill-yellow-400 text-yellow-400' : ''}`} />
+                              <Star className={`h-4 w-4 ${exam.starred ? 'fill-yellow-400 text-yellow-400' : 'text-muted-foreground'}`} />
                             </Button>
                             
                             <Dialog>
                               <DialogTrigger asChild>
-                                <Button variant="ghost" size="icon" className="h-8 w-8 text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/20">
+                                <Button variant="ghost" size="sm" className="p-1 h-auto">
                                   <Eye className="h-4 w-4" />
                                 </Button>
                               </DialogTrigger>
@@ -1335,11 +1578,15 @@ const Historico: React.FC = () => {
                               </DialogContent>
                             </Dialog>
 
+                            <Button variant="ghost" size="sm" className="p-1 h-auto">
+                              <Download className="h-4 w-4" />
+                            </Button>
+
                             <Button 
                               variant="ghost" 
-                              size="icon"
+                              size="sm"
                               onClick={() => deleteExam(exam.id)}
-                              className="h-8 w-8 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
+                              className="p-1 h-auto text-red-600 hover:text-red-700 hover:bg-red-50"
                             >
                               <Trash2 className="h-4 w-4" />
                             </Button>
@@ -1355,96 +1602,137 @@ const Historico: React.FC = () => {
                 {currentExams.map((exam) => (
                   <Card 
                     key={exam.id} 
-                    className={`group hover:shadow-xl transition-all duration-300 cursor-pointer border-slate-200 dark:border-slate-800 overflow-hidden ${
-                      selectedExams.includes(exam.id) ? 'ring-2 ring-blue-500 bg-blue-50/30' : 'bg-white dark:bg-slate-800'
+                    className={`hover:shadow-lg transition-all duration-200 cursor-pointer ${
+                      selectedExams.includes(exam.id) ? 'ring-2 ring-primary bg-primary/5' : ''
                     }`}
                     onClick={() => toggleSelectExam(exam.id)}
                   >
-                    <div className="h-2 bg-gradient-to-r from-blue-500 to-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                     <CardContent className="p-6">
-                      <div className="flex items-start justify-between mb-4">
-                        <div className="flex items-center gap-3">
-                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900 dark:to-indigo-900 flex items-center justify-center text-blue-700 dark:text-blue-300 font-bold text-lg">
-                            {exam.patient?.name?.charAt(0) || 'P'}
-                          </div>
-                          <div>
-                            <h3 className="font-semibold text-slate-900 dark:text-white line-clamp-1">{exam.patient?.name || 'Não informado'}</h3>
-                            <p className="text-sm text-slate-500">
-                              {exam.patient?.age && exam.patient?.gender ? 
-                                `${exam.patient.age} anos • ${exam.patient.gender}` : 
-                                'Dados não informados'
-                              }
-                            </p>
-                          </div>
-                        </div>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            toggleStarred(exam.id);
-                          }}
-                          className="h-8 w-8 -mr-2 -mt-2 text-slate-400 hover:text-yellow-400"
-                        >
-                          <Star className={`h-4 w-4 ${exam.starred ? 'fill-yellow-400 text-yellow-400' : ''}`} />
-                        </Button>
-                      </div>
-
                       <div className="space-y-4">
-                        <div className="flex items-center justify-between text-sm">
-                          <div className="flex items-center gap-2 text-slate-500">
-                            <CalendarIcon className="h-4 w-4" />
-                            {safeFormatDate(exam.analysisDate, 'dd/MM/yyyy')}
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-center gap-3">
+                            <Checkbox
+                              checked={selectedExams.includes(exam.id)}
+                              onCheckedChange={(checked) => toggleSelectExam(exam.id)}
+                              onClick={(e) => e.stopPropagation()}
+                            />
+                            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                              <User className="h-6 w-6 text-primary" />
+                            </div>
+                            <div>
+                              <h3 className="font-semibold">{exam.patient?.name || 'Não informado'}</h3>
+                              <p className="text-sm text-muted-foreground">
+                                {exam.patient?.age && exam.patient?.gender ? 
+                                  `${exam.patient.age} anos, ${exam.patient.gender}` : 
+                                  'Dados não informados'
+                                }
+                              </p>
+                            </div>
                           </div>
-                          <Badge variant="outline" className="font-normal">
-                            {exam.department || 'Geral'}
-                          </Badge>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleStarred(exam.id);
+                            }}
+                            className="p-1 h-auto"
+                          >
+                            <Star className={`h-4 w-4 ${exam.starred ? 'fill-yellow-400 text-yellow-400' : 'text-muted-foreground'}`} />
+                          </Button>
                         </div>
 
                         <div className="space-y-2">
-                          <div className="flex justify-between text-sm">
-                            <span className="text-slate-500">Confiança da IA</span>
-                            <span className="font-medium text-slate-900 dark:text-white">{safeConfidence(exam.confidence)}%</span>
+                          <div className="flex items-center gap-2">
+                            <code className="bg-muted px-2 py-1 rounded text-xs font-mono">
+                              {exam.protocol}
+                            </code>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                copyProtocol(exam.protocol);
+                              }}
+                              className="p-1 h-auto"
+                            >
+                              <Copy className="h-3 w-3" />
+                            </Button>
                           </div>
-                          <Progress value={safeConfidence(exam.confidence)} className="h-2" />
+                          
+                          <div className="flex items-center gap-2">
+                            {getStatusIcon(exam.status)}
+                            {getStatusBadge(exam.status)}
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            <Progress value={safeConfidence(exam.confidence)} className="flex-1 h-2" />
+                            <span className={`font-medium text-sm ${getConfidenceColor(exam.confidence)}`}>
+                              {safeConfidence(exam.confidence)}%
+                            </span>
+                          </div>
                         </div>
 
-                        <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-700">
-                          {getStatusBadge(exam.status)}
-                          
-                          <div className="flex items-center gap-1">
-                            <Dialog>
-                              <DialogTrigger asChild>
-                                <Button 
-                                  variant="ghost" 
-                                  size="sm" 
-                                  className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
-                                  onClick={(e) => e.stopPropagation()}
-                                >
-                                  Ver Detalhes
-                                </Button>
-                              </DialogTrigger>
-                              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-                                <DialogHeader>
-                                  <DialogTitle>Laudo Médico - {exam.protocol}</DialogTitle>
-                                  <DialogDescription>
-                                    Análise realizada em {safeFormatDate(exam.analysisDate, 'dd/MM/yyyy HH:mm')}
-                                  </DialogDescription>
-                                </DialogHeader>
-                                <StructuredMedicalReportViewer 
-                                  reportContent={exam.analysisResult}
-                                  isLoading={false}
-                                  patientData={{
-                                    name: exam.patient?.name || 'Paciente não identificado',
-                                    age: exam.patient?.age || 'N/A',
-                                    gender: exam.patient?.gender || 'N/A',
-                                    id: exam.patient?.id || exam.id,
-                                    protocol: exam.protocol
-                                  }}
-                                />
-                              </DialogContent>
-                            </Dialog>
-                          </div>
+                        <div className="flex items-center justify-between text-sm text-muted-foreground">
+                          <span>{safeFormatDate(exam.analysisDate, 'dd/MM/yyyy')}</span>
+                          <Badge variant="outline" className="text-xs">
+                            {exam.department}
+                          </Badge>
+                        </div>
+
+                        <div className="flex items-center gap-2 pt-2 border-t">
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button 
+                                variant="outline" 
+                                size="sm" 
+                                className="flex-1"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                <Eye className="h-4 w-4 mr-2" />
+                                Ver
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                              <DialogHeader>
+                                <DialogTitle>Laudo Médico - {exam.protocol}</DialogTitle>
+                                <DialogDescription>
+                                  Análise realizada em {safeFormatDate(exam.analysisDate, 'dd/MM/yyyy HH:mm')}
+                                </DialogDescription>
+                              </DialogHeader>
+                              <StructuredMedicalReportViewer 
+                                reportContent={exam.analysisResult}
+                                isLoading={false}
+                                patientData={{
+                                  name: exam.patient?.name || 'Paciente não identificado',
+                                  age: exam.patient?.age || 'N/A',
+                                  gender: exam.patient?.gender || 'N/A',
+                                  id: exam.patient?.id || exam.id,
+                                  protocol: exam.protocol
+                                }}
+                              />
+                            </DialogContent>
+                          </Dialog>
+
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <Download className="h-4 w-4" />
+                          </Button>
+
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              deleteExam(exam.id);
+                            }}
+                            className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
                         </div>
                       </div>
                     </CardContent>
@@ -1455,31 +1743,57 @@ const Historico: React.FC = () => {
             
             {/* Paginação Avançada */}
             {totalPages > 1 && (
-              <div className="border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 p-4">
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <div className="text-sm text-slate-500">
-                    Mostrando <span className="font-medium text-slate-900 dark:text-white">{startIndex + 1}</span> a{' '}
-                    <span className="font-medium text-slate-900 dark:text-white">{Math.min(endIndex, filteredExams.length)}</span> de{' '}
-                    <span className="font-medium text-slate-900 dark:text-white">{filteredExams.length}</span> resultados
+              <div className="border-t bg-muted/20 p-3 lg:p-4">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-3 lg:gap-4">
+                  <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
+                    <span className="text-center sm:text-left">
+                      Mostrando <span className="font-medium text-foreground">{startIndex + 1}</span> a{' '}
+                      <span className="font-medium text-foreground">{Math.min(endIndex, filteredExams.length)}</span> de{' '}
+                      <span className="font-medium text-foreground">{filteredExams.length}</span> exames
+                    </span>
+                    <Separator orientation="vertical" className="h-4 hidden sm:block" />
+                    <span className="text-center sm:text-left">
+                      Página <span className="font-medium text-foreground">{currentPage}</span> de{' '}
+                      <span className="font-medium text-foreground">{totalPages}</span>
+                    </span>
                   </div>
                   
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1 sm:gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setCurrentPage(1)}
+                      disabled={currentPage === 1}
+                      className="hidden md:flex p-1 sm:p-2"
+                    >
+                      <ChevronsLeft className="h-3 w-3 sm:h-4 sm:w-4" />
+                      <span className="sr-only">Primeira página</span>
+                    </Button>
+                    
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                       disabled={currentPage === 1}
-                      className="h-8 w-8 p-0"
+                      className="p-1 sm:p-2"
                     >
-                      <ChevronLeft className="h-4 w-4" />
+                      <ChevronLeft className="h-3 w-3 sm:h-4 sm:w-4" />
+                      <span className="sr-only">Página anterior</span>
                     </Button>
                     
+                    {/* Números das páginas */}
                     <div className="flex items-center gap-1">
-                      {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                        let pageNum = i + 1;
-                        if (totalPages > 5 && currentPage > 3) {
-                          pageNum = currentPage - 2 + i;
-                          if (pageNum > totalPages) pageNum = totalPages - (4 - i);
+                      {Array.from({ length: Math.min(window.innerWidth < 640 ? 3 : 5, totalPages) }, (_, i) => {
+                        let pageNum;
+                        const maxPages = window.innerWidth < 640 ? 3 : 5;
+                        if (totalPages <= maxPages) {
+                          pageNum = i + 1;
+                        } else if (currentPage <= Math.floor(maxPages / 2) + 1) {
+                          pageNum = i + 1;
+                        } else if (currentPage >= totalPages - Math.floor(maxPages / 2)) {
+                          pageNum = totalPages - maxPages + 1 + i;
+                        } else {
+                          pageNum = currentPage - Math.floor(maxPages / 2) + i;
                         }
                         
                         return (
@@ -1488,7 +1802,7 @@ const Historico: React.FC = () => {
                             variant={currentPage === pageNum ? "default" : "outline"}
                             size="sm"
                             onClick={() => setCurrentPage(pageNum)}
-                            className={`h-8 w-8 p-0 ${currentPage === pageNum ? 'bg-blue-600 hover:bg-blue-700' : ''}`}
+                            className="w-6 h-6 sm:w-8 sm:h-8 p-0 text-xs sm:text-sm"
                           >
                             {pageNum}
                           </Button>
@@ -1501,9 +1815,21 @@ const Historico: React.FC = () => {
                       size="sm"
                       onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                       disabled={currentPage === totalPages}
-                      className="h-8 w-8 p-0"
+                      className="p-1 sm:p-2"
                     >
-                      <ChevronRight className="h-4 w-4" />
+                      <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
+                      <span className="sr-only">Próxima página</span>
+                    </Button>
+                    
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setCurrentPage(totalPages)}
+                      disabled={currentPage === totalPages}
+                      className="hidden md:flex p-1 sm:p-2"
+                    >
+                      <ChevronsRight className="h-3 w-3 sm:h-4 sm:w-4" />
+                      <span className="sr-only">Última página</span>
                     </Button>
                   </div>
                 </div>

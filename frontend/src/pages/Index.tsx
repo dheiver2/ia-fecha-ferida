@@ -189,46 +189,47 @@ const Index = () => {
       </section>
 
       {/* Features Section */}
-      <section id="como-funciona" className="py-20 bg-white dark:bg-gray-900">
+      <section id="como-funciona" className="py-24 bg-white dark:bg-gray-900 relative">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gray-200 dark:via-gray-700 to-transparent"></div>
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight">
               Bem-vindo à VascularOne
             </h2>
             <p className="text-xl text-muted-foreground dark:text-gray-300 leading-relaxed">
-              Tecnologia de ponta para análise médica precisa e eficiente
+              Nossa plataforma combina o poder da inteligência artificial com protocolos médicos rigorosos.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
             {[
               {
-                icon: <Brain className="w-8 h-8" />,
-                title: "IA Avançada",
-                description: "Algoritmos de deep learning treinados com milhares de casos clínicos",
-                color: "from-primary to-accent"
-              },
-              {
-                icon: <Stethoscope className="w-8 h-8" />,
-                title: "Análise Médica",
-                description: "Avaliação completa seguindo protocolos médicos internacionais",
-                color: "from-primary to-accent"
-              },
-              {
-                icon: <Target className="w-8 h-8" />,
-                title: "Precisão Clínica",
-                description: "Resultados validados por especialistas com 94% de precisão",
-                color: "from-primary to-accent"
-              }
-            ].map((feature, index) => (
-              <div key={index} className="group relative">
-                <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-medium hover:shadow-strong transition-all duration-300 border border-border/20 dark:border-gray-700 group-hover:border-primary/20">
-                  <div className={`inline-flex p-4 rounded-2xl bg-gradient-to-r ${feature.color} text-white mb-6`}>
-                    {feature.icon}
-                  </div>
-                  <h3 className="text-xl font-bold mb-4 text-foreground dark:text-gray-100">{feature.title}</h3>
-                  <p className="text-muted-foreground dark:text-gray-300 leading-relaxed">{feature.description}</p>
+                icon: <Brain className="w-10 h-10" />,
+              title: "IA Generativa Avançada",
+              description: "Utilizamos modelos de última geração para analisar texturas, cores e profundidade com precisão sobre-humana.",
+              color: "text-purple-500",
+              bg: "bg-purple-50 dark:bg-purple-900/20"
+            },
+            {
+              icon: <Stethoscope className="w-10 h-10" />,
+              title: "Protocolos Clínicos",
+              description: "Análises baseadas em diretrizes internacionais (TIME, Wagner) para garantir conformidade médica.",
+              color: "text-blue-500",
+              bg: "bg-blue-50 dark:bg-blue-900/20"
+            },
+            {
+              icon: <Target className="w-10 h-10" />,
+              title: "Precisão Milimétrica",
+              description: "Medições automáticas de área e perímetro, reduzindo a subjetividade da avaliação manual.",
+              color: "text-green-500",
+              bg: "bg-green-50 dark:bg-green-900/20"
+            }].map((feature, index) => (
+              <div key={index} className="group relative p-8 rounded-3xl bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700 hover:bg-white dark:hover:bg-gray-800 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div className={`inline-flex p-4 rounded-2xl ${feature.bg} ${feature.color} mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                  {feature.icon}
                 </div>
+                <h3 className="text-2xl font-bold mb-4 text-foreground dark:text-gray-100">{feature.title}</h3>
+                <p className="text-muted-foreground dark:text-gray-400 leading-relaxed text-lg">{feature.description}</p>
               </div>
             ))}
           </div>

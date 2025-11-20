@@ -16,7 +16,7 @@ export const LoadingSpinner: React.FC<{
   return (
     <Loader2 
       className={cn(
-        'animate-spin text-blue-600',
+        'animate-spin text-emerald-600 dark:text-emerald-400',
         sizeClasses[size],
         className
       )} 
@@ -34,10 +34,10 @@ export const LoadingOverlay: React.FC<{
     <div className="relative">
       {children}
       {isLoading && (
-        <div className="absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center z-50 rounded-lg">
+        <div className="absolute inset-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm flex items-center justify-center z-50 rounded-lg">
           <div className="flex flex-col items-center gap-3">
             <LoadingSpinner size="lg" />
-            <p className="text-sm text-gray-600 font-medium">{message}</p>
+            <p className="text-sm text-slate-600 dark:text-slate-300 font-medium">{message}</p>
           </div>
         </div>
       )}
@@ -54,14 +54,14 @@ export const ProgressBar: React.FC<{
   return (
     <div className={cn('w-full', className)}>
       <div className="flex justify-between items-center mb-2">
-        <span className="text-sm font-medium text-gray-700">Progresso</span>
+        <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Progresso</span>
         {showPercentage && (
-          <span className="text-sm text-gray-500">{Math.round(progress)}%</span>
+          <span className="text-sm text-slate-500 dark:text-slate-400">{Math.round(progress)}%</span>
         )}
       </div>
-      <div className="w-full bg-gray-200 rounded-full h-2">
+      <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
         <div 
-          className="bg-blue-600 h-2 rounded-full transition-all duration-300 ease-out"
+          className="bg-emerald-600 dark:bg-emerald-500 h-2 rounded-full transition-all duration-300 ease-out"
           style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
         />
       </div>
@@ -104,35 +104,35 @@ export const Notification: React.FC<{
   const typeConfig = {
     success: {
       icon: CheckCircle,
-      bgColor: 'bg-green-50',
-      borderColor: 'border-green-200',
-      iconColor: 'text-green-600',
-      titleColor: 'text-green-800',
-      messageColor: 'text-green-700'
+      bgColor: 'bg-emerald-50 dark:bg-emerald-900/30',
+      borderColor: 'border-emerald-200 dark:border-emerald-800',
+      iconColor: 'text-emerald-600 dark:text-emerald-400',
+      titleColor: 'text-emerald-800 dark:text-emerald-200',
+      messageColor: 'text-emerald-700 dark:text-emerald-300'
     },
     error: {
       icon: AlertCircle,
-      bgColor: 'bg-red-50',
-      borderColor: 'border-red-200',
-      iconColor: 'text-red-600',
-      titleColor: 'text-red-800',
-      messageColor: 'text-red-700'
+      bgColor: 'bg-red-50 dark:bg-red-900/30',
+      borderColor: 'border-red-200 dark:border-red-800',
+      iconColor: 'text-red-600 dark:text-red-400',
+      titleColor: 'text-red-800 dark:text-red-200',
+      messageColor: 'text-red-700 dark:text-red-300'
     },
     warning: {
       icon: AlertCircle,
-      bgColor: 'bg-yellow-50',
-      borderColor: 'border-yellow-200',
-      iconColor: 'text-yellow-600',
-      titleColor: 'text-yellow-800',
-      messageColor: 'text-yellow-700'
+      bgColor: 'bg-amber-50 dark:bg-amber-900/30',
+      borderColor: 'border-amber-200 dark:border-amber-800',
+      iconColor: 'text-amber-600 dark:text-amber-400',
+      titleColor: 'text-amber-800 dark:text-amber-200',
+      messageColor: 'text-amber-700 dark:text-amber-300'
     },
     info: {
       icon: Info,
-      bgColor: 'bg-blue-50',
-      borderColor: 'border-blue-200',
-      iconColor: 'text-blue-600',
-      titleColor: 'text-blue-800',
-      messageColor: 'text-blue-700'
+      bgColor: 'bg-blue-50 dark:bg-blue-900/30',
+      borderColor: 'border-blue-200 dark:border-blue-800',
+      iconColor: 'text-blue-600 dark:text-blue-400',
+      titleColor: 'text-blue-800 dark:text-blue-200',
+      messageColor: 'text-blue-700 dark:text-blue-300'
     }
   };
 
@@ -143,7 +143,7 @@ export const Notification: React.FC<{
 
   return (
     <div className={cn(
-      'fixed top-4 right-4 max-w-sm w-full border rounded-lg p-4 shadow-lg z-50 transition-all duration-300',
+      'fixed top-4 right-4 max-w-sm w-full border rounded-lg p-4 shadow-lg z-50 transition-all duration-300 backdrop-blur-sm',
       config.bgColor,
       config.borderColor,
       isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
@@ -169,7 +169,7 @@ export const Notification: React.FC<{
               setTimeout(() => onClose(), 300);
             }}
             className={cn(
-              'flex-shrink-0 p-1 rounded-md hover:bg-black/5 transition-colors',
+              'flex-shrink-0 p-1 rounded-md hover:bg-black/5 dark:hover:bg-white/10 transition-colors',
               config.iconColor
             )}
           >
@@ -192,7 +192,7 @@ export const SkeletonLoader: React.FC<{
         <div
           key={index}
           className={cn(
-            'h-4 bg-gray-200 rounded animate-pulse',
+            'h-4 bg-slate-200 dark:bg-slate-700 rounded animate-pulse',
             index === lines - 1 ? 'w-3/4' : 'w-full'
           )}
         />
@@ -226,7 +226,7 @@ export const LoadingButton: React.FC<{
       disabled={disabled || isLoading}
       className={cn(
         'inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md font-medium transition-colors',
-        'bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed',
+        'bg-emerald-600 text-white hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-emerald-500/20',
         className
       )}
     >

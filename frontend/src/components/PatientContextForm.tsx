@@ -343,7 +343,7 @@ export const PatientContextForm: React.FC<PatientContextFormProps> = ({
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
                  {['Úlcera medial em MMII direito', 'Bordas irregulares', 'Exsudato moderado'].map((item) => (
                    <div key={item} className="flex items-center space-x-3 p-2 hover:bg-white dark:hover:bg-gray-800 rounded-lg transition-colors">
                      <Checkbox

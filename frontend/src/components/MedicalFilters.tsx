@@ -131,33 +131,35 @@ export const MedicalFilters: React.FC<MedicalFiltersProps> = ({
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'completed': return <CheckCircle className="h-4 w-4 text-medical-success" />;
-      case 'pending': return <Clock className="h-4 w-4 text-medical-warning" />;
-      case 'error': return <AlertTriangle className="h-4 w-4 text-medical-error" />;
-      case 'reviewing': return <FileText className="h-4 w-4 text-primary" />;
+      case 'completed': return <CheckCircle className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />;
+      case 'pending': return <Clock className="h-4 w-4 text-amber-600 dark:text-amber-400" />;
+      case 'error': return <AlertTriangle className="h-4 w-4 text-red-600 dark:text-red-400" />;
+      case 'reviewing': return <FileText className="h-4 w-4 text-blue-600 dark:text-blue-400" />;
       default: return null;
     }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'urgent': return 'bg-medical-error';
-      case 'high': return 'bg-medical-warning';
-      case 'normal': return 'bg-primary';
-      case 'low': return 'bg-muted-foreground';
-      default: return 'bg-muted';
+      case 'urgent': return 'bg-red-500';
+      case 'high': return 'bg-amber-500';
+      case 'normal': return 'bg-blue-500';
+      case 'low': return 'bg-slate-500';
+      default: return 'bg-slate-300';
     }
   };
 
   return (
-    <Card className="w-full">
-      <CardHeader className="pb-3">
+    <Card className="w-full border-slate-200/60 dark:border-slate-700/60 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-md">
+      <CardHeader className="pb-4 border-b border-slate-100 dark:border-slate-800">
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center space-x-2">
-              <Filter className="h-5 w-5 text-primary" />
-              <span className="text-gray-900 dark:text-gray-100">Filtros de Análise</span>
+          <CardTitle className="flex items-center space-x-2 text-lg text-slate-900 dark:text-white">
+            <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+              <Filter className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            </div>
+            <span>Filtros de Análise</span>
             {hasActiveFilters() && (
-              <Badge variant="secondary" className="ml-2">
+              <Badge variant="secondary" className="ml-2 bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border-blue-200 dark:border-blue-800">
                 {Object.values(filters).filter(v => 
                   v && v !== 'all' && v !== '' && 
                   (Array.isArray(v) ? v.length > 0 : true)
@@ -170,6 +172,7 @@ export const MedicalFilters: React.FC<MedicalFiltersProps> = ({
               variant="outline"
               size="sm"
               onClick={() => setIsExpanded(!isExpanded)}
+              className="border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300"
             >
               {isExpanded ? 'Menos filtros' : 'Mais filtros'}
             </Button>
@@ -178,7 +181,7 @@ export const MedicalFilters: React.FC<MedicalFiltersProps> = ({
                 variant="ghost"
                 size="sm"
                 onClick={onClearFilters}
-                className="text-medical-error hover:text-medical-error/80"
+                className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
               >
                 <X className="h-4 w-4 mr-1" />
                 Limpar
@@ -188,27 +191,27 @@ export const MedicalFilters: React.FC<MedicalFiltersProps> = ({
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-6 pt-6">
         {/* Search Bar */}
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
           <Input
             placeholder="Buscar por protocolo, paciente ou descrição..."
             value={filters.searchTerm}
             onChange={(e) => updateFilter('searchTerm', e.target.value)}
-            className="pl-10"
+            className="pl-10 bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 focus:ring-emerald-500 h-11"
           />
         </div>
 
         {/* Quick Filters Row */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div>
-            <Label className="text-sm font-medium mb-2 flex items-center text-gray-700 dark:text-gray-300">
-              <CheckCircle className="h-4 w-4 mr-1" />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="space-y-2">
+            <Label className="text-sm font-medium flex items-center text-slate-700 dark:text-slate-300">
+              <CheckCircle className="h-4 w-4 mr-2 text-emerald-500" />
               Status
             </Label>
             <Select value={filters.status} onValueChange={(value) => updateFilter('status', value)}>
-              <SelectTrigger>
+              <SelectTrigger className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 focus:ring-emerald-500">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -241,13 +244,13 @@ export const MedicalFilters: React.FC<MedicalFiltersProps> = ({
             </Select>
           </div>
 
-          <div>
-            <Label className="text-sm font-medium mb-2 flex items-center">
-              <Stethoscope className="h-4 w-4 mr-1" />
+          <div className="space-y-2">
+            <Label className="text-sm font-medium flex items-center text-slate-700 dark:text-slate-300">
+              <Stethoscope className="h-4 w-4 mr-2 text-blue-500" />
               Especialidade
             </Label>
             <Select value={filters.examType} onValueChange={(value) => updateFilter('examType', value)}>
-              <SelectTrigger>
+              <SelectTrigger className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 focus:ring-emerald-500">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -259,13 +262,13 @@ export const MedicalFilters: React.FC<MedicalFiltersProps> = ({
             </Select>
           </div>
 
-          <div>
-            <Label className="text-sm font-medium mb-2 flex items-center">
-              <User className="h-4 w-4 mr-1" />
+          <div className="space-y-2">
+            <Label className="text-sm font-medium flex items-center text-slate-700 dark:text-slate-300">
+              <User className="h-4 w-4 mr-2 text-purple-500" />
               Médico
             </Label>
             <Select value={filters.doctor} onValueChange={(value) => updateFilter('doctor', value)}>
-              <SelectTrigger>
+              <SelectTrigger className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 focus:ring-emerald-500">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -277,38 +280,38 @@ export const MedicalFilters: React.FC<MedicalFiltersProps> = ({
             </Select>
           </div>
 
-          <div>
-            <Label className="text-sm font-medium mb-2 flex items-center">
-              <AlertTriangle className="h-4 w-4 mr-1" />
+          <div className="space-y-2">
+            <Label className="text-sm font-medium flex items-center text-slate-700 dark:text-slate-300">
+              <AlertTriangle className="h-4 w-4 mr-2 text-amber-500" />
               Prioridade
             </Label>
             <Select value={filters.priority} onValueChange={(value) => updateFilter('priority', value)}>
-              <SelectTrigger>
+              <SelectTrigger className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 focus:ring-emerald-500">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">Todas</SelectItem>
                 <SelectItem value="urgent">
                   <div className="flex items-center space-x-2">
-                    <div className={`w-3 h-3 rounded-full ${getPriorityColor('urgent')}`}></div>
+                    <div className={`w-2 h-2 rounded-full ${getPriorityColor('urgent')}`}></div>
                     <span>Urgente</span>
                   </div>
                 </SelectItem>
                 <SelectItem value="high">
                   <div className="flex items-center space-x-2">
-                    <div className={`w-3 h-3 rounded-full ${getPriorityColor('high')}`}></div>
+                    <div className={`w-2 h-2 rounded-full ${getPriorityColor('high')}`}></div>
                     <span>Alta</span>
                   </div>
                 </SelectItem>
                 <SelectItem value="normal">
                   <div className="flex items-center space-x-2">
-                    <div className={`w-3 h-3 rounded-full ${getPriorityColor('normal')}`}></div>
+                    <div className={`w-2 h-2 rounded-full ${getPriorityColor('normal')}`}></div>
                     <span>Normal</span>
                   </div>
                 </SelectItem>
                 <SelectItem value="low">
                   <div className="flex items-center space-x-2">
-                    <div className={`w-3 h-3 rounded-full ${getPriorityColor('low')}`}></div>
+                    <div className={`w-2 h-2 rounded-full ${getPriorityColor('low')}`}></div>
                     <span>Baixa</span>
                   </div>
                 </SelectItem>
@@ -319,19 +322,18 @@ export const MedicalFilters: React.FC<MedicalFiltersProps> = ({
 
         {/* Expanded Filters */}
         {isExpanded && (
-          <>
-            <Separator />
+          <div className="animate-in slide-in-from-top-2 duration-300 pt-4 border-t border-slate-100 dark:border-slate-800">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {/* Date Range */}
               <div className="space-y-2">
-                <Label className="text-sm font-medium flex items-center">
-                  <CalendarIcon className="h-4 w-4 mr-1" />
+                <Label className="text-sm font-medium flex items-center text-slate-700 dark:text-slate-300">
+                  <CalendarIcon className="h-4 w-4 mr-2 text-slate-400" />
                   Período de Análise
                 </Label>
                 <div className="flex space-x-2">
                   <Popover>
                     <PopoverTrigger asChild>
-                      <Button variant="outline" size="sm" className="flex-1">
+                      <Button variant="outline" size="sm" className="flex-1 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800">
                         {filters.dateRange.from 
                           ? format(filters.dateRange.from, 'dd/MM/yyyy', { locale: ptBR })
                           : 'Data inicial'
@@ -349,7 +351,7 @@ export const MedicalFilters: React.FC<MedicalFiltersProps> = ({
                   </Popover>
                   <Popover>
                     <PopoverTrigger asChild>
-                      <Button variant="outline" size="sm" className="flex-1">
+                      <Button variant="outline" size="sm" className="flex-1 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800">
                         {filters.dateRange.to 
                           ? format(filters.dateRange.to, 'dd/MM/yyyy', { locale: ptBR })
                           : 'Data final'
@@ -370,8 +372,9 @@ export const MedicalFilters: React.FC<MedicalFiltersProps> = ({
 
               {/* Confidence Range */}
               <div className="space-y-2">
-                <Label className="text-sm font-medium">
-                  Confiança da Análise ({filters.confidenceRange.min}% - {filters.confidenceRange.max}%)
+                <Label className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center">
+                  <CheckCircle className="h-4 w-4 mr-2 text-slate-400" />
+                  Confiança ({filters.confidenceRange.min}% - {filters.confidenceRange.max}%)
                 </Label>
                 <div className="flex space-x-2">
                   <Input
@@ -383,7 +386,7 @@ export const MedicalFilters: React.FC<MedicalFiltersProps> = ({
                       ...filters.confidenceRange,
                       min: parseInt(e.target.value) || 0
                     })}
-                    className="flex-1"
+                    className="flex-1 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 focus:ring-emerald-500"
                     placeholder="Min"
                   />
                   <Input
@@ -395,7 +398,7 @@ export const MedicalFilters: React.FC<MedicalFiltersProps> = ({
                       ...filters.confidenceRange,
                       max: parseInt(e.target.value) || 100
                     })}
-                    className="flex-1"
+                    className="flex-1 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 focus:ring-emerald-500"
                     placeholder="Max"
                   />
                 </div>
@@ -403,8 +406,8 @@ export const MedicalFilters: React.FC<MedicalFiltersProps> = ({
 
               {/* Starred Filter */}
               <div className="space-y-2">
-                <Label className="text-sm font-medium flex items-center">
-                  <Star className="h-4 w-4 mr-1" />
+                <Label className="text-sm font-medium flex items-center text-slate-700 dark:text-slate-300">
+                  <Star className="h-4 w-4 mr-2 text-amber-400" />
                   Favoritos
                 </Label>
                 <Select 
@@ -413,7 +416,7 @@ export const MedicalFilters: React.FC<MedicalFiltersProps> = ({
                     value === 'all' ? null : value === 'starred'
                   )}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 focus:ring-emerald-500">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -426,16 +429,21 @@ export const MedicalFilters: React.FC<MedicalFiltersProps> = ({
             </div>
 
             {/* Tags */}
-            <div className="space-y-2">
-              <Label className="text-sm font-medium">Tags</Label>
-              <div className="flex flex-wrap gap-2 mb-2">
+            <div className="space-y-3 mt-6">
+              <Label className="text-sm font-medium text-slate-700 dark:text-slate-300">Tags</Label>
+              <div className="flex flex-wrap gap-2 mb-3 min-h-[2.5rem] p-2 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700">
+                {filters.tags.length === 0 && (
+                  <span className="text-slate-400 text-sm italic self-center">Nenhuma tag selecionada</span>
+                )}
                 {filters.tags.map((tag) => (
-                  <Badge key={tag} variant="secondary" className="flex items-center space-x-1">
+                  <Badge key={tag} variant="secondary" className="flex items-center space-x-1 bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-600 shadow-sm pl-2 pr-1 py-1">
                     <span>{tag}</span>
-                    <X 
-                      className="h-3 w-3 cursor-pointer hover:text-red-600" 
+                    <button 
+                      className="ml-1 p-0.5 hover:bg-slate-100 dark:hover:bg-slate-600 rounded-full transition-colors" 
                       onClick={() => removeTag(tag)}
-                    />
+                    >
+                      <X className="h-3 w-3 text-slate-400 hover:text-red-500" />
+                    </button>
                   </Badge>
                 ))}
               </div>
@@ -448,14 +456,14 @@ export const MedicalFilters: React.FC<MedicalFiltersProps> = ({
                       variant="outline"
                       size="sm"
                       onClick={() => addTag(tag)}
-                      className="text-xs"
+                      className="text-xs border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400"
                     >
                       + {tag}
                     </Button>
                   ))}
               </div>
             </div>
-          </>
+          </div>
         )}
       </CardContent>
     </Card>

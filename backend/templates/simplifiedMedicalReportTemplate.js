@@ -330,4 +330,128 @@ IMPORTANTE:
 `;
 };
 
-module.exports = { createSimplifiedPrompt };
+const createPrognosisPrompt = (reportData, patientContext) => {
+  const contextInfo = patientContext ? `
+    CONTEXTO DO PACIENTE:
+    - Idade: ${patientContext.age || 'Não informado'}
+    - Sexo: ${patientContext.gender || 'Não informado'}
+    - Condições médicas: ${patientContext.medicalConditions || 'Não informado'}
+    - Medicações: ${patientContext.currentMedications || 'Não informado'}
+    - Histórico de feridas: ${patientContext.woundHistory || 'Não informado'}
+    ` : '';
+
+  return `
+    Você é um especialista em medicina de feridas e cicatrização. Com base no laudo médico fornecido e no contexto do paciente, forneça uma análise de prognóstico detalhada e recomendações personalizadas.
+
+    ${contextInfo}
+
+    LAUDO MÉDICO ANALISADO:
+    ${reportData}
+
+    Por favor, forneça sua análise no seguinte formato JSON estruturado:
+
+    {
+      "prognosisAnalysis": {
+        "healingTimeEstimate": {
+          "optimistic": "[tempo em semanas]",
+          "realistic": "[tempo em semanas]",
+          "pessimistic": "[tempo em semanas]",
+          "factors": ["fatores que influenciam o tempo de cicatrização"]
+        },
+        "healingProbability": {
+          "complete": "[porcentagem 0-100]",
+          "partial": "[porcentagem 0-100]",
+          "complications": "[porcentagem 0-100]",
+          "reasoning": "Justificativa baseada nos achados"
+        },
+        "riskFactors": {
+          "high": ["fatores de alto risco identificados"],
+          "moderate": ["fatores de risco moderado"],
+          "protective": ["fatores protetivos presentes"]
+        },
+        "criticalIndicators": {
+          "warning": ["sinais de alerta para monitoramento"],
+          "improvement": ["indicadores de melhora esperados"],
+          "deterioration": ["sinais de piora a observar"]
+        }
+      },
+      "personalizedRecommendations": {
+        "immediate": {
+          "priority": "alta",
+          "actions": ["ações imediatas necessárias"],
+          "timeline": "24-48 horas"
+        },
+        "shortTerm": {
+          "priority": "alta",
+          "actions": ["ações para 1-2 semanas"],
+          "timeline": "1-2 semanas"
+        },
+        "longTerm": {
+          "priority": "média",
+          "actions": ["ações para seguimento prolongado"],
+          "timeline": "1-3 meses"
+        },
+        "lifestyle": {
+          "nutrition": ["recomendações nutricionais específicas"],
+          "activity": ["orientações de atividade física"],
+          "hygiene": ["cuidados de higiene personalizados"],
+          "environment": ["modificações ambientais sugeridas"]
+        },
+        "monitoring": {
+          "frequency": "[frequência de avaliação recomendada]",
+          "parameters": ["parâmetros específicos a monitorar"],
+          "tools": ["ferramentas de monitoramento sugeridas"],
+          "alerts": ["quando buscar atendimento urgente"]
+        }
+      },
+      "treatmentOptimization": {
+        "currentApproach": {
+          "effectiveness": "[alta|média|baixa]",
+          "adjustments": ["ajustes sugeridos no tratamento atual"]
+        },
+        "alternativeOptions": {
+          "conservative": ["opções conservadoras adicionais"],
+          "advanced": ["terapias avançadas a considerar"],
+          "surgical": ["intervenções cirúrgicas se aplicável"]
+        },
+        "contraindications": ["tratamentos a evitar baseado no caso"],
+        "drugInteractions": ["possíveis interações medicamentosas"]
+      },
+      "qualityOfLife": {
+        "impact": {
+          "physical": "Impacto físico esperado",
+          "emotional": "Impacto emocional a considerar",
+          "social": "Impacto social e funcional"
+        },
+        "supportStrategies": ["estratégias de suporte recomendadas"],
+        "adaptations": ["adaptações necessárias no dia a dia"]
+      },
+      "followUpPlan": {
+        "schedule": {
+          "week1": "Avaliação em 1 semana",
+          "week2": "Avaliação em 2 semanas",
+          "month1": "Avaliação em 1 mês",
+          "ongoing": "Seguimento contínuo"
+        },
+        "specialists": ["especialistas a consultar"],
+        "tests": ["exames complementares sugeridos"],
+        "documentation": ["documentação necessária para seguimento"]
+      },
+      "evidenceBased": {
+        "guidelines": ["diretrizes clínicas aplicáveis"],
+        "research": ["evidências científicas relevantes"],
+        "confidence": "[alta|média|baixa] - nível de confiança da análise"
+      }
+    }
+
+    IMPORTANTE: 
+    - Base suas recomendações em evidências científicas atuais
+    - Considere as limitações da análise por imagem
+    - Personalize as recomendações para o contexto específico do paciente
+    - Mantenha um tom profissional e empático
+    - Inclua disclaimers apropriados sobre a necessidade de avaliação presencial
+    - Responda APENAS com o JSON válido
+    `;
+};
+
+module.exports = { createSimplifiedPrompt, createPrognosisPrompt };

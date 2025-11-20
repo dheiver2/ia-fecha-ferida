@@ -2,22 +2,7 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 const fs = require('fs');
 const path = require('path');
 // Usando template simplificado para evitar problemas de parsing JSON
-const { createSimplifiedPrompt } = require('../templates/simplifiedMedicalReportTemplate.js');
-
-const DEFAULT_MODEL_PRIORITY = [
-  'gemini-2.5-pro',
-  'gemini-2.5-pro-preview-06-05',
-  'gemini-2.5-pro-preview-05-06',
-  'gemini-2.5-pro-preview-03-25',
-  'gemini-2.5-flash',
-  'gemini-2.5-flash-lite',
-  'gemini-2.0-flash',
-  'gemini-flash-latest',
-  'gemini-pro-latest',
-  'gemini-1.5-pro',
-  'gemini-1.5-flash',
-  'gemini-pro'
-];
+const { createSimplifiedPrompt, createPrognosisPrompt } = require('../templates/simplifiedMedicalReportTemplate.js');
 
 class GeminiService {
   constructor() {
@@ -35,8 +20,9 @@ class GeminiService {
     }
     
     // Lista de modelos em ordem de preferência (do mais recente para o mais estável)
-    this.availableModels = this.resolveModelPriority();
-    console.log('📋 Modelos configurados para fallback do Gemini:', this.availableModels.join(', '));
+    this.availableModels = [
+      'gemini-2.5-flash',
+    ];
     
     this.genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     this.currentModel = null;
@@ -108,34 +94,6 @@ class GeminiService {
       'Todos os modelos Gemini falharam';
     throw new Error(errorMessage);
   }
-  
-  resolveModelPriority() {
-    const rawPriority = process.env.GEMINI_MODEL_PRIORITY;
-    const sanitize = (value) => value.replace(/^models\//, '').trim();
-    
-    let prioritizedModels = [];
-    
-    if (rawPriority) {
-      prioritizedModels = rawPriority
-        .split(',')
-        .map((model) => sanitize(model))
-        .filter(Boolean);
-    }
-    
-    const combinedList = [
-      ...prioritizedModels,
-      ...DEFAULT_MODEL_PRIORITY
-    ];
-    
-    // Remove duplicados mantendo ordem
-    const deduped = Array.from(new Set(combinedList));
-    
-    if (deduped.length === 0) {
-      throw new Error('Nenhum modelo Gemini configurado. Defina GEMINI_MODEL_PRIORITY ou use a lista padrão.');
-    }
-    
-    return deduped;
-  }
 
   async analyzeWoundImage(imagePath, patientContext = '') {
     console.log('=== GEMINI SERVICE DEBUG ===');
@@ -200,6 +158,44 @@ class GeminiService {
       }
       
       console.log('=== FIM GEMINI SERVICE DEBUG ===');
+      return responseText;
+    });
+  }
+
+  async analyzePrognosis(reportData, patientContext = '') {
+    console.log('=== GEMINI SERVICE PROGNOSIS DEBUG ===');
+    console.log('Tamanho do laudo:', reportData.length);
+    
+    const prompt = createPrognosisPrompt(reportData, patientContext);
+
+    return await this.tryWithFallback(async () => {
+      console.log(`Enviando prognóstico para Gemini API com modelo: ${this.currentModel}...`);
+      
+      const result = await this.model.generateContent([prompt]);
+
+      console.log('Resposta de prognóstico recebida do Gemini');
+      const response = await result.response;
+      const responseText = response.text();
+      console.log('Tamanho da resposta:', responseText.length);
+      
+      console.log('🔍 Verificando se é JSON válido...');
+      try {
+        JSON.parse(responseText);
+        console.log('✅ Resposta é JSON válido');
+      } catch (parseError) {
+        console.log('❌ Resposta NÃO é JSON válido:', parseError.message);
+        console.log('🔧 Tentando limpar resposta...');
+        const cleanText = responseText.replace(/```json\n?|\n?```/g, '').trim();
+        try {
+          JSON.parse(cleanText);
+          console.log('✅ Resposta limpa é JSON válido');
+          return cleanText;
+        } catch (cleanParseError) {
+          console.log('❌ Resposta limpa ainda NÃO é JSON válido:', cleanParseError.message);
+        }
+      }
+      
+      console.log('=== FIM GEMINI SERVICE PROGNOSIS DEBUG ===');
       return responseText;
     });
   }

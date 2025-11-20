@@ -14,7 +14,9 @@ import {
   Stethoscope,
   Heart,
   Brain,
-  Eye
+  Eye,
+  ArrowUpRight,
+  ArrowDownRight
 } from 'lucide-react';
 
 interface DashboardStats {
@@ -51,8 +53,8 @@ export const MedicalDashboard: React.FC<MedicalDashboardProps> = ({
       title: "Análises Hoje",
       value: stats.todayAnalyses,
       icon: Activity,
-      color: "text-primary",
-      bgColor: "bg-primary/10",
+      color: "text-emerald-600 dark:text-emerald-400",
+      bgColor: "bg-emerald-100 dark:bg-emerald-900/30",
       change: "+12%",
       changeType: "positive" as const
     },
@@ -60,8 +62,8 @@ export const MedicalDashboard: React.FC<MedicalDashboardProps> = ({
       title: "Confiança Média",
       value: `${stats.avgConfidence}%`,
       icon: TrendingUp,
-      color: "text-accent",
-      bgColor: "bg-accent/10",
+      color: "text-teal-600 dark:text-teal-400",
+      bgColor: "bg-teal-100 dark:bg-teal-900/30",
       change: "+2.1%",
       changeType: "positive" as const
     },
@@ -69,8 +71,8 @@ export const MedicalDashboard: React.FC<MedicalDashboardProps> = ({
       title: "Pendentes",
       value: stats.pendingReviews,
       icon: Clock,
-      color: "text-medical-warning",
-      bgColor: "bg-medical-warning/10",
+      color: "text-amber-600 dark:text-amber-400",
+      bgColor: "bg-amber-100 dark:bg-amber-900/30",
       change: "-3",
       changeType: "negative" as const
     },
@@ -78,8 +80,8 @@ export const MedicalDashboard: React.FC<MedicalDashboardProps> = ({
       title: "Taxa de Sucesso",
       value: `${stats.successRate}%`,
       icon: CheckCircle,
-      color: "text-medical-success",
-      bgColor: "bg-medical-success/10",
+      color: "text-emerald-600 dark:text-emerald-400",
+      bgColor: "bg-emerald-100 dark:bg-emerald-900/30",
       change: "+0.3%",
       changeType: "positive" as const
     }
@@ -91,46 +93,46 @@ export const MedicalDashboard: React.FC<MedicalDashboardProps> = ({
       cases: 456,
       accuracy: 96.8,
       icon: Eye,
-      color: "bg-primary"
+      color: "bg-emerald-500"
     },
     {
       name: "Cardiologia", 
       cases: 234,
       accuracy: 94.2,
       icon: Heart,
-      color: "bg-medical-error"
+      color: "bg-rose-500"
     },
     {
       name: "Neurologia",
       cases: 189,
       accuracy: 92.1,
       icon: Brain,
-      color: "bg-accent"
+      color: "bg-slate-500"
     },
     {
       name: "Clínica Geral",
       cases: 368,
       accuracy: 95.4,
       icon: Stethoscope,
-      color: "bg-medical-success"
+      color: "bg-teal-500"
     }
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-in fade-in duration-500">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-bold text-foreground">
+          <h2 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
             Dashboard Médico
           </h2>
-          <p className="text-muted-foreground mt-1">
+          <p className="text-slate-500 dark:text-slate-400 mt-1">
             Visão geral das análises e estatísticas do sistema
           </p>
         </div>
-        <div className="flex items-center space-x-2">
-          <Calendar className="h-5 w-5 text-primary" />
-          <span className="text-sm text-muted-foreground">
+        <div className="flex items-center space-x-2 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm px-4 py-2 rounded-full border border-slate-200/50 dark:border-slate-700/50 shadow-sm">
+          <Calendar className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+          <span className="text-sm font-medium text-slate-600 dark:text-slate-300 capitalize">
             {new Date().toLocaleDateString('pt-BR', { 
               weekday: 'long', 
               year: 'numeric', 
@@ -146,28 +148,29 @@ export const MedicalDashboard: React.FC<MedicalDashboardProps> = ({
         {quickStats.map((stat, index) => {
           const Icon = stat.icon;
           return (
-            <Card key={index} className="hover:shadow-lg transition-shadow">
+            <Card key={index} className="border-slate-200/60 dark:border-slate-700/60 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl hover:shadow-lg transition-all duration-300 hover:-translate-y-1 shadow-md">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-muted-foreground">
+                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
                       {stat.title}
                     </p>
-                    <p className="text-3xl font-bold text-foreground mt-2">
+                    <p className="text-3xl font-bold text-slate-900 dark:text-white mt-2">
                       {stat.value}
                     </p>
                     <div className="flex items-center mt-2">
-                      <span className={`text-sm font-medium ${
+                      <span className={`text-sm font-medium flex items-center ${
                         stat.changeType === 'positive' 
-                          ? 'text-medical-success' 
-                          : 'text-medical-error'
+                          ? 'text-emerald-600 dark:text-emerald-400' 
+                          : 'text-red-600 dark:text-red-400'
                       }`}>
+                        {stat.changeType === 'positive' ? <ArrowUpRight className="w-3 h-3 mr-1" /> : <ArrowDownRight className="w-3 h-3 mr-1" />}
                         {stat.change}
                       </span>
-                      <span className="text-sm text-muted-foreground ml-1">vs ontem</span>
+                      <span className="text-sm text-slate-400 ml-1">vs ontem</span>
                     </div>
                   </div>
-                  <div className={`p-3 rounded-full ${stat.bgColor}`}>
+                  <div className={`p-3 rounded-xl ${stat.bgColor}`}>
                     <Icon className={`h-6 w-6 ${stat.color}`} />
                   </div>
                 </div>
@@ -180,93 +183,97 @@ export const MedicalDashboard: React.FC<MedicalDashboardProps> = ({
       {/* Performance Metrics */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Processing Performance */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <Activity className="h-5 w-5 text-primary" />
+        <Card className="border-slate-200/60 dark:border-slate-700/60 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-md">
+          <CardHeader className="border-b border-slate-100 dark:border-slate-800 pb-4">
+            <CardTitle className="flex items-center space-x-2 text-lg text-slate-900 dark:text-white">
+              <div className="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
+                <Activity className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+              </div>
               <span>Performance do Sistema</span>
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-6 pt-6">
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm font-medium">Tempo Médio de Processamento</span>
-                <span className="text-sm text-gray-600">{stats.avgProcessingTime}s</span>
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Tempo Médio de Processamento</span>
+                <span className="text-sm text-slate-500 dark:text-slate-400">{stats.avgProcessingTime}s</span>
               </div>
-              <Progress value={85} className="h-2" />
+              <Progress value={85} className="h-2 bg-slate-100 dark:bg-slate-800" indicatorClassName="bg-emerald-600 dark:bg-emerald-500" />
             </div>
             
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm font-medium">Confiança Média</span>
-                <span className="text-sm text-gray-600">{stats.avgConfidence}%</span>
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Confiança Média</span>
+                <span className="text-sm text-slate-500 dark:text-slate-400">{stats.avgConfidence}%</span>
               </div>
-              <Progress value={stats.avgConfidence} className="h-2" />
+              <Progress value={stats.avgConfidence} className="h-2 bg-slate-100 dark:bg-slate-800" indicatorClassName="bg-teal-600 dark:bg-teal-500" />
             </div>
             
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm font-medium">Taxa de Sucesso</span>
-                <span className="text-sm text-gray-600">{stats.successRate}%</span>
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Taxa de Sucesso</span>
+                <span className="text-sm text-slate-500 dark:text-slate-400">{stats.successRate}%</span>
               </div>
-              <Progress value={stats.successRate} className="h-2" />
+              <Progress value={stats.successRate} className="h-2 bg-slate-100 dark:bg-slate-800" indicatorClassName="bg-emerald-600 dark:bg-emerald-500" />
             </div>
           </CardContent>
         </Card>
 
         {/* Critical Alerts */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <AlertTriangle className="h-5 w-5 text-medical-warning" />
+        <Card className="border-slate-200/60 dark:border-slate-700/60 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-md">
+          <CardHeader className="border-b border-slate-100 dark:border-slate-800 pb-4">
+            <CardTitle className="flex items-center space-x-2 text-lg text-slate-900 dark:text-white">
+              <div className="p-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
+                <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+              </div>
               <span>Alertas Críticos</span>
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-6">
             <div className="space-y-4">
-              <div className="flex items-center justify-between p-3 bg-medical-error/10 rounded-lg">
+              <div className="flex items-center justify-between p-4 bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/20 rounded-xl transition-colors hover:bg-red-100 dark:hover:bg-red-900/20">
                 <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-medical-error rounded-full"></div>
+                  <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
                   <div>
-                    <p className="font-medium text-medical-error">
+                    <p className="font-medium text-red-700 dark:text-red-300">
                       {stats.criticalCases} casos críticos
                     </p>
-                    <p className="text-sm text-medical-error/80">
+                    <p className="text-sm text-red-600/80 dark:text-red-400/80">
                       Requerem atenção imediata
                     </p>
                   </div>
                 </div>
-                <Badge variant="destructive">Urgente</Badge>
+                <Badge variant="destructive" className="bg-red-500 hover:bg-red-600 border-red-600">Urgente</Badge>
               </div>
               
-              <div className="flex items-center justify-between p-3 bg-medical-warning/10 rounded-lg">
+              <div className="flex items-center justify-between p-4 bg-amber-50 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-900/20 rounded-xl transition-colors hover:bg-amber-100 dark:hover:bg-amber-900/20">
                 <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-medical-warning rounded-full"></div>
+                  <div className="w-2 h-2 bg-amber-500 rounded-full"></div>
                   <div>
-                    <p className="font-medium text-medical-warning">
+                    <p className="font-medium text-amber-700 dark:text-amber-300">
                       {stats.pendingReviews} análises pendentes
                     </p>
-                    <p className="text-sm text-medical-warning/80">
+                    <p className="text-sm text-amber-600/80 dark:text-amber-400/80">
                       Aguardando revisão médica
                     </p>
                   </div>
                 </div>
-                <Badge variant="secondary">Pendente</Badge>
+                <Badge variant="secondary" className="bg-amber-100 text-amber-700 hover:bg-amber-200 dark:bg-amber-900/30 dark:text-amber-300 border-amber-200 dark:border-amber-800">Pendente</Badge>
               </div>
               
-              <div className="flex items-center justify-between p-3 bg-medical-success/10 rounded-lg">
+              <div className="flex items-center justify-between p-4 bg-emerald-50 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-900/20 rounded-xl transition-colors hover:bg-emerald-100 dark:hover:bg-emerald-900/20">
                 <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-medical-success rounded-full"></div>
+                  <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
                   <div>
-                    <p className="font-medium text-medical-success">
+                    <p className="font-medium text-emerald-700 dark:text-emerald-300">
                       Sistema operacional
                     </p>
-                    <p className="text-sm text-medical-success/80">
+                    <p className="text-sm text-emerald-600/80 dark:text-emerald-400/80">
                       Todos os serviços funcionando
                     </p>
                   </div>
                 </div>
-                <Badge className="bg-medical-success hover:bg-medical-success/90 text-white">Normal</Badge>
+                <Badge className="bg-emerald-500 hover:bg-emerald-600 text-white border-emerald-600">Normal</Badge>
               </div>
             </div>
           </CardContent>
@@ -274,39 +281,41 @@ export const MedicalDashboard: React.FC<MedicalDashboardProps> = ({
       </div>
 
       {/* Specialty Statistics */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <Users className="h-5 w-5 text-primary" />
+      <Card className="border-slate-200/60 dark:border-slate-700/60 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-md">
+        <CardHeader className="border-b border-slate-100 dark:border-slate-800 pb-4">
+          <CardTitle className="flex items-center space-x-2 text-lg text-slate-900 dark:text-white">
+            <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+              <Users className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+            </div>
             <span>Estatísticas por Especialidade</span>
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pt-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {specialtyStats.map((specialty, index) => {
               const Icon = specialty.icon;
               return (
-                <div key={index} className="p-4 border border-border rounded-lg hover:shadow-md transition-shadow">
+                <div key={index} className="p-4 border border-slate-200 dark:border-slate-700 rounded-xl hover:shadow-md transition-all duration-300 hover:border-emerald-200 dark:hover:border-emerald-800 bg-slate-50/50 dark:bg-slate-800/50">
                   <div className="flex items-center space-x-3 mb-3">
-                    <div className={`p-2 rounded-lg ${specialty.color}`}>
+                    <div className={`p-2 rounded-lg shadow-sm ${specialty.color}`}>
                       <Icon className="h-5 w-5 text-white" />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-foreground">
+                      <h4 className="font-semibold text-slate-900 dark:text-white">
                         {specialty.name}
                       </h4>
                     </div>
                   </div>
                   <div className="space-y-2">
                     <div className="flex justify-between">
-                      <span className="text-sm text-muted-foreground">Casos</span>
-                      <span className="font-medium text-foreground">{specialty.cases}</span>
+                      <span className="text-sm text-slate-500 dark:text-slate-400">Casos</span>
+                      <span className="font-medium text-slate-900 dark:text-white">{specialty.cases}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-sm text-muted-foreground">Precisão</span>
-                      <span className="font-medium text-medical-success">{specialty.accuracy}%</span>
+                      <span className="text-sm text-slate-500 dark:text-slate-400">Precisão</span>
+                      <span className="font-medium text-emerald-600 dark:text-emerald-400">{specialty.accuracy}%</span>
                     </div>
-                    <Progress value={specialty.accuracy} className="h-1" />
+                    <Progress value={specialty.accuracy} className="h-1.5 bg-slate-200 dark:bg-slate-700" indicatorClassName={specialty.color} />
                   </div>
                 </div>
               );

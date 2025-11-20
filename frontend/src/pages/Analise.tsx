@@ -170,7 +170,11 @@ const Analise = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-subtle dark:bg-gradient-subtle">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-blue-50/50 to-transparent dark:from-gray-800/50 dark:to-transparent -z-10"></div>
+      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 -z-10"></div>
+      
       <Header />
 
       {/* Hero Section otimizado */}
@@ -195,7 +199,7 @@ const Analise = () => {
         </div>
       </section>
 
-      <main className="pb-8">
+      <main className="pb-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
           
           {/* Indicador de Progresso Moderno */}
@@ -400,7 +404,7 @@ const Analise = () => {
             </div>
           </div>
 
-          {/* Seção de Análise em Progresso */}
+          {/* Analysis Progress */}
           {isAnalyzing && (
             <div className="mb-12 animate-in fade-in duration-500">
               <div className="max-w-4xl mx-auto">
@@ -451,7 +455,7 @@ const Analise = () => {
             </div>
           )}
 
-          {/* Seção de Resultados */}
+          {/* Results Section */}
           {analysisResult && (
             <div className="mb-12 animate-in slide-in-from-bottom-8 duration-700">
               <div className="max-w-6xl mx-auto">

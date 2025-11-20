@@ -128,21 +128,21 @@ const ContextualNavigation: React.FC = () => {
   if (currentNavigation.length === 0) return null;
 
   return (
-    <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-      <div className="container mx-auto px-4 py-6">
-        <div className="max-w-4xl mx-auto">
+    <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800">
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-5xl mx-auto">
           {/* Header */}
-          <div className="mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <div className="mb-8">
+            <h2 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
               {title}
             </h2>
-            <p className="text-gray-600 dark:text-gray-300 mt-1">
+            <p className="text-slate-600 dark:text-slate-400 mt-2 text-lg">
               {subtitle}
             </p>
           </div>
 
           {/* Navigation Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {currentNavigation.map((item, index) => (
               <Link
                 key={index}
@@ -150,41 +150,40 @@ const ContextualNavigation: React.FC = () => {
                 className="group block"
               >
                 <div className={`
-                  p-6 rounded-xl border-2 transition-all duration-200 hover:shadow-lg
+                  p-6 rounded-2xl border transition-all duration-300 hover:shadow-xl hover:-translate-y-1
                   ${item.primary 
-                    ? 'border-blue-200 bg-blue-50 hover:border-blue-300 dark:border-blue-800 dark:bg-blue-900/20' 
-                    : 'border-gray-200 bg-gray-50 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800/50'
+                    ? 'border-emerald-200 bg-emerald-50/50 hover:border-emerald-300 dark:border-emerald-800/50 dark:bg-emerald-900/10 hover:shadow-emerald-500/10' 
+                    : 'border-slate-200 bg-white hover:border-emerald-200 dark:border-slate-800 dark:bg-slate-900/50 dark:hover:border-emerald-800/50 hover:shadow-slate-200/50 dark:hover:shadow-black/20'
                   }
-                  group-hover:scale-105
                 `}>
                   <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-4">
                       <div className={`
-                        p-2 rounded-lg
+                        p-3 rounded-xl transition-colors duration-300
                         ${item.primary 
-                          ? 'bg-blue-100 text-blue-600 dark:bg-blue-800 dark:text-blue-300' 
-                          : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300'
+                          ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400 group-hover:bg-emerald-200 dark:group-hover:bg-emerald-900/50' 
+                          : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400 group-hover:bg-emerald-50 group-hover:text-emerald-600 dark:group-hover:bg-emerald-900/20 dark:group-hover:text-emerald-400'
                         }
                       `}>
-                        {item.icon}
+                        {React.cloneElement(item.icon as React.ReactElement, { className: "w-6 h-6" })}
                       </div>
                       <div>
-                        <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                        <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2 text-lg group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">
                           {item.label}
                           {item.badge && (
-                            <Badge variant="secondary" className="text-xs">
+                            <Badge variant="secondary" className="text-xs bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800">
                               {item.badge}
                             </Badge>
                           )}
                         </h3>
                         {item.description && (
-                          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                          <p className="text-sm text-slate-600 dark:text-slate-400 mt-1 group-hover:text-slate-700 dark:group-hover:text-slate-300">
                             {item.description}
                           </p>
                         )}
                       </div>
                     </div>
-                    <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors" />
+                    <ArrowRight className="w-5 h-5 text-slate-300 group-hover:text-emerald-500 dark:text-slate-600 dark:group-hover:text-emerald-400 transition-all transform group-hover:translate-x-1" />
                   </div>
                 </div>
               </Link>
@@ -193,24 +192,24 @@ const ContextualNavigation: React.FC = () => {
 
           {/* Quick Actions para médicos */}
           {isMedicalContext && (
-            <div className="mt-8 p-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl border border-blue-200 dark:border-blue-800">
-              <div className="flex items-center justify-between">
+            <div className="mt-10 p-6 bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/10 dark:to-teal-900/10 rounded-2xl border border-emerald-100 dark:border-emerald-900/30 shadow-sm">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div>
-                  <h3 className="font-semibold text-gray-900 dark:text-white">
+                  <h3 className="font-bold text-slate-900 dark:text-white text-lg">
                     Ações Rápidas
                   </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <p className="text-slate-600 dark:text-slate-400">
                     Acesso direto às funcionalidades mais usadas
                   </p>
                 </div>
-                <div className="flex gap-2">
-                  <Button size="sm" variant="outline" asChild>
+                <div className="flex gap-3 w-full sm:w-auto">
+                  <Button size="lg" variant="outline" asChild className="flex-1 sm:flex-none border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700 dark:border-emerald-800 dark:hover:bg-emerald-900/20 dark:hover:text-emerald-400">
                     <Link to="/analise">
                       <Camera className="w-4 h-4 mr-2" />
                       Analisar
                     </Link>
                   </Button>
-                  <Button size="sm" asChild>
+                  <Button size="lg" asChild className="flex-1 sm:flex-none bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-500/20">
                     <Link to="/teleconsulta">
                       <Phone className="w-4 h-4 mr-2" />
                       Consulta
@@ -223,14 +222,16 @@ const ContextualNavigation: React.FC = () => {
 
           {/* Ajuda contextual para pacientes */}
           {isPatientContext && (
-            <div className="mt-8 p-4 bg-green-50 dark:bg-green-900/20 rounded-xl border border-green-200 dark:border-green-800">
-              <div className="flex items-start gap-3">
-                <HelpCircle className="w-5 h-5 text-green-600 dark:text-green-400 mt-0.5" />
+            <div className="mt-10 p-6 bg-emerald-50 dark:bg-emerald-900/10 rounded-2xl border border-emerald-100 dark:border-emerald-900/30 shadow-sm">
+              <div className="flex items-start gap-4">
+                <div className="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
+                  <HelpCircle className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+                </div>
                 <div>
-                  <h3 className="font-semibold text-green-900 dark:text-green-100">
+                  <h3 className="font-bold text-emerald-900 dark:text-emerald-100 text-lg">
                     Precisa de ajuda?
                   </h3>
-                  <p className="text-sm text-green-700 dark:text-green-300 mt-1">
+                  <p className="text-emerald-700 dark:text-emerald-300 mt-1 leading-relaxed">
                     Se você não tem um código de consulta, entre em contato com seu médico. 
                     Ele enviará um link ou código para você acessar a videochamada.
                   </p>

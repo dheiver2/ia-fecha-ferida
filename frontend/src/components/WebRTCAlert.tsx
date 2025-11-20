@@ -1,7 +1,7 @@
 import React from 'react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { AlertTriangle, ExternalLink, RefreshCw } from 'lucide-react';
+import { AlertTriangle, ExternalLink, RefreshCw, ShieldAlert } from 'lucide-react';
 
 interface WebRTCAlertProps {
   issues: string[];
@@ -30,27 +30,27 @@ export const WebRTCAlert: React.FC<WebRTCAlertProps> = ({ issues, onRetry }) => 
       const localhostUrl = currentUrl.replace(window.location.hostname, 'localhost');
       
       solutions.push(
-        <div key="localhost" className="mb-3">
-          <p className="font-medium text-sm mb-2">✅ Solução Recomendada:</p>
+        <div key="localhost" className="mb-3 p-3 bg-white/50 dark:bg-slate-800/50 rounded-lg border border-amber-200 dark:border-amber-800/50">
+          <p className="font-medium text-sm mb-2 text-amber-900 dark:text-amber-200">✅ Solução Recomendada:</p>
           <Button 
             variant="outline" 
             size="sm" 
             onClick={() => window.location.href = localhostUrl}
-            className="w-full justify-start"
+            className="w-full justify-start bg-white dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-900/20 border-amber-200 dark:border-amber-800 text-amber-900 dark:text-amber-200"
           >
             <ExternalLink className="w-4 h-4 mr-2" />
             Acessar via localhost
           </Button>
-          <p className="text-xs text-muted-foreground mt-1">
+          <p className="text-xs text-amber-700 dark:text-amber-400 mt-2">
             Clique para acessar via localhost (mais seguro)
           </p>
         </div>
       );
       
       solutions.push(
-        <div key="https" className="mb-3">
-          <p className="font-medium text-sm mb-2">🔒 Alternativa:</p>
-          <p className="text-xs text-muted-foreground">
+        <div key="https" className="mb-3 p-3 bg-white/50 dark:bg-slate-800/50 rounded-lg border border-amber-200 dark:border-amber-800/50">
+          <p className="font-medium text-sm mb-2 text-amber-900 dark:text-amber-200">🔒 Alternativa:</p>
+          <p className="text-xs text-amber-700 dark:text-amber-400">
             Configure HTTPS para acesso via rede (veja MEDIA_ACCESS_SOLUTION.md)
           </p>
         </div>
@@ -59,9 +59,9 @@ export const WebRTCAlert: React.FC<WebRTCAlertProps> = ({ issues, onRetry }) => 
     
     if (hasGetUserMediaIssue) {
       solutions.push(
-        <div key="browser" className="mb-3">
-          <p className="font-medium text-sm mb-2">🌐 Atualize seu navegador:</p>
-          <p className="text-xs text-muted-foreground">
+        <div key="browser" className="mb-3 p-3 bg-white/50 dark:bg-slate-800/50 rounded-lg border border-amber-200 dark:border-amber-800/50">
+          <p className="font-medium text-sm mb-2 text-amber-900 dark:text-amber-200">🌐 Atualize seu navegador:</p>
+          <p className="text-xs text-amber-700 dark:text-amber-400">
             Use Chrome, Firefox ou Edge atualizados
           </p>
         </div>
@@ -72,20 +72,20 @@ export const WebRTCAlert: React.FC<WebRTCAlertProps> = ({ issues, onRetry }) => 
   };
   
   return (
-    <Alert className="border-orange-200 bg-orange-50">
-      <AlertTriangle className="h-4 w-4 text-orange-600" />
-      <AlertTitle className="text-orange-800">
+    <Alert className="border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 backdrop-blur-sm shadow-lg">
+      <ShieldAlert className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+      <AlertTitle className="text-amber-800 dark:text-amber-200 font-bold text-lg ml-2">
         {getMainMessage()}
       </AlertTitle>
-      <AlertDescription className="text-orange-700">
-        <div className="mt-2">
-          <p className="text-sm mb-3">
+      <AlertDescription className="text-amber-700 dark:text-amber-300 ml-2 mt-2">
+        <div>
+          <p className="text-sm mb-4 font-medium">
             A videochamada não pode ser iniciada devido aos seguintes problemas:
           </p>
           
-          <ul className="text-xs space-y-1 mb-4 pl-4">
+          <ul className="text-xs space-y-2 mb-6 pl-4">
             {issues.map((issue, index) => (
-              <li key={index} className="list-disc">
+              <li key={index} className="list-disc marker:text-amber-500">
                 {issue}
               </li>
             ))}
@@ -98,7 +98,7 @@ export const WebRTCAlert: React.FC<WebRTCAlertProps> = ({ issues, onRetry }) => 
               variant="outline" 
               size="sm" 
               onClick={onRetry}
-              className="w-full"
+              className="w-full mt-2 bg-white dark:bg-slate-800 hover:bg-amber-100 dark:hover:bg-amber-900/30 border-amber-200 dark:border-amber-800 text-amber-900 dark:text-amber-200"
             >
               <RefreshCw className="w-4 h-4 mr-2" />
               Tentar Novamente

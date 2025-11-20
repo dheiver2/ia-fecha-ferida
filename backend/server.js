@@ -276,6 +276,37 @@ app.post('/api/analyze', authenticateToken, extractRequestInfo, upload.single('i
 	}
 });
 
+// Endpoint para análise de prognóstico
+app.post('/api/analyze-prognosis', authenticateToken, extractRequestInfo, async (req, res) => {
+	try {
+		const { reportData, patientContext } = req.body;
+
+		if (!reportData) {
+			return res.status(400).json({
+				error: 'Dados do laudo não fornecidos',
+			});
+		}
+
+		console.log('=== DEBUG PROGNÓSTICO ===');
+		console.log('Recebendo solicitação de prognóstico');
+		
+		// Chamar o serviço Gemini para análise de prognóstico
+		const prognosis = await geminiService.analyzePrognosis(reportData, patientContext);
+		
+		res.json({
+			success: true,
+			data: prognosis,
+			timestamp: new Date().toISOString(),
+		});
+	} catch (error) {
+		console.error('Erro na análise de prognóstico:', error);
+		res.status(500).json({
+			error: 'Erro interno do servidor',
+			message: error.message,
+		});
+	}
+});
+
 // Middleware de tratamento de erros
 app.use((error, req, res, next) => {
 	if (error instanceof multer.MulterError) {

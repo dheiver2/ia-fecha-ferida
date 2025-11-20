@@ -472,6 +472,60 @@ All colors MUST be HSL.
   }
 }
 
+/* Advanced UI/UX Utilities */
+
+/* Glassmorphism */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark .glass {
+  background: rgba(17, 24, 39, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+}
+
+.dark .glass-card {
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.5);
+}
+
+/* Selection */
+::selection {
+  background: hsl(var(--primary) / 0.2);
+  color: hsl(var(--primary));
+}
+
 /* Utilities: melhor contraste sobre gradientes e imagens */
 .text-on-gradient {
   color: hsl(0 0% 98%);
@@ -493,77 +547,3 @@ All colors MUST be HSL.
   background: linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.12) 100%);
   pointer-events: none;
 }
-
-  /* Melhor contraste para elementos específicos no modo escuro */
-  .dark .text-gray-500 {
-    color: hsl(215 20% 75%) !important;
-  }
-
-  .dark .text-gray-600 {
-    color: hsl(215 20% 80%) !important;
-  }
-
-  .dark .text-gray-400 {
-    color: hsl(215 20% 70%) !important;
-  }
-
-  .dark .text-gray-700 {
-    color: hsl(215 20% 85%) !important;
-  }
-
-  .dark .text-gray-800 {
-    color: hsl(215 20% 90%) !important;
-  }
-
-  .dark .text-gray-900 {
-    color: hsl(215 20% 95%) !important;
-  }
-
-  .dark .text-slate-600 {
-    color: hsl(215 20% 78%) !important;
-  }
-
-  .dark .text-slate-700 {
-    color: hsl(215 20% 85%) !important;
-  }
-
-  .dark .text-slate-800 {
-    color: hsl(215 20% 90%) !important;
-  }
-
-  .dark .text-slate-900 {
-    color: hsl(215 20% 95%) !important;
-  }
-
-  /* Melhor contraste para textos médicos no modo escuro */
-  .dark .text-slate-300 {
-    color: hsl(215 20% 80%) !important;
-  }
-
-  /* Garantir visibilidade de textos básicos no modo escuro */
-  .dark .text-foreground {
-    color: hsl(210 40% 98%) !important;
-  }
-
-  .dark .text-gray-300 {
-    color: hsl(215 20% 85%) !important;
-  }
-
-  .dark .text-gray-200 {
-    color: hsl(215 20% 90%) !important;
-  }
-
-  .dark .text-gray-100 {
-    color: hsl(215 20% 95%) !important;
-  }
-
-  /* Garantir que o fundo escuro seja aplicado */
-  .dark {
-    background-color: hsl(220 15% 12%) !important;
-    color: hsl(210 40% 98%) !important;
-  }
-
-  .dark body {
-    background-color: hsl(220 15% 12%) !important;
-    color: hsl(210 40% 98%) !important;
-  }

@@ -40,105 +40,142 @@ const Index = () => {
       )}
       
       {/* Hero Section - Enhanced */}
-      <section className="relative pt-16 sm:pt-20 lg:pt-24 pb-12 sm:pb-16 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-hero opacity-5"></div>
+      <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden">
+        {/* Background Elements */}
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-50/50 to-white dark:from-gray-900 dark:to-gray-950 -z-20"></div>
+        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 -z-10 animate-pulse duration-[10000ms]"></div>
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-accent/5 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4 -z-10"></div>
+        
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-12 items-center">
-              <div className="space-y-6 sm:space-y-8">
-                <div className="space-y-3 sm:space-y-4">
-                  <div className="inline-flex items-center px-4 py-2 bg-primary/10 rounded-full text-primary font-semibold text-sm">
-                    <Zap className="w-4 h-4 mr-2" />
-                    Tecnologia Médica Avançada
+          <div className="max-w-7xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+              <div className="space-y-8 text-center lg:text-left">
+                <div className="space-y-6">
+                  <div className="inline-flex items-center px-4 py-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-primary/20 rounded-full text-primary font-semibold text-sm shadow-sm animate-in fade-in slide-in-from-bottom-4 duration-700">
+                    <Zap className="w-4 h-4 mr-2 fill-primary" />
+                    Tecnologia Médica de Última Geração
                   </div>
-                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                    <span className="bg-gradient-to-r from-primary via-accent to-primary-light bg-clip-text text-transparent">
-                      Revolucione
-                    </span>
-                    <br />
-                    <span className="text-foreground">
-                      o Cuidado de Feridas
+                  <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1] animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-100">
+                    <span className="block text-foreground dark:text-white">Revolucione o</span>
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-red-500 to-accent">
+                      Cuidado de Feridas
                     </span>
                   </h1>
-                  <p className="text-lg sm:text-xl text-muted-foreground dark:text-gray-300 leading-relaxed max-w-lg">
-                    Análise inteligente de feridas com IA avançada. Diagnósticos precisos, 
-                    tratamentos personalizados e resultados comprovados.
+                  <p className="text-xl text-muted-foreground dark:text-gray-300 leading-relaxed max-w-2xl mx-auto lg:mx-0 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
+                    Análise inteligente com IA avançada. Diagnósticos precisos, 
+                    tratamentos personalizados e resultados comprovados em segundos.
                   </p>
                 </div>
                 
-                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300">
                   <Link to={user ? "/analise" : "/login"} className="w-full sm:w-auto">
-                    <Button size="lg" className="w-full sm:w-auto bg-gradient-primary text-white font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-2xl shadow-strong hover:shadow-glow transition-all duration-300 hover:scale-105 group min-h-[48px]">
+                    <Button size="lg" className="w-full sm:w-auto bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-bold px-8 py-6 rounded-2xl shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-300 hover:-translate-y-1 group text-lg">
                       {user ? "Começar Análise" : "Entrar para Analisar"}
                       <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   </Link>
                   <Link to="/simples" className="w-full sm:w-auto">
-                    <Button size="lg" className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-accent-foreground font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-2xl shadow-strong hover:shadow-glow transition-all duration-300 hover:scale-105 group min-h-[48px]">
+                    <Button size="lg" variant="outline" className="w-full sm:w-auto border-2 border-gray-200 dark:border-gray-700 hover:border-primary/50 hover:bg-primary/5 text-foreground font-bold px-8 py-6 rounded-2xl transition-all duration-300 hover:-translate-y-1 text-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm">
                       Videochamada Rápida
-                      <Stethoscope className="w-5 h-5 ml-2 group-hover:scale-110 transition-transform" />
+                      <Stethoscope className="w-5 h-5 ml-2" />
                     </Button>
                   </Link>
-                  <Button variant="outline" size="lg" className="w-full sm:w-auto border-2 border-primary text-primary hover:bg-primary hover:text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-2xl transition-all duration-300 min-h-[48px]">
-                    Ver Demonstração
-                  </Button>
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-8 pt-4">
-                  <div className="flex items-center space-x-2">
-                    <div className="flex -space-x-2">
+                <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start space-y-4 sm:space-y-0 sm:space-x-8 pt-8 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-500">
+                  <div className="flex items-center space-x-3">
+                    <div className="flex -space-x-3">
                       {[1,2,3,4].map((i) => (
-                        <div key={i} className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-r from-primary to-accent border-2 border-white"></div>
+                        <div key={i} className="w-10 h-10 rounded-full border-2 border-white dark:border-gray-900 bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-xs font-bold text-gray-600 dark:text-gray-300 overflow-hidden">
+                           <User className="w-6 h-6 opacity-50" />
+                        </div>
                       ))}
                     </div>
-                    <span className="text-sm text-muted-foreground font-medium">+1000 profissionais</span>
+                    <div className="text-left">
+                      <p className="font-bold text-foreground dark:text-white">+1000</p>
+                      <p className="text-xs text-muted-foreground">Profissionais ativos</p>
+                    </div>
                   </div>
-                  <div className="flex items-center space-x-1">
-                    {[1,2,3,4,5].map((i) => (
-                      <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                    ))}
-                    <span className="text-sm text-muted-foreground font-medium ml-2">4.9/5</span>
+                  <div className="h-8 w-px bg-gray-200 dark:bg-gray-700 hidden sm:block"></div>
+                  <div className="flex items-center space-x-2">
+                    <div className="flex text-yellow-400">
+                      {[1,2,3,4,5].map((i) => (
+                        <Star key={i} className="w-5 h-5 fill-current" />
+                      ))}
+                    </div>
+                    <div className="text-left">
+                      <p className="font-bold text-foreground dark:text-white">4.9/5</p>
+                      <p className="text-xs text-muted-foreground">Avaliação média</p>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="relative mt-8 lg:mt-0">
-                <div className="relative z-10 bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl shadow-strong p-4 sm:p-6 lg:p-8 border border-border/20 dark:border-gray-700">
-                  <div className="space-y-4 sm:space-y-6">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-base sm:text-lg font-bold text-foreground dark:text-gray-100">Análise em Tempo Real</h3>
-                      <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+              <div className="relative mt-12 lg:mt-0 animate-in fade-in slide-in-from-right-8 duration-1000 delay-300">
+                <div className="relative z-10 glass-card rounded-[2rem] p-6 sm:p-8 border border-white/40 dark:border-gray-700/40 shadow-2xl transform transition-transform hover:scale-[1.02] duration-500">
+                  <div className="absolute top-0 right-0 -mt-6 -mr-6 w-24 h-24 bg-gradient-to-br from-primary to-accent rounded-full blur-2xl opacity-20 animate-pulse"></div>
+                  
+                  <div className="space-y-6">
+                    <div className="flex items-center justify-between border-b border-gray-100 dark:border-gray-700 pb-4">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                          <Activity className="w-5 h-5 text-green-600 dark:text-green-400" />
+                        </div>
+                        <div>
+                          <h3 className="font-bold text-foreground dark:text-gray-100">Análise em Tempo Real</h3>
+                          <p className="text-xs text-muted-foreground">Processamento via IA</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-2 px-3 py-1 bg-green-50 dark:bg-green-900/20 rounded-full border border-green-100 dark:border-green-900/30">
+                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                        <span className="text-xs font-medium text-green-700 dark:text-green-400">Online</span>
+                      </div>
                     </div>
                     
-                    <div className="space-y-3 sm:space-y-4">
-                      <div className="flex items-center space-x-3">
-                        <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
-                        <span className="text-xs sm:text-sm text-muted-foreground dark:text-gray-300">Imagem processada</span>
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
+                        <div className="flex items-center space-x-3">
+                          <CheckCircle className="w-5 h-5 text-primary" />
+                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Segmentação da Lesão</span>
+                        </div>
+                        <span className="text-xs font-bold text-primary">100%</span>
                       </div>
-                      <div className="flex items-center space-x-3">
-                        <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
-                        <span className="text-xs sm:text-sm text-muted-foreground dark:text-gray-300">IA analisando padrões</span>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
+                        <div className="flex items-center space-x-3">
+                          <CheckCircle className="w-5 h-5 text-primary" />
+                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Classificação Tecidual</span>
+                        </div>
+                        <span className="text-xs font-bold text-primary">98%</span>
                       </div>
-                      <div className="flex items-center space-x-3">
-                        <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-primary border-t-transparent rounded-full animate-spin flex-shrink-0"></div>
-                        <span className="text-xs sm:text-sm text-muted-foreground dark:text-gray-300">Gerando relatório...</span>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-primary/10 relative overflow-hidden">
+                        <div className="absolute inset-0 bg-primary/5 animate-pulse"></div>
+                        <div className="flex items-center space-x-3 relative z-10">
+                          <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Gerando Prognóstico...</span>
+                        </div>
+                        <span className="text-xs font-bold text-primary relative z-10">Processando</span>
                       </div>
                     </div>
 
-                    <div className="bg-gradient-subtle dark:bg-gray-700/50 rounded-xl sm:rounded-2xl p-3 sm:p-4">
-                      <div className="text-xs sm:text-sm font-semibold text-primary mb-2">Precisão do Diagnóstico</div>
-                      <div className="flex items-center space-x-2">
-                        <div className="flex-1 bg-gray-200 dark:bg-gray-600 rounded-full h-2">
-                          <div className="bg-gradient-primary h-2 rounded-full w-[94%] transition-all duration-1000"></div>
-                        </div>
-                        <span className="text-xs sm:text-sm font-bold text-primary">94%</span>
+                    <div className="pt-4">
+                      <div className="flex justify-between text-sm mb-2">
+                        <span className="text-muted-foreground">Precisão do Modelo</span>
+                        <span className="font-bold text-primary">99.4%</span>
+                      </div>
+                      <div className="h-3 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-primary to-accent w-[99.4%] rounded-full shadow-[0_0_10px_rgba(255,75,62,0.5)]"></div>
                       </div>
                     </div>
                   </div>
                 </div>
                 
-                <div className="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-r from-accent to-primary-light rounded-full opacity-20 animate-pulse"></div>
-                <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-gradient-to-r from-primary to-accent rounded-full opacity-30 animate-pulse delay-1000"></div>
+                {/* Floating Elements */}
+                <div className="absolute -top-8 -left-8 glass p-4 rounded-2xl shadow-xl animate-bounce duration-[3000ms]">
+                  <Shield className="w-8 h-8 text-green-500" />
+                </div>
+                <div className="absolute -bottom-6 -right-6 glass p-4 rounded-2xl shadow-xl animate-bounce duration-[4000ms] delay-700">
+                  <Brain className="w-8 h-8 text-primary" />
+                </div>
               </div>
             </div>
           </div>
@@ -146,46 +183,51 @@ const Index = () => {
       </section>
 
       {/* Features Section */}
-      <section id="como-funciona" className="py-20 bg-white dark:bg-gray-900">
+      <section id="como-funciona" className="py-24 bg-white dark:bg-gray-900 relative">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gray-200 dark:via-gray-700 to-transparent"></div>
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight">
-              Bem-vindo à Vascular One
+          <div className="max-w-4xl mx-auto text-center mb-20">
+            <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-4">
+              Por que escolher
+            </div>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-6 text-foreground dark:text-white">
+              Tecnologia que <span className="text-primary">Salva Vidas</span>
             </h2>
             <p className="text-xl text-muted-foreground dark:text-gray-300 leading-relaxed">
-              Tecnologia de ponta para análise médica precisa e eficiente
+              Nossa plataforma combina o poder da inteligência artificial com protocolos médicos rigorosos.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
             {[
               {
-                icon: <Brain className="w-8 h-8" />,
-                title: "IA Avançada",
-                description: "Algoritmos de deep learning treinados com milhares de casos clínicos",
-                color: "from-primary to-accent"
+                icon: <Brain className="w-10 h-10" />,
+                title: "IA Generativa Avançada",
+                description: "Utilizamos modelos de última geração para analisar texturas, cores e profundidade com precisão sobre-humana.",
+                color: "text-purple-500",
+                bg: "bg-purple-50 dark:bg-purple-900/20"
               },
               {
-                icon: <Stethoscope className="w-8 h-8" />,
-                title: "Análise Médica",
-                description: "Avaliação completa seguindo protocolos médicos internacionais",
-                color: "from-primary to-accent"
+                icon: <Stethoscope className="w-10 h-10" />,
+                title: "Protocolos Clínicos",
+                description: "Análises baseadas em diretrizes internacionais (TIME, Wagner) para garantir conformidade médica.",
+                color: "text-blue-500",
+                bg: "bg-blue-50 dark:bg-blue-900/20"
               },
               {
-                icon: <Target className="w-8 h-8" />,
-                title: "Precisão Clínica",
-                description: "Resultados validados por especialistas com 94% de precisão",
-                color: "from-primary to-accent"
+                icon: <Target className="w-10 h-10" />,
+                title: "Precisão Milimétrica",
+                description: "Medições automáticas de área e perímetro, reduzindo a subjetividade da avaliação manual.",
+                color: "text-green-500",
+                bg: "bg-green-50 dark:bg-green-900/20"
               }
             ].map((feature, index) => (
-              <div key={index} className="group relative">
-                <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-medium hover:shadow-strong transition-all duration-300 border border-border/20 dark:border-gray-700 group-hover:border-primary/20">
-                  <div className={`inline-flex p-4 rounded-2xl bg-gradient-to-r ${feature.color} text-white mb-6`}>
-                    {feature.icon}
-                  </div>
-                  <h3 className="text-xl font-bold mb-4 text-foreground dark:text-gray-100">{feature.title}</h3>
-                  <p className="text-muted-foreground dark:text-gray-300 leading-relaxed">{feature.description}</p>
+              <div key={index} className="group relative p-8 rounded-3xl bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700 hover:bg-white dark:hover:bg-gray-800 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div className={`inline-flex p-4 rounded-2xl ${feature.bg} ${feature.color} mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                  {feature.icon}
                 </div>
+                <h3 className="text-2xl font-bold mb-4 text-foreground dark:text-gray-100">{feature.title}</h3>
+                <p className="text-muted-foreground dark:text-gray-400 leading-relaxed text-lg">{feature.description}</p>
               </div>
             ))}
           </div>

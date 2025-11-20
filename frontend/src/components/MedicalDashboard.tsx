@@ -53,8 +53,8 @@ export const MedicalDashboard: React.FC<MedicalDashboardProps> = ({
       title: "Análises Hoje",
       value: stats.todayAnalyses,
       icon: Activity,
-      color: "text-blue-600 dark:text-blue-400",
-      bgColor: "bg-blue-100 dark:bg-blue-900/30",
+      color: "text-emerald-600 dark:text-emerald-400",
+      bgColor: "bg-emerald-100 dark:bg-emerald-900/30",
       change: "+12%",
       changeType: "positive" as const
     },
@@ -62,8 +62,8 @@ export const MedicalDashboard: React.FC<MedicalDashboardProps> = ({
       title: "Confiança Média",
       value: `${stats.avgConfidence}%`,
       icon: TrendingUp,
-      color: "text-purple-600 dark:text-purple-400",
-      bgColor: "bg-purple-100 dark:bg-purple-900/30",
+      color: "text-teal-600 dark:text-teal-400",
+      bgColor: "bg-teal-100 dark:bg-teal-900/30",
       change: "+2.1%",
       changeType: "positive" as const
     },
@@ -93,28 +93,28 @@ export const MedicalDashboard: React.FC<MedicalDashboardProps> = ({
       cases: 456,
       accuracy: 96.8,
       icon: Eye,
-      color: "bg-blue-500"
+      color: "bg-emerald-500"
     },
     {
       name: "Cardiologia", 
       cases: 234,
       accuracy: 94.2,
       icon: Heart,
-      color: "bg-red-500"
+      color: "bg-rose-500"
     },
     {
       name: "Neurologia",
       cases: 189,
       accuracy: 92.1,
       icon: Brain,
-      color: "bg-purple-500"
+      color: "bg-slate-500"
     },
     {
       name: "Clínica Geral",
       cases: 368,
       accuracy: 95.4,
       icon: Stethoscope,
-      color: "bg-emerald-500"
+      color: "bg-teal-500"
     }
   ];
 
@@ -130,8 +130,8 @@ export const MedicalDashboard: React.FC<MedicalDashboardProps> = ({
             Visão geral das análises e estatísticas do sistema
           </p>
         </div>
-        <div className="flex items-center space-x-2 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm px-4 py-2 rounded-full border border-slate-200/50 dark:border-slate-700/50">
-          <Calendar className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+        <div className="flex items-center space-x-2 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm px-4 py-2 rounded-full border border-slate-200/50 dark:border-slate-700/50 shadow-sm">
+          <Calendar className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
           <span className="text-sm font-medium text-slate-600 dark:text-slate-300 capitalize">
             {new Date().toLocaleDateString('pt-BR', { 
               weekday: 'long', 
@@ -148,7 +148,7 @@ export const MedicalDashboard: React.FC<MedicalDashboardProps> = ({
         {quickStats.map((stat, index) => {
           const Icon = stat.icon;
           return (
-            <Card key={index} className="border-slate-200/60 dark:border-slate-700/60 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+            <Card key={index} className="border-slate-200/60 dark:border-slate-700/60 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl hover:shadow-lg transition-all duration-300 hover:-translate-y-1 shadow-md">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -183,20 +183,22 @@ export const MedicalDashboard: React.FC<MedicalDashboardProps> = ({
       {/* Performance Metrics */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Processing Performance */}
-        <Card className="border-slate-200/60 dark:border-slate-700/60 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl">
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2 text-lg">
-              <Activity className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+        <Card className="border-slate-200/60 dark:border-slate-700/60 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-md">
+          <CardHeader className="border-b border-slate-100 dark:border-slate-800 pb-4">
+            <CardTitle className="flex items-center space-x-2 text-lg text-slate-900 dark:text-white">
+              <div className="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
+                <Activity className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+              </div>
               <span>Performance do Sistema</span>
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-6 pt-6">
             <div>
               <div className="flex justify-between items-center mb-2">
                 <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Tempo Médio de Processamento</span>
                 <span className="text-sm text-slate-500 dark:text-slate-400">{stats.avgProcessingTime}s</span>
               </div>
-              <Progress value={85} className="h-2 bg-slate-100 dark:bg-slate-700" indicatorClassName="bg-blue-600 dark:bg-blue-500" />
+              <Progress value={85} className="h-2 bg-slate-100 dark:bg-slate-800" indicatorClassName="bg-emerald-600 dark:bg-emerald-500" />
             </div>
             
             <div>
@@ -204,7 +206,7 @@ export const MedicalDashboard: React.FC<MedicalDashboardProps> = ({
                 <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Confiança Média</span>
                 <span className="text-sm text-slate-500 dark:text-slate-400">{stats.avgConfidence}%</span>
               </div>
-              <Progress value={stats.avgConfidence} className="h-2 bg-slate-100 dark:bg-slate-700" indicatorClassName="bg-purple-600 dark:bg-purple-500" />
+              <Progress value={stats.avgConfidence} className="h-2 bg-slate-100 dark:bg-slate-800" indicatorClassName="bg-teal-600 dark:bg-teal-500" />
             </div>
             
             <div>
@@ -212,20 +214,22 @@ export const MedicalDashboard: React.FC<MedicalDashboardProps> = ({
                 <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Taxa de Sucesso</span>
                 <span className="text-sm text-slate-500 dark:text-slate-400">{stats.successRate}%</span>
               </div>
-              <Progress value={stats.successRate} className="h-2 bg-slate-100 dark:bg-slate-700" indicatorClassName="bg-emerald-600 dark:bg-emerald-500" />
+              <Progress value={stats.successRate} className="h-2 bg-slate-100 dark:bg-slate-800" indicatorClassName="bg-emerald-600 dark:bg-emerald-500" />
             </div>
           </CardContent>
         </Card>
 
         {/* Critical Alerts */}
-        <Card className="border-slate-200/60 dark:border-slate-700/60 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl">
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2 text-lg">
-              <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+        <Card className="border-slate-200/60 dark:border-slate-700/60 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-md">
+          <CardHeader className="border-b border-slate-100 dark:border-slate-800 pb-4">
+            <CardTitle className="flex items-center space-x-2 text-lg text-slate-900 dark:text-white">
+              <div className="p-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
+                <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+              </div>
               <span>Alertas Críticos</span>
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-6">
             <div className="space-y-4">
               <div className="flex items-center justify-between p-4 bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/20 rounded-xl transition-colors hover:bg-red-100 dark:hover:bg-red-900/20">
                 <div className="flex items-center space-x-3">
@@ -239,7 +243,7 @@ export const MedicalDashboard: React.FC<MedicalDashboardProps> = ({
                     </p>
                   </div>
                 </div>
-                <Badge variant="destructive" className="bg-red-500 hover:bg-red-600">Urgente</Badge>
+                <Badge variant="destructive" className="bg-red-500 hover:bg-red-600 border-red-600">Urgente</Badge>
               </div>
               
               <div className="flex items-center justify-between p-4 bg-amber-50 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-900/20 rounded-xl transition-colors hover:bg-amber-100 dark:hover:bg-amber-900/20">
@@ -254,7 +258,7 @@ export const MedicalDashboard: React.FC<MedicalDashboardProps> = ({
                     </p>
                   </div>
                 </div>
-                <Badge variant="secondary" className="bg-amber-100 text-amber-700 hover:bg-amber-200 dark:bg-amber-900/30 dark:text-amber-300">Pendente</Badge>
+                <Badge variant="secondary" className="bg-amber-100 text-amber-700 hover:bg-amber-200 dark:bg-amber-900/30 dark:text-amber-300 border-amber-200 dark:border-amber-800">Pendente</Badge>
               </div>
               
               <div className="flex items-center justify-between p-4 bg-emerald-50 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-900/20 rounded-xl transition-colors hover:bg-emerald-100 dark:hover:bg-emerald-900/20">
@@ -269,7 +273,7 @@ export const MedicalDashboard: React.FC<MedicalDashboardProps> = ({
                     </p>
                   </div>
                 </div>
-                <Badge className="bg-emerald-500 hover:bg-emerald-600 text-white">Normal</Badge>
+                <Badge className="bg-emerald-500 hover:bg-emerald-600 text-white border-emerald-600">Normal</Badge>
               </div>
             </div>
           </CardContent>
@@ -277,19 +281,21 @@ export const MedicalDashboard: React.FC<MedicalDashboardProps> = ({
       </div>
 
       {/* Specialty Statistics */}
-      <Card className="border-slate-200/60 dark:border-slate-700/60 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl">
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2 text-lg">
-            <Users className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+      <Card className="border-slate-200/60 dark:border-slate-700/60 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-md">
+        <CardHeader className="border-b border-slate-100 dark:border-slate-800 pb-4">
+          <CardTitle className="flex items-center space-x-2 text-lg text-slate-900 dark:text-white">
+            <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+              <Users className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+            </div>
             <span>Estatísticas por Especialidade</span>
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pt-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {specialtyStats.map((specialty, index) => {
               const Icon = specialty.icon;
               return (
-                <div key={index} className="p-4 border border-slate-200 dark:border-slate-700 rounded-xl hover:shadow-md transition-all duration-300 hover:border-blue-200 dark:hover:border-blue-800 bg-slate-50/50 dark:bg-slate-900/50">
+                <div key={index} className="p-4 border border-slate-200 dark:border-slate-700 rounded-xl hover:shadow-md transition-all duration-300 hover:border-emerald-200 dark:hover:border-emerald-800 bg-slate-50/50 dark:bg-slate-800/50">
                   <div className="flex items-center space-x-3 mb-3">
                     <div className={`p-2 rounded-lg shadow-sm ${specialty.color}`}>
                       <Icon className="h-5 w-5 text-white" />

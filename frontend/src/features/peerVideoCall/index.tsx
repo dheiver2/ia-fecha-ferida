@@ -443,7 +443,7 @@ export default function SimplePeerVideoCall({
 	};
 
 	return (
-		<div className='min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4'>
+		<div className='min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-4'>
 			<div className='mx-auto max-w-7xl'>
 				{/* Header */}
 				<VideoCallHeader
@@ -461,12 +461,12 @@ export default function SimplePeerVideoCall({
 				<div className='mb-6 grid grid-cols-1 gap-6 lg:grid-cols-3'>
 					{/* Vídeo principal (remoto) */}
 					<div className='lg:col-span-2'>
-						<Card className='h-96 lg:h-[500px]'>
+						<Card className='h-96 lg:h-[500px] border-slate-200/60 dark:border-slate-700/60 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl shadow-lg'>
 							<CardHeader className='pb-2'>
-								<CardTitle className='flex items-center justify-between text-sm'>
+								<CardTitle className='flex items-center justify-between text-sm text-slate-900 dark:text-white'>
 									<span>Vídeo Remoto</span>
 									{remoteStream && (
-										<Badge variant='default' className='text-xs'>
+										<Badge className='bg-emerald-500 hover:bg-emerald-600 text-white text-xs'>
 											Ativo
 										</Badge>
 									)}
@@ -477,13 +477,13 @@ export default function SimplePeerVideoCall({
 									ref={remoteVideoRef}
 									autoPlay
 									playsInline
-									className='h-full w-full rounded-lg bg-gray-900 object-cover'
+									className='h-full w-full rounded-lg bg-slate-900 object-cover shadow-inner'
 								/>
 								{!remoteStream && (
-									<div className='absolute inset-0 flex items-center justify-center rounded-lg bg-gray-900'>
+									<div className='absolute inset-0 flex items-center justify-center rounded-lg bg-slate-900/90 backdrop-blur-sm'>
 										<div className='text-center text-white'>
-											<Users className='mx-auto mb-4 h-16 w-16 opacity-50' />
-											<p className='text-lg'>
+											<Users className='mx-auto mb-4 h-16 w-16 opacity-50 text-emerald-500' />
+											<p className='text-lg font-medium'>
 												{remoteUserConnected
 													? 'Estabelecendo conexão de vídeo...'
 													: 'Aguardando outro participante...'}
@@ -503,12 +503,12 @@ export default function SimplePeerVideoCall({
 					{/* Vídeo local e chat */}
 					<div className='space-y-4'>
 						{/* Vídeo local */}
-						<Card>
+						<Card className='border-slate-200/60 dark:border-slate-700/60 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl shadow-md'>
 							<CardHeader className='pb-2'>
-								<CardTitle className='flex items-center justify-between text-sm'>
+								<CardTitle className='flex items-center justify-between text-sm text-slate-900 dark:text-white'>
 									<span>Seu vídeo</span>
 									{localStream && (
-										<Badge variant='default' className='text-xs'>
+										<Badge variant='outline' className='text-xs border-emerald-200 text-emerald-700 dark:border-emerald-800 dark:text-emerald-400'>
 											{localStream.getVideoTracks().length}V / {localStream.getAudioTracks().length}A
 										</Badge>
 									)}
@@ -520,39 +520,39 @@ export default function SimplePeerVideoCall({
 									autoPlay
 									playsInline
 									muted
-									className='h-32 w-full rounded bg-gray-900 object-cover'
+									className='h-32 w-full rounded bg-slate-900 object-cover shadow-inner'
 								/>
 							</CardContent>
 						</Card>
 
 						{/* Status da Conexão */}
-						<Card>
+						<Card className='border-slate-200/60 dark:border-slate-700/60 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl shadow-md'>
 							<CardHeader className='pb-2'>
-								<CardTitle className='text-sm'>Status da Conexão</CardTitle>
+								<CardTitle className='text-sm text-slate-900 dark:text-white'>Status da Conexão</CardTitle>
 							</CardHeader>
 							<CardContent className='p-2'>
 								<div className='space-y-2 text-sm'>
-									<div className='flex justify-between'>
-										<span>Socket:</span>
-										<Badge variant={isConnected ? 'default' : 'destructive'} className='text-xs'>
+									<div className='flex justify-between items-center'>
+										<span className='text-slate-600 dark:text-slate-400'>Socket:</span>
+										<Badge variant={isConnected ? 'default' : 'destructive'} className={`text-xs ${isConnected ? 'bg-emerald-500 hover:bg-emerald-600' : ''}`}>
 											{isConnected ? 'Conectado' : 'Desconectado'}
 										</Badge>
 									</div>
-									<div className='flex justify-between'>
-										<span>Usuário Remoto:</span>
-										<Badge variant={remoteUserConnected ? 'default' : 'secondary'} className='text-xs'>
+									<div className='flex justify-between items-center'>
+										<span className='text-slate-600 dark:text-slate-400'>Usuário Remoto:</span>
+										<Badge variant={remoteUserConnected ? 'default' : 'secondary'} className={`text-xs ${remoteUserConnected ? 'bg-emerald-500 hover:bg-emerald-600' : ''}`}>
 											{remoteUserConnected ? 'Conectado' : 'Ausente'}
 										</Badge>
 									</div>
-									<div className='flex justify-between'>
-										<span>Vídeo Remoto:</span>
-										<Badge variant={remoteStream ? 'default' : 'secondary'} className='text-xs'>
+									<div className='flex justify-between items-center'>
+										<span className='text-slate-600 dark:text-slate-400'>Vídeo Remoto:</span>
+										<Badge variant={remoteStream ? 'default' : 'secondary'} className={`text-xs ${remoteStream ? 'bg-emerald-500 hover:bg-emerald-600' : ''}`}>
 											{remoteStream ? 'Ativo' : 'Inativo'}
 										</Badge>
 									</div>
-									<div className='flex justify-between'>
-										<span>Peer:</span>
-										<Badge variant={peer ? 'default' : 'secondary'} className='text-xs'>
+									<div className='flex justify-between items-center'>
+										<span className='text-slate-600 dark:text-slate-400'>Peer:</span>
+										<Badge variant={peer ? 'default' : 'secondary'} className={`text-xs ${peer ? 'bg-emerald-500 hover:bg-emerald-600' : ''}`}>
 											{peer ? 'Conectado' : 'Desconectado'}
 										</Badge>
 									</div>
@@ -561,30 +561,30 @@ export default function SimplePeerVideoCall({
 						</Card>
 
 						{/* Chat */}
-						<Card className='flex-1'>
+						<Card className='flex-1 border-slate-200/60 dark:border-slate-700/60 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl shadow-md'>
 							<CardHeader className='pb-2'>
 								<div className='flex items-center justify-between'>
-									<CardTitle className='text-sm'>Chat</CardTitle>
-									<Button variant='ghost' size='sm' onClick={() => setShowChat(!showChat)}>
-										<MessageCircle className='h-4 w-4' />
+									<CardTitle className='text-sm text-slate-900 dark:text-white'>Chat</CardTitle>
+									<Button variant='ghost' size='sm' onClick={() => setShowChat(!showChat)} className='hover:bg-slate-100 dark:hover:bg-slate-700'>
+										<MessageCircle className='h-4 w-4 text-slate-600 dark:text-slate-400' />
 									</Button>
 								</div>
 							</CardHeader>
 							{showChat && (
 								<CardContent className='space-y-2 p-2'>
-									<div className='h-32 overflow-y-auto rounded bg-gray-50 p-2 text-sm'>
+									<div className='h-32 overflow-y-auto rounded bg-slate-50 dark:bg-slate-900/50 p-2 text-sm border border-slate-200 dark:border-slate-700'>
 										{chatMessages.length === 0 ? (
-											<p className='text-center text-gray-500'>Nenhuma mensagem ainda</p>
+											<p className='text-center text-slate-500 dark:text-slate-400'>Nenhuma mensagem ainda</p>
 										) : (
 											chatMessages.map((msg, index) => (
 												<div key={index} className='mb-2'>
 													<div className='flex items-center gap-1'>
-														<span className='text-xs font-medium text-blue-600'>{msg.sender}</span>
-														<span className='text-xs text-gray-400'>
+														<span className='text-xs font-medium text-emerald-600 dark:text-emerald-400'>{msg.sender}</span>
+														<span className='text-xs text-slate-400'>
 															{new Date(msg.timestamp).toLocaleTimeString()}
 														</span>
 													</div>
-													<p className='text-sm'>{msg.message}</p>
+													<p className='text-sm text-slate-700 dark:text-slate-300'>{msg.message}</p>
 												</div>
 											))
 										)}
@@ -596,9 +596,9 @@ export default function SimplePeerVideoCall({
 											onChange={(e) => setChatInput(e.target.value)}
 											onKeyPress={(e) => e.key === 'Enter' && sendChatMessage()}
 											placeholder='Digite uma mensagem...'
-											className='flex-1 rounded border px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500'
+											className='flex-1 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-900 dark:text-white'
 										/>
-										<Button size='sm' onClick={sendChatMessage} disabled={!chatInput.trim() || !socket}>
+										<Button size='sm' onClick={sendChatMessage} disabled={!chatInput.trim() || !socket} className='bg-emerald-600 hover:bg-emerald-700 text-white'>
 											Enviar
 										</Button>
 									</div>

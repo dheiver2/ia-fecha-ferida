@@ -20,12 +20,13 @@ All colors MUST be HSL.
     /* Design System - Paleta Vascular One */
     --brand-coral: 4 100% 62%;      /* #FF4B3E aprox. */
     --brand-navy: 211 72% 20%;      /* #0E3156 aprox. */
+    --brand-emerald: 161 94% 30%;   /* #059669 Emerald 600 */
     --pixel-red: 4 100% 58%;        /* tons digitalizados/pixelados */
 
-    --primary: var(--brand-coral);
+    --primary: var(--brand-emerald);
     --primary-foreground: 0 0% 98%;
-    --primary-light: 4 100% 72%;
-    --primary-dark: 4 92% 50%;
+    --primary-light: 160 84% 39%;   /* Emerald 500 */
+    --primary-dark: 163 94% 24%;    /* Emerald 700 */
 
     --secondary: 213 100% 96%;
     --secondary-foreground: 205 85% 15%;
@@ -41,11 +42,11 @@ All colors MUST be HSL.
 
     --border: 200 30% 85%;
     --input: 200 30% 90%;
-    --ring: var(--brand-coral);     /* Ring acompanha primária */
+    --ring: var(--brand-emerald);     /* Ring acompanha primária */
 
     /* Medical specific colors - Paleta médica consistente */
     --medical-blue: 205 85% 25%;
-    --medical-green: 160 75% 30%;
+    --medical-green: var(--brand-emerald);
     --medical-red: 0 75% 45%;
     --medical-orange: 35 85% 40%;
     --medical-gray: 205 15% 35%;
@@ -93,10 +94,10 @@ All colors MUST be HSL.
     --popover-foreground: 210 40% 98%;
 
     /* Design System - Paleta Vascular One - Modo Escuro */
-    --primary: var(--brand-coral);     /* Coral visível no dark */
+    --primary: 160 84% 39%;            /* Emerald 500 para dark mode */
     --primary-foreground: 220 15% 8%;
-    --primary-light: 4 100% 70%;
-    --primary-dark: 4 92% 55%;
+    --primary-light: 160 84% 45%;
+    --primary-dark: 161 94% 30%;
 
     --secondary: 220 15% 15%;
     --secondary-foreground: 210 40% 98%;
@@ -112,11 +113,11 @@ All colors MUST be HSL.
 
     --border: 220 15% 20%;
     --input: 220 15% 18%;
-    --ring: var(--brand-coral);
+    --ring: 160 84% 39%;
 
     /* Medical specific colors - Paleta médica modo escuro */
     --medical-blue: 205 85% 70%;
-    --medical-green: 160 75% 65%;
+    --medical-green: 160 84% 39%;
     --medical-red: 0 75% 70%;
     --medical-orange: 35 85% 65%;
     --medical-gray: 205 15% 82%;

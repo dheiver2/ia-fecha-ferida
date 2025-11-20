@@ -157,12 +157,12 @@ export const InviteHandler: React.FC<InviteHandlerProps> = ({ onJoinCall }) => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md">
-          <CardContent className="p-6">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-4">
+        <Card className="w-full max-w-md bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-slate-200 dark:border-slate-800 shadow-xl">
+          <CardContent className="p-8">
             <div className="text-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-              <p>Carregando convite...</p>
+              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-emerald-600 mx-auto mb-4"></div>
+              <p className="text-slate-600 dark:text-slate-400">Carregando convite...</p>
             </div>
           </CardContent>
         </Card>
@@ -172,18 +172,20 @@ export const InviteHandler: React.FC<InviteHandlerProps> = ({ onJoinCall }) => {
 
   if (error || !inviteData) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md">
-          <CardContent className="p-6">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-4">
+        <Card className="w-full max-w-md bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-slate-200 dark:border-slate-800 shadow-xl">
+          <CardContent className="p-8">
             <div className="text-center">
-              <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-              <h2 className="text-xl font-semibold text-gray-900 mb-2">
+              <div className="p-3 bg-red-100 dark:bg-red-900/30 rounded-full w-fit mx-auto mb-4">
+                <AlertCircle className="w-8 h-8 text-red-600 dark:text-red-400" />
+              </div>
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
                 Convite Inválido
               </h2>
-              <p className="text-gray-600 mb-4">
+              <p className="text-slate-600 dark:text-slate-400 mb-6">
                 {error || 'Este convite não foi encontrado ou pode ter expirado.'}
               </p>
-              <Button onClick={() => navigate('/')} variant="outline">
+              <Button onClick={() => navigate('/')} variant="outline" className="border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800">
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Voltar ao Início
               </Button>
@@ -198,23 +200,23 @@ export const InviteHandler: React.FC<InviteHandlerProps> = ({ onJoinCall }) => {
   const canJoin = isCallTime() && timeStatus.status !== 'expired';
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-lg">
-        <CardHeader className="text-center">
-          <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Video className="w-8 h-8 text-blue-600" />
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-4">
+      <Card className="w-full max-w-lg bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-slate-200 dark:border-slate-800 shadow-xl">
+        <CardHeader className="text-center border-b border-slate-100 dark:border-slate-800 pb-6">
+          <div className="w-20 h-20 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
+            <Video className="w-10 h-10 text-emerald-600 dark:text-emerald-400" />
           </div>
-          <CardTitle className="text-2xl">Convite para Teleconsulta</CardTitle>
+          <CardTitle className="text-2xl font-bold text-slate-900 dark:text-white">Convite para Teleconsulta</CardTitle>
         </CardHeader>
         
-        <CardContent className="space-y-6">
+        <CardContent className="space-y-8 p-8">
           {/* Informações do Médico */}
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <User className="w-5 h-5 text-gray-500" />
-              <span className="font-semibold text-lg">{inviteData.doctorName}</span>
+          <div className="text-center space-y-1">
+            <div className="flex items-center justify-center gap-2">
+              <User className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+              <span className="font-bold text-lg text-slate-900 dark:text-white">{inviteData.doctorName}</span>
             </div>
-            <p className="text-gray-600">Dermatologista</p>
+            <p className="text-slate-500 dark:text-slate-400">Dermatologista</p>
           </div>
 
           {/* Status da Consulta */}
@@ -225,22 +227,29 @@ export const InviteHandler: React.FC<InviteHandlerProps> = ({ onJoinCall }) => {
                 timeStatus.status === 'soon' ? 'secondary' :
                 timeStatus.status === 'expired' ? 'destructive' : 'outline'
               }
-              className="text-sm px-3 py-1"
+              className={`text-sm px-4 py-1.5 rounded-full ${
+                timeStatus.status === 'active' ? 'bg-emerald-100 text-emerald-700 border-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-300 dark:border-emerald-800' :
+                timeStatus.status === 'soon' ? 'bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800' :
+                timeStatus.status === 'expired' ? 'bg-red-100 text-red-700 border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-800' :
+                'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700'
+              }`}
             >
               {timeStatus.message}
             </Badge>
           </div>
 
           {/* Informações da Consulta */}
-          <div className="space-y-3">
+          <div className="space-y-4">
             {inviteData.scheduledTime && (
-              <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                <Calendar className="w-5 h-5 text-gray-500" />
+              <div className="flex items-center gap-4 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-800">
+                <div className="p-2 bg-white dark:bg-slate-900 rounded-lg shadow-sm">
+                  <Calendar className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                </div>
                 <div>
-                  <p className="font-medium">
+                  <p className="font-semibold text-slate-900 dark:text-white">
                     {format(inviteData.scheduledTime, "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
                   </p>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-slate-500 dark:text-slate-400">
                     {format(inviteData.scheduledTime, "HH:mm", { locale: ptBR })}
                   </p>
                 </div>
@@ -248,39 +257,44 @@ export const InviteHandler: React.FC<InviteHandlerProps> = ({ onJoinCall }) => {
             )}
 
             {inviteData.duration && (
-              <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                <Clock className="w-5 h-5 text-gray-500" />
+              <div className="flex items-center gap-4 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-800">
+                <div className="p-2 bg-white dark:bg-slate-900 rounded-lg shadow-sm">
+                  <Clock className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                </div>
                 <div>
-                  <p className="font-medium">Duração</p>
-                  <p className="text-sm text-gray-600">{inviteData.duration} minutos</p>
+                  <p className="font-semibold text-slate-900 dark:text-white">Duração Estimada</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">{inviteData.duration} minutos</p>
                 </div>
               </div>
             )}
 
             {inviteData.notes && (
-              <div className="p-3 bg-blue-50 rounded-lg">
-                <p className="font-medium text-blue-900 mb-1">Observações</p>
-                <p className="text-sm text-blue-700">{inviteData.notes}</p>
+              <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-100 dark:border-blue-800/50">
+                <p className="font-semibold text-blue-900 dark:text-blue-300 mb-1 flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4" />
+                  Observações
+                </p>
+                <p className="text-sm text-blue-700 dark:text-blue-400">{inviteData.notes}</p>
               </div>
             )}
           </div>
 
           {/* Botões de Ação */}
-          <div className="space-y-3">
+          <div className="space-y-3 pt-4">
             <Button
               onClick={handleJoinCall}
               disabled={!canJoin || isJoining}
-              className="w-full"
+              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-500/20 h-12 text-lg rounded-xl transition-all hover:scale-[1.02]"
               size="lg"
             >
               {isJoining ? (
                 <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
                   Entrando...
                 </>
               ) : (
                 <>
-                  <Phone className="w-4 h-4 mr-2" />
+                  <Phone className="w-5 h-5 mr-2" />
                   {timeStatus.status === 'expired' ? 'Horário Expirado' : 'Entrar na Consulta'}
                 </>
               )}
@@ -289,7 +303,7 @@ export const InviteHandler: React.FC<InviteHandlerProps> = ({ onJoinCall }) => {
             <Button
               onClick={() => navigate('/')}
               variant="outline"
-              className="w-full"
+              className="w-full border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 h-12 rounded-xl"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Voltar ao Início
@@ -297,7 +311,7 @@ export const InviteHandler: React.FC<InviteHandlerProps> = ({ onJoinCall }) => {
           </div>
 
           {/* Instruções */}
-          <div className="text-center text-sm text-gray-600">
+          <div className="text-center text-sm text-slate-500 dark:text-slate-400 space-y-1">
             <p>Certifique-se de que sua câmera e microfone estão funcionando.</p>
             <p>A consulta será iniciada automaticamente quando você clicar em "Entrar na Consulta".</p>
           </div>

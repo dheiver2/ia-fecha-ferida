@@ -1,96 +1,129 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight, Upload, Brain, FileText } from "lucide-react";
+import { ArrowRight, Play, Shield, Activity, Users, Sparkles } from "lucide-react";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-20 pb-16 bg-gradient-hero overflow-hidden">
-      {/* Advanced Background Elements */}
-      <div className="absolute inset-0 bg-gradient-subtle opacity-60"></div>
-      
-      {/* Floating Orbs - Casa Fecha Feridas Theme */}
-      <div className="absolute top-20 left-10 w-80 h-80 bg-primary/15 rounded-full blur-3xl animate-pulse"></div>
-      <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-primary-light/10 rounded-full blur-2xl animate-pulse delay-500"></div>
-      
-      {/* Geometric Patterns */}
-      <div className="absolute top-32 right-20 w-32 h-32 border border-white/20 rounded-lg rotate-45 animate-spin-slow"></div>
-      <div className="absolute bottom-32 left-20 w-24 h-24 border border-accent/30 rounded-full animate-bounce-slow"></div>
-      
+    <div className="relative overflow-hidden bg-slate-50 dark:bg-slate-950 pt-24 pb-32">
+      {/* Background Elements */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
+        <div className="absolute -top-[30%] -right-[10%] w-[70%] h-[70%] rounded-full bg-emerald-400/20 blur-[120px] opacity-30 animate-pulse" />
+        <div className="absolute top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-blue-400/20 blur-[120px] opacity-30 animate-pulse delay-1000" />
+        <div className="absolute bottom-0 right-[20%] w-[40%] h-[40%] rounded-full bg-teal-400/20 blur-[100px] opacity-20" />
+        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
+      </div>
+
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-6xl mx-auto text-center">
-          {/* Modern Typography with Casa Fecha Feridas Branding */}
-          <div className="mb-12">
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-8 leading-tight">
-              <span className="text-white drop-shadow-2xl [text-shadow:_2px_2px_4px_rgb(0_0_0_/_50%)] block">
-                Casa Fecha Feridas
+        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+          <div className="flex-1 space-y-8 text-center lg:text-left">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-100/50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 text-sm font-medium backdrop-blur-sm shadow-sm mx-auto lg:mx-0">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
-              <span className="block text-3xl md:text-4xl lg:text-5xl mt-6 text-white drop-shadow-2xl [text-shadow:_2px_2px_4px_rgb(0_0_0_/_50%)] font-bold">
-                Análise Médica Inteligente
+              Nova Tecnologia de IA Vascular
+            </div>
+            
+            <h1 className="text-5xl lg:text-7xl font-bold tracking-tight text-slate-900 dark:text-white leading-[1.1]">
+              Diagnóstico Vascular <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-400 dark:from-emerald-400 dark:via-teal-300 dark:to-emerald-200 animate-gradient-x">
+                Inteligente & Preciso
               </span>
             </h1>
-          </div>
-          
-          <div className="mb-14">
-            <p className="text-lg md:text-xl lg:text-2xl max-w-4xl mx-auto leading-relaxed text-white drop-shadow-lg [text-shadow:_1px_1px_3px_rgb(0_0_0_/_60%)] font-medium">
-              Transforme imagens médicas em laudos detalhados usando inteligência artificial avançada.
+            
+            <p className="text-xl text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed mx-auto lg:mx-0">
+              Revolucione o atendimento vascular com nossa plataforma integrada. 
+              Análise de feridas por IA, telemedicina avançada e gestão completa 
+              do paciente em um único lugar.
             </p>
-            <p className="text-lg md:text-xl lg:text-2xl mt-4 text-white font-bold drop-shadow-lg [text-shadow:_1px_1px_3px_rgb(0_0_0_/_60%)]">
-              Resultados precisos em segundos.
-            </p>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-24">
-            <Link to="/analise" className="w-full sm:w-auto">
+            
+            <div className="flex flex-col sm:flex-row gap-4 pt-4 justify-center lg:justify-start">
+              <Link to="/analise" className="w-full sm:w-auto">
+                <Button 
+                  size="lg" 
+                  className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-500/30 h-14 px-8 text-lg rounded-xl transition-all hover:scale-105 hover:shadow-emerald-500/50 w-full"
+                >
+                  Começar Agora
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+              </Link>
+              
               <Button 
-                size="lg" 
-                className="group w-full sm:w-auto bg-white/95 text-primary hover:bg-white shadow-2xl hover:shadow-glow transition-all duration-300 text-lg px-12 py-6 font-bold rounded-2xl backdrop-blur-sm border border-white/20 hover:scale-105"
+                variant="outline" 
+                size="lg"
+                className="border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 h-14 px-8 text-lg rounded-xl backdrop-blur-sm bg-white/50 dark:bg-slate-900/50 w-full sm:w-auto hover:border-emerald-200 dark:hover:border-emerald-800 transition-all"
               >
-                <Upload className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform" />
-                Enviar Imagem Agora
-                <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-1 transition-transform" />
+                <Play className="mr-2 w-5 h-5 fill-current" />
+                Ver Demonstração
               </Button>
-            </Link>
-            
-            <Button 
-              variant="outline" 
-              size="lg"
-              className="group w-full sm:w-auto border-2 border-white/70 text-white hover:bg-white/15 backdrop-blur-md text-lg px-12 py-6 font-semibold transition-all duration-300 rounded-2xl hover:border-white hover:scale-105"
-            >
-              <Brain className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform" />
-              Ver Demonstração
-            </Button>
+            </div>
+
+            <div className="pt-8 flex flex-wrap justify-center lg:justify-start items-center gap-6 sm:gap-8 text-sm text-slate-500 dark:text-slate-400">
+              <div className="flex items-center gap-2 bg-white/50 dark:bg-slate-900/50 px-3 py-1.5 rounded-lg border border-slate-100 dark:border-slate-800 shadow-sm">
+                <div className="p-1 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400">
+                  <Shield className="w-4 h-4" />
+                </div>
+                <span className="font-medium">HIPAA Compliant</span>
+              </div>
+              <div className="flex items-center gap-2 bg-white/50 dark:bg-slate-900/50 px-3 py-1.5 rounded-lg border border-slate-100 dark:border-slate-800 shadow-sm">
+                <div className="p-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
+                  <Activity className="w-4 h-4" />
+                </div>
+                <span className="font-medium">99.9% Precisão</span>
+              </div>
+              <div className="flex items-center gap-2 bg-white/50 dark:bg-slate-900/50 px-3 py-1.5 rounded-lg border border-slate-100 dark:border-slate-800 shadow-sm">
+                <div className="p-1 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400">
+                  <Users className="w-4 h-4" />
+                </div>
+                <span className="font-medium">+10k Médicos</span>
+              </div>
+            </div>
           </div>
 
-          {/* Modern Process Steps with Glassmorphism */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10 max-w-5xl mx-auto mt-8">
-            <div className="group bg-white/20 backdrop-blur-lg rounded-3xl p-8 lg:p-10 border border-white/40 hover:border-white/60 transition-all duration-300 hover:bg-white/25 hover:scale-105 hover:shadow-2xl">
-              <div className="bg-primary/30 rounded-2xl p-5 w-fit mx-auto mb-8 group-hover:bg-primary/40 transition-colors">
-                <Upload className="h-12 w-12 text-white drop-shadow-lg group-hover:scale-110 transition-transform" />
+          <div className="flex-1 relative w-full max-w-[600px] lg:max-w-none">
+            <div className="relative z-10 bg-white/40 dark:bg-slate-900/40 rounded-2xl shadow-2xl shadow-emerald-900/20 dark:shadow-black/50 border border-white/20 dark:border-slate-700/30 p-3 backdrop-blur-xl">
+              <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/10 to-blue-500/10 rounded-2xl" />
+              <img 
+                src="/dashboard-preview.png" 
+                alt="Dashboard Preview" 
+                className="relative rounded-xl w-full h-auto shadow-inner bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700"
+                onError={(e) => {
+                  e.currentTarget.src = "https://placehold.co/800x500/f1f5f9/1e293b?text=Vascular+One+Dashboard";
+                }}
+              />
+              
+              {/* Floating Cards */}
+              <div className="absolute -left-4 sm:-left-8 top-10 bg-white/90 dark:bg-slate-800/90 p-4 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 animate-bounce duration-[3000ms] backdrop-blur-md max-w-[200px]">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
+                    <Sparkles className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Análise IA</p>
+                    <p className="text-sm font-bold text-slate-900 dark:text-white">Alta Precisão</p>
+                  </div>
+                </div>
               </div>
-              <h3 className="text-xl lg:text-2xl font-bold mb-4 text-white drop-shadow-lg [text-shadow:_1px_1px_2px_rgb(0_0_0_/_70%)]">1. Upload Seguro</h3>
-              <p className="text-white drop-shadow-md [text-shadow:_1px_1px_2px_rgb(0_0_0_/_60%)] leading-relaxed text-base lg:text-lg">Envie sua imagem médica com total segurança e privacidade</p>
+
+              <div className="absolute -right-4 sm:-right-8 bottom-20 bg-white/90 dark:bg-slate-800/90 p-4 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 animate-bounce duration-[4000ms] backdrop-blur-md max-w-[200px]">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                    <Users className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Pacientes</p>
+                    <p className="text-sm font-bold text-slate-900 dark:text-white">+1,234 Ativos</p>
+                  </div>
+                </div>
+              </div>
             </div>
             
-            <div className="group bg-white/20 backdrop-blur-lg rounded-3xl p-8 lg:p-10 border border-white/40 hover:border-white/60 transition-all duration-300 hover:bg-white/25 hover:scale-105 hover:shadow-2xl">
-              <div className="bg-accent/30 rounded-2xl p-5 w-fit mx-auto mb-8 group-hover:bg-accent/40 transition-colors">
-                <Brain className="h-12 w-12 text-white drop-shadow-lg group-hover:scale-110 transition-transform" />
-              </div>
-              <h3 className="text-xl lg:text-2xl font-bold mb-4 text-white drop-shadow-lg [text-shadow:_1px_1px_2px_rgb(0_0_0_/_70%)]">2. IA Avançada</h3>
-              <p className="text-white drop-shadow-md [text-shadow:_1px_1px_2px_rgb(0_0_0_/_60%)] leading-relaxed text-base lg:text-lg">Processamento inteligente com algoritmos de última geração</p>
-            </div>
-            
-            <div className="group bg-white/20 backdrop-blur-lg rounded-3xl p-8 lg:p-10 border border-white/40 hover:border-white/60 transition-all duration-300 hover:bg-white/25 hover:scale-105 hover:shadow-2xl">
-              <div className="bg-primary-light/30 rounded-2xl p-5 w-fit mx-auto mb-8 group-hover:bg-primary-light/40 transition-colors">
-                <FileText className="h-12 w-12 text-white drop-shadow-lg group-hover:scale-110 transition-transform" />
-              </div>
-              <h3 className="text-xl lg:text-2xl font-bold mb-4 text-white drop-shadow-lg [text-shadow:_1px_1px_2px_rgb(0_0_0_/_70%)]">3. Laudo Completo</h3>
-              <p className="text-white drop-shadow-md [text-shadow:_1px_1px_2px_rgb(0_0_0_/_60%)] leading-relaxed text-base lg:text-lg">Resultado detalhado e profissional em segundos</p>
-            </div>
+            {/* Decorative background behind image */}
+            <div className="absolute -inset-4 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-[2rem] blur-3xl opacity-20 -z-10" />
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

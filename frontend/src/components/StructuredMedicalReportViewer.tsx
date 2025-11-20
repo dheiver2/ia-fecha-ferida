@@ -73,36 +73,36 @@ interface StructuredMedicalReportViewerProps {
 // Componente de Recomendações Melhoradas
 const ImprovedRecommendations = ({ parsedReport }: { parsedReport: MedicalReportTemplate }) => {
   return (
-    <div className="bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20 p-4 rounded-lg border border-blue-300 dark:border-blue-800">
-      <h4 className="text-lg font-semibold mb-3 flex items-center space-x-2 text-blue-900 dark:text-blue-100">
+    <div className="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 p-6 rounded-xl border border-emerald-100 dark:border-emerald-800 shadow-sm">
+      <h4 className="text-lg font-semibold mb-4 flex items-center space-x-2 text-emerald-900 dark:text-emerald-100">
         <Target className="h-5 w-5" />
         <span>Resumo das Recomendações</span>
       </h4>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+        <div className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm p-4 rounded-xl shadow-sm border border-emerald-100 dark:border-emerald-800/50">
           <div className="flex items-center space-x-2 mb-2">
-            <Zap className="h-4 w-4 text-red-600" />
-            <span className="font-medium text-red-800">Urgente</span>
+            <Zap className="h-4 w-4 text-rose-600" />
+            <span className="font-medium text-rose-800 dark:text-rose-300">Urgente</span>
           </div>
-          <p className="text-sm text-gray-800 dark:text-gray-200 font-medium">
+          <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">
             {parsedReport.recommendations.immediate ? 'Definidas' : 'Não definidas'}
           </p>
         </div>
-        <div className="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+        <div className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm p-4 rounded-xl shadow-sm border border-emerald-100 dark:border-emerald-800/50">
           <div className="flex items-center space-x-2 mb-2">
-            <Clock className="h-4 w-4 text-yellow-600" />
-            <span className="font-medium text-yellow-800">Seguimento</span>
+            <Clock className="h-4 w-4 text-amber-600" />
+            <span className="font-medium text-amber-800 dark:text-amber-300">Seguimento</span>
           </div>
-          <p className="text-sm text-gray-800 dark:text-gray-200 font-medium">
+          <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">
             {parsedReport.recommendations.monitoring?.followUpSchedule?.length ? 'Agendado' : 'Não definido'}
           </p>
         </div>
-        <div className="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+        <div className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm p-4 rounded-xl shadow-sm border border-emerald-100 dark:border-emerald-800/50">
           <div className="flex items-center space-x-2 mb-2">
-            <Pill className="h-4 w-4 text-green-600" />
-            <span className="font-medium text-green-800">Tratamento</span>
+            <Pill className="h-4 w-4 text-emerald-600" />
+            <span className="font-medium text-emerald-800 dark:text-emerald-300">Tratamento</span>
           </div>
-          <p className="text-sm text-gray-800 dark:text-gray-200 font-medium">
+          <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">
             {parsedReport.recommendations.referrals?.length || 0} encaminhamentos
           </p>
         </div>
@@ -427,14 +427,14 @@ export const StructuredMedicalReportViewer: React.FC<StructuredMedicalReportView
     const area = parsedReport?.findings?.morphology?.dimensions?.area || 0;
     
     return (
-      <Card className="mb-6 border-l-4 border-l-blue-500 shadow-lg border-slate-200/60 dark:border-slate-700/60 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl">
+      <Card className="mb-6 border-l-4 border-l-emerald-500 shadow-lg border-slate-200/60 dark:border-slate-700/60 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <CardTitle className="flex items-center text-xl font-bold text-slate-900 dark:text-white">
-              <Brain className="w-6 h-6 mr-2 text-blue-600 dark:text-blue-400" />
+              <Brain className="w-6 h-6 mr-2 text-emerald-600 dark:text-emerald-400" />
               Resumo Executivo
             </CardTitle>
-            <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800">
+            <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-300 dark:border-emerald-800">
               <Star className="w-3 h-3 mr-1" />
               Análise IA
             </Badge>
@@ -442,12 +442,12 @@ export const StructuredMedicalReportViewer: React.FC<StructuredMedicalReportView
         </CardHeader>
         <CardContent>
           <div className="grid md:grid-cols-3 gap-4">
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 p-4 rounded-xl border border-blue-100 dark:border-blue-800">
+            <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800/50 dark:to-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
               <div className="flex items-center mb-2">
-                <Target className="w-5 h-5 text-blue-600 dark:text-blue-400 mr-2" />
-                <span className="font-semibold text-blue-800 dark:text-blue-200">Diagnóstico Principal</span>
+                <Target className="w-5 h-5 text-emerald-600 dark:text-emerald-400 mr-2" />
+                <span className="font-semibold text-slate-800 dark:text-slate-200">Diagnóstico Principal</span>
               </div>
-              <p className="text-blue-900 dark:text-blue-100 font-medium">{condition}</p>
+              <p className="text-slate-900 dark:text-slate-100 font-medium">{condition}</p>
             </div>
             
             <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-800/20 p-4 rounded-xl border border-emerald-100 dark:border-emerald-800">
@@ -461,12 +461,12 @@ export const StructuredMedicalReportViewer: React.FC<StructuredMedicalReportView
               </div>
             </div>
             
-            <div className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 p-4 rounded-xl border border-purple-100 dark:border-purple-800">
+            <div className="bg-gradient-to-br from-teal-50 to-teal-100 dark:from-teal-900/20 dark:to-teal-800/20 p-4 rounded-xl border border-teal-100 dark:border-teal-800">
               <div className="flex items-center mb-2">
-                <Ruler className="w-5 h-5 text-purple-600 dark:text-purple-400 mr-2" />
-                <span className="font-semibold text-purple-800 dark:text-purple-200">Área da Lesão</span>
+                <Ruler className="w-5 h-5 text-teal-600 dark:text-teal-400 mr-2" />
+                <span className="font-semibold text-teal-800 dark:text-teal-200">Área da Lesão</span>
               </div>
-              <p className="text-purple-900 dark:text-purple-100 font-medium">{area} cm²</p>
+              <p className="text-teal-900 dark:text-teal-100 font-medium">{area} cm²</p>
             </div>
           </div>
         </CardContent>
@@ -482,7 +482,7 @@ export const StructuredMedicalReportViewer: React.FC<StructuredMedicalReportView
       <Card className="mb-6 border-slate-200/60 dark:border-slate-700/60 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl">
         <CardHeader>
           <CardTitle className="flex items-center text-lg font-bold text-slate-900 dark:text-white">
-            <PieChart className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" />
+            <PieChart className="w-5 h-5 mr-2 text-emerald-600 dark:text-emerald-400" />
             Análise Tecidual Visual
           </CardTitle>
         </CardHeader>
@@ -500,10 +500,10 @@ export const StructuredMedicalReportViewer: React.FC<StructuredMedicalReportView
               
               <div>
                 <div className="flex justify-between items-center mb-2">
-                  <span className="font-medium text-red-700 dark:text-red-400">Tecido Necrótico</span>
+                  <span className="font-medium text-rose-700 dark:text-rose-400">Tecido Necrótico</span>
                   <span className="font-bold text-slate-900 dark:text-white">{tissueData?.necrotic?.percentage || 0}%</span>
                 </div>
-                <Progress value={tissueData?.necrotic?.percentage || 0} className="h-3 bg-slate-100 dark:bg-slate-700" indicatorClassName="bg-red-500" />
+                <Progress value={tissueData?.necrotic?.percentage || 0} className="h-3 bg-slate-100 dark:bg-slate-700" indicatorClassName="bg-rose-500" />
                 <p className="text-sm text-slate-600 dark:text-slate-400 font-medium mt-1">{tissueData?.necrotic?.type || 'N/A'}</p>
               </div>
               
@@ -518,7 +518,7 @@ export const StructuredMedicalReportViewer: React.FC<StructuredMedicalReportView
             
             <div className="bg-slate-50/50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
               <h4 className="font-semibold mb-3 flex items-center text-slate-900 dark:text-white">
-                <Thermometer className="w-4 h-4 mr-2 text-blue-600 dark:text-blue-400" />
+                <Thermometer className="w-4 h-4 mr-2 text-emerald-600 dark:text-emerald-400" />
                 Indicadores Clínicos
               </h4>
               <div className="space-y-2 text-sm">
@@ -553,9 +553,9 @@ export const StructuredMedicalReportViewer: React.FC<StructuredMedicalReportView
   // Componente de Sistema de Tags
   const TagSystem = ({ diagnosis, findings }: { diagnosis: any, findings: any }) => {
     const tags = [
-      { label: diagnosis?.classification?.grade || 'N/A', color: 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 border-blue-200 dark:border-blue-800', icon: Tag },
+      { label: diagnosis?.classification?.grade || 'N/A', color: 'bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-300 border-slate-200 dark:border-slate-700', icon: Tag },
       { label: findings?.morphology?.shape || 'N/A', color: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800', icon: Eye },
-      { label: findings?.location || 'N/A', color: 'bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 border-purple-200 dark:border-purple-800', icon: Location },
+      { label: findings?.location || 'N/A', color: 'bg-teal-100 dark:bg-teal-900/30 text-teal-800 dark:text-teal-300 border-teal-200 dark:border-teal-800', icon: Location },
       { label: diagnosis?.primary?.etiology || 'N/A', color: 'bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300 border-amber-200 dark:border-amber-800', icon: Microscope }
     ];
     
@@ -583,26 +583,26 @@ export const StructuredMedicalReportViewer: React.FC<StructuredMedicalReportView
       <Card className="mb-6 border-slate-200/60 dark:border-slate-700/60 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl">
         <CardHeader>
           <CardTitle className="flex items-center text-lg font-bold text-slate-900 dark:text-white">
-            <Bandage className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" />
+            <Bandage className="w-5 h-5 mr-2 text-emerald-600 dark:text-emerald-400" />
             Plano Terapêutico
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <h4 className="font-semibold mb-3 flex items-center text-red-700 dark:text-red-400">
+              <h4 className="font-semibold mb-3 flex items-center text-rose-700 dark:text-rose-400">
                 <Timer className="w-4 h-4 mr-2" />
                 Ações Imediatas
               </h4>
               <div className="space-y-3">
                 {Object.entries(immediateActions).map(([key, value], index) => (
-                  <div key={index} className="flex items-start p-3 bg-red-50 dark:bg-red-900/10 rounded-lg border-l-4 border-red-500 dark:border-red-500">
-                    <div className="bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 mt-0.5">
+                  <div key={index} className="flex items-start p-3 bg-rose-50 dark:bg-rose-900/10 rounded-lg border-l-4 border-rose-500 dark:border-rose-500">
+                    <div className="bg-rose-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 mt-0.5">
                       {index + 1}
                     </div>
                     <div>
-                      <p className="font-medium text-red-800 dark:text-red-200">{key}</p>
-                      <p className="text-red-700 dark:text-red-300 text-sm">{typeof value === 'object' ? JSON.stringify(value) : String(value)}</p>
+                      <p className="font-medium text-rose-800 dark:text-rose-200">{key}</p>
+                      <p className="text-rose-700 dark:text-rose-300 text-sm">{typeof value === 'object' ? JSON.stringify(value) : String(value)}</p>
                     </div>
                   </div>
                 ))}
@@ -610,19 +610,19 @@ export const StructuredMedicalReportViewer: React.FC<StructuredMedicalReportView
             </div>
             
             <div>
-              <h4 className="font-semibold mb-3 flex items-center text-blue-700 dark:text-blue-400">
+              <h4 className="font-semibold mb-3 flex items-center text-emerald-700 dark:text-emerald-400">
                 <CalendarIcon className="w-4 h-4 mr-2" />
                 Acompanhamento
               </h4>
               <div className="space-y-3">
                 {Object.entries(followUp).map(([key, value], index) => (
-                  <div key={index} className="flex items-start p-3 bg-blue-50 dark:bg-blue-900/10 rounded-lg border-l-4 border-blue-500 dark:border-blue-500">
-                    <div className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 mt-0.5">
+                  <div key={index} className="flex items-start p-3 bg-emerald-50 dark:bg-emerald-900/10 rounded-lg border-l-4 border-emerald-500 dark:border-emerald-500">
+                    <div className="bg-emerald-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 mt-0.5">
                       {index + 1}
                     </div>
                     <div>
-                      <p className="font-medium text-blue-800 dark:text-blue-200">{key}</p>
-                      <p className="text-blue-700 dark:text-blue-300 text-sm">{typeof value === 'object' ? JSON.stringify(value) : String(value)}</p>
+                      <p className="font-medium text-emerald-800 dark:text-emerald-200">{key}</p>
+                      <p className="text-emerald-700 dark:text-emerald-300 text-sm">{typeof value === 'object' ? JSON.stringify(value) : String(value)}</p>
                     </div>
                   </div>
                 ))}
@@ -663,7 +663,7 @@ export const StructuredMedicalReportViewer: React.FC<StructuredMedicalReportView
               <div className="flex items-center">
                 <QrCode className="w-4 h-4 mr-2 text-emerald-600 dark:text-emerald-400" />
                 <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Código de Verificação</span>
-                <span className="ml-2 text-xs font-mono bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-2 py-1 rounded border border-emerald-100 dark:border-emerald-800">{reportId}</span>
+                <span className="ml-2 text-xs font-mono bg-white/80 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 px-2 py-1 rounded border border-emerald-100 dark:border-emerald-800">{reportId}</span>
               </div>
             </div>
             <div className="text-xs text-emerald-700 dark:text-emerald-300 space-y-1">
@@ -777,8 +777,8 @@ export const StructuredMedicalReportViewer: React.FC<StructuredMedicalReportView
   ) => {
     const isExpanded = expandedSections.has(id);
     const priorityColors = {
-      high: 'border-l-red-500 dark:border-l-red-500 bg-white/80 dark:bg-slate-800/80',
-      medium: 'border-l-blue-500 dark:border-l-blue-500 bg-white/80 dark:bg-slate-800/80',
+      high: 'border-l-emerald-500 dark:border-l-emerald-500 bg-white/80 dark:bg-slate-800/80',
+      medium: 'border-l-teal-500 dark:border-l-teal-500 bg-white/80 dark:bg-slate-800/80',
       low: 'border-l-slate-500 dark:border-l-slate-500 bg-white/80 dark:bg-slate-800/80'
     };
 

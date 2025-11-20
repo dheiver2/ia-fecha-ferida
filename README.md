@@ -77,6 +77,7 @@ NODE_ENV=development
 
 # Google Gemini AI
 GEMINI_API_KEY=sua_chave_gemini_aqui
+GEMINI_MODEL_PRIORITY=gemini-2.5-pro,gemini-2.5-flash,gemini-flash-latest,gemini-pro-latest
 
 # JWT (gere uma chave segura)
 JWT_SECRET=sua_chave_jwt_super_secreta_aqui
@@ -94,6 +95,8 @@ BCRYPT_ROUNDS=10
 RATE_LIMIT_WINDOW_MS=900000
 RATE_LIMIT_MAX_REQUESTS=100
 ```
+
+> `GEMINI_MODEL_PRIORITY` é opcional e aceita uma lista separada por vírgulas com os modelos preferidos do Gemini. Se não informado, o backend usa uma lista padrão que já inclui os modelos 2.5 e os fallbacks mais recentes.
 
 **Frontend** (`frontend/.env`):
 ```env

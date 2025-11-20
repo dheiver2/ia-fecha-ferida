@@ -5,6 +5,7 @@ const path = require('path');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const http = require('http');
+const net = require('net');
 require('dotenv').config();
 
 // Importar Prisma Client
@@ -18,7 +19,7 @@ const { authenticateToken, extractRequestInfo } = require('./middleware/auth');
 const SimpleSignalingServer = require('./services/simpleSignalingServer');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = parseInt(process.env.PORT, 10) || 3001;
 
 // Configuração CORS específica para desenvolvimento
 const corsOptions = {
@@ -297,14 +298,43 @@ if (!fs.existsSync('uploads')) {
 	fs.mkdirSync('uploads');
 }
 
+async function ensurePortAvailable(port) {
+	return new Promise((resolve, reject) => {
+		const tester = net.createServer()
+			.once('error', (error) => {
+				if (error.code === 'EADDRINUSE' || error.code === 'EACCES') {
+					const portError = new Error(`Porta ${port} já está em uso. Finalize o processo que está usando essa porta ou configure a variável PORT com outro valor.`);
+					portError.code = 'PORT_IN_USE';
+					portError.port = port;
+					return reject(portError);
+				}
+				return reject(error);
+			})
+			.once('listening', () => tester.once('close', resolve).close())
+			.listen(port, '0.0.0.0');
+	});
+}
+
 // Inicializar aplicação
 async function startServer() {
 	try {
 		// Inicializar banco de dados
+		console.log('🔄 Reiniciando servidor para aplicar alterações...');
 		await initializeDatabase();
+		await ensurePortAvailable(PORT);
 
 		// Criar servidor HTTP
 		const server = http.createServer(app);
+
+		server.on('error', (error) => {
+			if (error.code === 'EADDRINUSE') {
+				console.error(`❌ Porta ${PORT} já está em uso. Finalize o processo que está ocupando essa porta ou defina a variável PORT com outro valor.`);
+				console.error(`ℹ️  Dicas rápidas: use "lsof -i :${PORT}" ou "npx kill-port ${PORT}" para encerrar processos, ou ajuste o arquivo .env com outra porta.`);
+				process.exit(1);
+			}
+
+			console.error('❌ Erro no servidor HTTP:', error);
+		});
 
 		// Inicializar servidor de sinalização WebRTC
 		const signalingServer = new SimpleSignalingServer(server);
@@ -328,7 +358,12 @@ async function startServer() {
 			signalingServer.cleanupEmptyRooms();
 		}, 5 * 60 * 1000); // A cada 5 minutos
 	} catch (error) {
-		console.error('❌ Erro ao iniciar servidor:', error);
+		if (error.code === 'PORT_IN_USE') {
+			console.error(`❌ Porta ${PORT} já está em uso. Finalize o processo que está ocupando essa porta ou defina a variável PORT com outro valor.`);
+			console.error(`ℹ️  Dicas: rode "lsof -i :${PORT}" (macOS/Linux) ou "netstat -ano | find \\"${PORT}\\"" (Windows) para identificar o processo, use "npx kill-port ${PORT}" ou atualize o arquivo .env com PORT=${PORT + 1}.`);
+		} else {
+			console.error('❌ Erro ao iniciar servidor:', error);
+		}
 		process.exit(1);
 	}
 }

@@ -13,7 +13,7 @@
     "seed": "node prisma/seed.js"
   },
   "dependencies": {
-    "@google/generative-ai": "^0.2.1",
+    "@google/generative-ai": "^0.24.1",
     "@prisma/client": "^6.16.2",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",

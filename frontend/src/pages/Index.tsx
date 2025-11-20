@@ -40,105 +40,148 @@ const Index = () => {
       )}
       
       {/* Hero Section - Enhanced */}
-      <section className="relative pt-16 sm:pt-20 lg:pt-24 pb-12 sm:pb-16 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-hero opacity-5"></div>
+      <section className="relative pt-20 sm:pt-24 lg:pt-32 pb-16 sm:pb-20 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-hero opacity-10 dark:opacity-20 animate-pulse-slow"></div>
+        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-12 items-center">
-              <div className="space-y-6 sm:space-y-8">
-                <div className="space-y-3 sm:space-y-4">
-                  <div className="inline-flex items-center px-4 py-2 bg-primary/10 rounded-full text-primary font-semibold text-sm">
-                    <Zap className="w-4 h-4 mr-2" />
-                    Tecnologia Médica Avançada
+          <div className="max-w-7xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-12 sm:gap-16 items-center">
+              <div className="space-y-8 sm:space-y-10 animate-in slide-in-from-left duration-700">
+                <div className="space-y-4 sm:space-y-6">
+                  <div className="inline-flex items-center px-4 py-2 bg-primary/10 dark:bg-primary/20 rounded-full text-primary font-semibold text-sm backdrop-blur-sm border border-primary/20">
+                    <Zap className="w-4 h-4 mr-2 fill-current" />
+                    Tecnologia Médica de 4ª Geração
                   </div>
-                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                    <span className="bg-gradient-to-r from-primary via-accent to-primary-light bg-clip-text text-transparent">
+                  <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight">
+                    <span className="bg-gradient-to-r from-primary via-accent to-primary-light bg-clip-text text-transparent drop-shadow-sm">
                       Revolucione
                     </span>
                     <br />
-                    <span className="text-foreground">
+                    <span className="text-foreground dark:text-white">
                       o Cuidado de Feridas
                     </span>
                   </h1>
                   <p className="text-lg sm:text-xl text-muted-foreground dark:text-gray-300 leading-relaxed max-w-lg">
                     Análise inteligente de feridas com IA avançada. Diagnósticos precisos, 
-                    tratamentos personalizados e resultados comprovados.
+                    tratamentos personalizados e resultados comprovados clinicamente.
                   </p>
                 </div>
                 
-                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
                   <Link to={user ? "/analise" : "/login"} className="w-full sm:w-auto">
-                    <Button size="lg" className="w-full sm:w-auto bg-gradient-primary text-white font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-2xl shadow-strong hover:shadow-glow transition-all duration-300 hover:scale-105 group min-h-[48px]">
+                    <Button size="lg" className="w-full sm:w-auto bg-gradient-primary text-white font-bold px-8 py-6 rounded-2xl shadow-strong hover:shadow-glow transition-all duration-300 hover:scale-105 group text-lg">
                       {user ? "Começar Análise" : "Entrar para Analisar"}
-                      <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                      <ArrowRight className="w-6 h-6 ml-2 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   </Link>
                   <Link to="/simples" className="w-full sm:w-auto">
-                    <Button size="lg" className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-accent-foreground font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-2xl shadow-strong hover:shadow-glow transition-all duration-300 hover:scale-105 group min-h-[48px]">
+                    <Button size="lg" variant="outline" className="w-full sm:w-auto border-2 border-accent text-accent hover:bg-accent hover:text-white dark:border-accent dark:text-accent-foreground dark:hover:bg-accent dark:hover:text-white font-bold px-8 py-6 rounded-2xl shadow-soft hover:shadow-medium transition-all duration-300 hover:scale-105 group text-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm">
                       Videochamada Rápida
-                      <Stethoscope className="w-5 h-5 ml-2 group-hover:scale-110 transition-transform" />
+                      <Stethoscope className="w-6 h-6 ml-2 group-hover:scale-110 transition-transform" />
                     </Button>
                   </Link>
-                  <Button variant="outline" size="lg" className="w-full sm:w-auto border-2 border-primary text-primary hover:bg-primary hover:text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-2xl transition-all duration-300 min-h-[48px]">
-                    Ver Demonstração
-                  </Button>
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-8 pt-4">
-                  <div className="flex items-center space-x-2">
-                    <div className="flex -space-x-2">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-8 pt-6 border-t border-border/40 dark:border-gray-700/40">
+                  <div className="flex items-center space-x-3">
+                    <div className="flex -space-x-3">
                       {[1,2,3,4].map((i) => (
-                        <div key={i} className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-r from-primary to-accent border-2 border-white"></div>
+                        <div key={i} className="w-10 h-10 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 border-2 border-background flex items-center justify-center text-xs font-bold text-muted-foreground">
+                           <Users className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                        </div>
                       ))}
                     </div>
-                    <span className="text-sm text-muted-foreground font-medium">+1000 profissionais</span>
+                    <div>
+                        <p className="text-sm font-bold text-foreground dark:text-white">+1000 profissionais</p>
+                        <p className="text-xs text-muted-foreground">confiam na VascularOne</p>
+                    </div>
                   </div>
-                  <div className="flex items-center space-x-1">
-                    {[1,2,3,4,5].map((i) => (
-                      <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                    ))}
-                    <span className="text-sm text-muted-foreground font-medium ml-2">4.9/5</span>
+                  <div className="flex items-center space-x-2 bg-yellow-50 dark:bg-yellow-900/20 px-3 py-1 rounded-lg border border-yellow-100 dark:border-yellow-900/30">
+                    <div className="flex">
+                        {[1,2,3,4,5].map((i) => (
+                        <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                        ))}
+                    </div>
+                    <span className="text-sm font-bold text-yellow-700 dark:text-yellow-400">4.9/5</span>
                   </div>
                 </div>
               </div>
 
-              <div className="relative mt-8 lg:mt-0">
-                <div className="relative z-10 bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl shadow-strong p-4 sm:p-6 lg:p-8 border border-border/20 dark:border-gray-700">
-                  <div className="space-y-4 sm:space-y-6">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-base sm:text-lg font-bold text-foreground dark:text-gray-100">Análise em Tempo Real</h3>
-                      <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+              <div className="relative mt-12 lg:mt-0 animate-in slide-in-from-right duration-1000 delay-200">
+                <div className="relative z-10 bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-[2rem] shadow-2xl p-6 sm:p-8 border border-white/20 dark:border-gray-700 ring-1 ring-black/5 dark:ring-white/10">
+                  <div className="absolute top-0 right-0 -mt-4 -mr-4 bg-gradient-to-br from-primary to-accent text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg transform rotate-12">
+                    IA Ativa
+                  </div>
+                  
+                  <div className="space-y-6">
+                    <div className="flex items-center justify-between border-b border-gray-100 dark:border-gray-700 pb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                            <Brain className="w-6 h-6 text-primary" />
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-bold text-foreground dark:text-gray-100">Análise em Tempo Real</h3>
+                            <p className="text-xs text-muted-foreground">Processamento Neural v4.0</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="relative flex h-3 w-3">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                        </span>
+                        <span className="text-xs font-medium text-green-600 dark:text-green-400">Online</span>
+                      </div>
                     </div>
                     
-                    <div className="space-y-3 sm:space-y-4">
-                      <div className="flex items-center space-x-3">
-                        <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
-                        <span className="text-xs sm:text-sm text-muted-foreground dark:text-gray-300">Imagem processada</span>
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                        <div className="flex items-center space-x-3">
+                          <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
+                            <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
+                          </div>
+                          <span className="text-sm font-medium text-gray-700 dark:text-gray-200">Segmentação da Lesão</span>
+                        </div>
+                        <span className="text-xs font-bold text-green-600 dark:text-green-400">100%</span>
                       </div>
-                      <div className="flex items-center space-x-3">
-                        <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
-                        <span className="text-xs sm:text-sm text-muted-foreground dark:text-gray-300">IA analisando padrões</span>
+                      
+                      <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                        <div className="flex items-center space-x-3">
+                          <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                            <Brain className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                          </div>
+                          <span className="text-sm font-medium text-gray-700 dark:text-gray-200">Classificação Tecidual</span>
+                        </div>
+                        <span className="text-xs font-bold text-blue-600 dark:text-blue-400">98.5%</span>
                       </div>
-                      <div className="flex items-center space-x-3">
-                        <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-primary border-t-transparent rounded-full animate-spin flex-shrink-0"></div>
-                        <span className="text-xs sm:text-sm text-muted-foreground dark:text-gray-300">Gerando relatório...</span>
+
+                      <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-primary/20 relative overflow-hidden">
+                        <div className="absolute inset-0 bg-primary/5 animate-pulse"></div>
+                        <div className="flex items-center space-x-3 relative z-10">
+                          <div className="p-2 bg-primary/10 dark:bg-primary/20 rounded-lg">
+                            <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                          </div>
+                          <span className="text-sm font-medium text-gray-900 dark:text-white">Gerando Prognóstico...</span>
+                        </div>
+                        <span className="text-xs font-bold text-primary relative z-10">Processando</span>
                       </div>
                     </div>
 
-                    <div className="bg-gradient-subtle dark:bg-gray-700/50 rounded-xl sm:rounded-2xl p-3 sm:p-4">
-                      <div className="text-xs sm:text-sm font-semibold text-primary mb-2">Precisão do Diagnóstico</div>
-                      <div className="flex items-center space-x-2">
-                        <div className="flex-1 bg-gray-200 dark:bg-gray-600 rounded-full h-2">
-                          <div className="bg-gradient-primary h-2 rounded-full w-[94%] transition-all duration-1000"></div>
-                        </div>
-                        <span className="text-xs sm:text-sm font-bold text-primary">94%</span>
+                    <div className="bg-gradient-subtle dark:bg-gray-900/50 rounded-2xl p-5 border border-gray-200 dark:border-gray-700">
+                      <div className="flex justify-between items-end mb-2">
+                        <div className="text-sm font-semibold text-primary">Precisão do Diagnóstico</div>
+                        <div className="text-2xl font-bold text-primary">94%</div>
                       </div>
+                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
+                        <div className="bg-gradient-primary h-3 rounded-full w-[94%] shadow-lg animate-[width_1.5s_ease-out]"></div>
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-2 text-right">Baseado em 10k+ casos validados</p>
                     </div>
                   </div>
                 </div>
                 
-                <div className="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-r from-accent to-primary-light rounded-full opacity-20 animate-pulse"></div>
-                <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-gradient-to-r from-primary to-accent rounded-full opacity-30 animate-pulse delay-1000"></div>
+                {/* Decorative Elements */}
+                <div className="absolute -top-12 -right-12 w-64 h-64 bg-primary/20 rounded-full blur-3xl animate-pulse-slow"></div>
+                <div className="absolute -bottom-12 -left-12 w-64 h-64 bg-accent/20 rounded-full blur-3xl animate-pulse-slow delay-700"></div>
               </div>
             </div>
           </div>
@@ -150,7 +193,7 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight">
-              Bem-vindo à Vascular One
+              Bem-vindo à VascularOne
             </h2>
             <p className="text-xl text-muted-foreground dark:text-gray-300 leading-relaxed">
               Tecnologia de ponta para análise médica precisa e eficiente

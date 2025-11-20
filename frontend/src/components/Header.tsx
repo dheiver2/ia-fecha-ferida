@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Menu, X, Heart, Sparkles, User, LogOut, ChevronDown, Home, Activity, History, Video, AlertTriangle } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import logoImage from "@/assets/1.png";
 import {
@@ -15,8 +15,17 @@ import {
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { user, logout } = useAuth();
   const location = useLocation();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -34,88 +43,66 @@ const Header = () => {
   ];
 
   const protectedNavItems = [
-    { href: "/analise", label: "Análise IA", isLink: true },
-    { href: "/historico", label: "Histórico", isLink: true },
-    { href: "/teleconsulta", label: "Teleconsulta", isLink: true },
-    { href: "/alertas", label: "Alertas", isLink: true }
+    { href: "/analise", label: "Análise IA", isLink: true, icon: Activity },
+    { href: "/historico", label: "Histórico", isLink: true, icon: History },
+    { href: "/teleconsulta", label: "Teleconsulta", isLink: true, icon: Video },
+    { href: "/alertas", label: "Alertas", isLink: true, icon: AlertTriangle }
   ];
 
   const navItems = user ? protectedNavItems : publicNavItems;
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border-b border-primary/10 dark:border-gray-700/50 shadow-xl">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-3">
+    <header 
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled 
+          ? 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-2xl border-b border-gray-200/50 dark:border-gray-700/50 shadow-lg' 
+          : 'bg-transparent border-b border-transparent'
+      }`}
+    >
+      <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-50"></div>
+      
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
         <div className="flex items-center justify-between">
           {/* Logo Section - Reorganizado */}
-          <Link to="/" className="flex items-center space-x-2 sm:space-x-3 group">
+          <Link to="/" className="flex items-center space-x-3 group relative z-10">
             <div className="relative">
+              <div className="absolute inset-0 bg-primary/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <img 
                 src={logoImage} 
-                alt="Vascular One" 
-                className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 object-contain rounded-md ring-1 ring-black/5 dark:ring-white/10 drop-shadow-md group-hover:scale-105 transition-all duration-300"
+                alt="VascularOne" 
+                className="w-10 h-10 sm:w-12 sm:h-12 object-contain relative z-10 drop-shadow-md group-hover:scale-105 transition-transform duration-300"
               />
-              <div className="absolute -top-0.5 -right-0.5 sm:-top-1 sm:-right-1 w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-green-500 rounded-full shadow-sm"></div>
+              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full shadow-sm border-2 border-white dark:border-gray-900 animate-pulse"></div>
             </div>
             <div className="hidden sm:block">
-              <h1 className="text-base sm:text-lg md:text-xl font-bold text-foreground dark:text-white group-hover:text-primary transition-colors">
-                Vascular One
+              <h1 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white tracking-tight group-hover:text-primary transition-colors">
+                VascularOne
               </h1>
-              <p className="text-xs text-muted-foreground font-medium flex items-center gap-1">
-                <Sparkles className="w-3 h-3" />
-                Análise médica com IA
+              <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-semibold flex items-center gap-1">
+                <Sparkles className="w-3 h-3 text-primary" />
+                Inteligência Médica
               </p>
             </div>
           </Link>
           
           {/* Desktop Navigation - Otimizada */}
-          <nav className="hidden md:flex items-center space-x-6">
+          <nav className="hidden md:flex items-center space-x-1 bg-gray-100/50 dark:bg-gray-800/50 p-1 rounded-full backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50">
             {user ? (
               <>
-                {/* Links diretos principais - mais limpo */}
-                <Link
-                  to="/analise"
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                    isActivePage('/analise') 
-                      ? 'text-primary bg-primary/10 shadow-sm' 
-                      : 'text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-primary/5'
-                  }`}
-                >
-                  <Activity className="h-4 w-4" />
-                  Análise IA
-                </Link>
-                <Link
-                  to="/historico"
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                    isActivePage('/historico') 
-                      ? 'text-primary bg-primary/10 shadow-sm' 
-                      : 'text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-primary/5'
-                  }`}
-                >
-                  <History className="h-4 w-4" />
-                  Histórico
-                </Link>
-                <Link
-                  to="/teleconsulta"
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                    isActivePage('/teleconsulta') 
-                      ? 'text-primary bg-primary/10 shadow-sm' 
-                      : 'text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-primary/5'
-                  }`}
-                >
-                  <Video className="h-4 w-4" />
-                  Teleconsulta
-                </Link>
-                <Link
-                  to="/alertas"
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                    isActivePage('/alertas') 
-                      ? 'text-primary bg-primary/10 shadow-sm' 
-                      : 'text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-primary/5'
-                  }`}
-                >
-                  <AlertTriangle className="h-4 w-4" />
-                  Alertas
-                </Link>
+                {protectedNavItems.map((item) => (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                      isActivePage(item.href) 
+                        ? 'text-primary bg-white dark:bg-gray-900 shadow-sm scale-105' 
+                        : 'text-gray-600 dark:text-gray-400 hover:text-primary hover:bg-white/50 dark:hover:bg-gray-800/50'
+                    }`}
+                  >
+                    {item.icon && <item.icon className="h-4 w-4" />}
+                    {item.label}
+                  </Link>
+                ))}
               </>
             ) : (
               /* Links para usuários não logados - melhorados */
@@ -123,7 +110,7 @@ const Header = () => {
                 <a
                   key={index}
                   href={item.href}
-                  className="px-3 py-2 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-primary/5 transition-all duration-200"
+                  className="px-4 py-2 rounded-full text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-primary hover:bg-white/50 dark:hover:bg-gray-800/50 transition-all duration-300"
                 >
                   {item.label}
                 </a>
@@ -132,55 +119,65 @@ const Header = () => {
           </nav>
 
           {/* Desktop Actions - Reorganizada */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-3">
+            <ThemeToggle />
+            
             {user ? (
               <>
-                {/* User Info - Mais compacta */}
-                <div className="flex items-center space-x-2 px-3 py-1.5 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-                  <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                    <User className="w-4 h-4 text-primary" />
-                  </div>
-                  <div className="text-sm">
-                    <p className="font-medium text-foreground dark:text-gray-200 leading-tight">{user?.name}</p>
-                    <p className="text-xs text-muted-foreground dark:text-gray-400 capitalize leading-tight">{user?.role}</p>
-                  </div>
-                </div>
+                <div className="h-8 w-px bg-gray-200 dark:bg-gray-700 mx-2"></div>
                 
-                {/* Botão principal */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="flex items-center gap-2 pl-2 pr-4 py-1 h-auto hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full border border-transparent hover:border-gray-200 dark:hover:border-gray-700 transition-all">
+                      <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary-dark rounded-full flex items-center justify-center text-white shadow-sm">
+                        <User className="w-4 h-4" />
+                      </div>
+                      <div className="text-left hidden lg:block">
+                        <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 leading-none">{user?.name?.split(' ')[0]}</p>
+                        <p className="text-[10px] text-muted-foreground uppercase tracking-wider leading-none mt-1">{user?.role}</p>
+                      </div>
+                      <ChevronDown className="w-4 h-4 text-muted-foreground" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56 p-2">
+                    <div className="px-2 py-1.5 mb-1">
+                        <p className="text-sm font-medium">{user?.name}</p>
+                        <p className="text-xs text-muted-foreground">{user?.email}</p>
+                    </div>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem className="cursor-pointer">
+                        <User className="mr-2 h-4 w-4" />
+                        <span>Perfil</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="cursor-pointer">
+                        <Activity className="mr-2 h-4 w-4" />
+                        <span>Minhas Análises</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleLogout} className="text-red-600 focus:text-red-600 cursor-pointer">
+                        <LogOut className="mr-2 h-4 w-4" />
+                        <span>Sair</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
                 <Link to="/analise">
-                  <Button className="bg-primary hover:bg-primary/90 text-white font-medium px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 group">
+                  <Button className="bg-primary hover:bg-primary/90 text-white font-medium px-6 py-2 rounded-full shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:-translate-y-0.5 transition-all duration-300 group">
                     <Heart className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
-                    Análise
+                    Nova Análise
                   </Button>
                 </Link>
-                
-                {/* Theme Toggle */}
-                <ThemeToggle />
-                
-                {/* Logout */}
-                <Button 
-                  onClick={handleLogout}
-                  variant="ghost" 
-                  size="sm"
-                  className="text-gray-600 hover:text-red-600 hover:bg-red-50 dark:text-gray-400 dark:hover:text-red-400 dark:hover:bg-red-950/20"
-                >
-                  <LogOut className="w-4 h-4" />
-                </Button>
               </>
             ) : (
               <>
-                {/* Theme Toggle para não logados */}
-                <ThemeToggle />
-                
-                {/* Botões para usuários não autenticados - Mais limpos */}
                 <Link to="/login">
-                  <Button variant="ghost" className="text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-primary/5 font-medium">
+                  <Button variant="ghost" className="text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-primary/5 font-medium rounded-full px-6">
                     Entrar
                   </Button>
                 </Link>
                 <Link to="/register">
-                  <Button className="bg-primary hover:bg-primary/90 text-white font-medium px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
-                    Cadastrar
+                  <Button className="bg-primary hover:bg-primary/90 text-white font-medium px-6 py-2 rounded-full shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:-translate-y-0.5 transition-all duration-300">
+                    Começar Agora
                   </Button>
                 </Link>
               </>
@@ -188,93 +185,62 @@ const Header = () => {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="flex items-center space-x-1 sm:space-x-2 md:hidden">
+          <div className="flex items-center space-x-2 md:hidden">
             <ThemeToggle />
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
+              className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
               aria-label={isMenuOpen ? "Fechar menu" : "Abrir menu"}
             >
-              {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </Button>
           </div>
         </div>
 
         {/* Mobile Navigation - Otimizada */}
         {isMenuOpen && (
-          <div className="md:hidden mt-3 sm:mt-4 pb-4 border-t border-gray-200 dark:border-gray-700">
-            <nav className="flex flex-col space-y-1 sm:space-y-2 pt-3 sm:pt-4">
+          <div className="md:hidden absolute top-full left-0 right-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border-b border-gray-200 dark:border-gray-800 shadow-xl animate-in slide-in-from-top-5 duration-300">
+            <div className="container mx-auto px-4 py-6 space-y-6">
               {user ? (
                 <>
-                  {/* User Info Mobile - Mais compacta */}
-                  <div className="flex items-center space-x-3 px-4 py-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 mb-3">
-                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                      <User className="w-5 h-5 text-primary" />
+                  {/* User Info Mobile */}
+                  <div className="flex items-center space-x-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-700">
+                    <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary-dark rounded-full flex items-center justify-center text-white shadow-md">
+                      <User className="w-6 h-6" />
                     </div>
                     <div>
-                      <p className="font-medium text-foreground dark:text-gray-200">{user?.name}</p>
-                      <p className="text-sm text-muted-foreground dark:text-gray-400 capitalize">{user?.role}</p>
+                      <p className="font-bold text-gray-900 dark:text-white text-lg">{user?.name}</p>
+                      <p className="text-sm text-muted-foreground capitalize">{user?.role}</p>
                     </div>
                   </div>
                   
-                  {/* Navegação para usuários logados - Mais limpa */}
-                  <Link
-                    to="/analise"
-                    className={`flex items-center gap-3 px-4 py-3 sm:py-4 rounded-lg font-medium transition-all duration-200 min-h-[48px] ${
-                      isActivePage('/analise') 
-                        ? 'text-primary bg-primary/10 shadow-sm' 
-                        : 'text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-primary/5'
-                    }`}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <Activity className="h-5 w-5" />
-                    Análise IA
-                  </Link>
-                  <Link
-                    to="/historico"
-                    className={`flex items-center gap-3 px-4 py-3 sm:py-4 rounded-lg font-medium transition-all duration-200 min-h-[48px] ${
-                      isActivePage('/historico') 
-                        ? 'text-primary bg-primary/10 shadow-sm' 
-                        : 'text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-primary/5'
-                    }`}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <History className="h-5 w-5" />
-                    Histórico
-                  </Link>
-                  <Link
-                    to="/teleconsulta"
-                    className={`flex items-center gap-3 px-4 py-3 sm:py-4 rounded-lg font-medium transition-all duration-200 min-h-[48px] ${
-                      isActivePage('/teleconsulta') 
-                        ? 'text-primary bg-primary/10 shadow-sm' 
-                        : 'text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-primary/5'
-                    }`}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <Video className="h-5 w-5" />
-                    Teleconsulta
-                  </Link>
-                  <Link
-                    to="/alertas"
-                    className={`flex items-center gap-3 px-4 py-3 sm:py-4 rounded-lg font-medium transition-all duration-200 min-h-[48px] ${
-                      isActivePage('/alertas') 
-                        ? 'text-primary bg-primary/10 shadow-sm' 
-                        : 'text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-primary/5'
-                    }`}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <AlertTriangle className="h-5 w-5" />
-                    Alertas Médicos
-                  </Link>
+                  {/* Navegação */}
+                  <nav className="space-y-2">
+                    {protectedNavItems.map((item) => (
+                        <Link
+                            key={item.href}
+                            to={item.href}
+                            className={`flex items-center gap-4 p-4 rounded-xl font-medium transition-all duration-200 ${
+                            isActivePage(item.href) 
+                                ? 'text-primary bg-primary/10 shadow-sm' 
+                                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
+                            }`}
+                            onClick={() => setIsMenuOpen(false)}
+                        >
+                            {item.icon && <item.icon className="h-5 w-5" />}
+                            {item.label}
+                        </Link>
+                    ))}
+                  </nav>
                   
-                  {/* Botões de ação mobile */}
-                  <div className="pt-3 space-y-2">
+                  {/* Ações */}
+                  <div className="space-y-3 pt-2">
                     <Link to="/analise" onClick={() => setIsMenuOpen(false)}>
-                      <Button className="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 rounded-lg shadow-sm">
-                        <Heart className="w-4 h-4 mr-2" />
-                        Começar Análise
+                      <Button className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-6 rounded-xl shadow-lg shadow-primary/20">
+                        <Heart className="w-5 h-5 mr-2" />
+                        Nova Análise
                       </Button>
                     </Link>
                     
@@ -283,44 +249,44 @@ const Header = () => {
                         handleLogout();
                         setIsMenuOpen(false);
                       }}
-                      variant="ghost" 
-                      className="w-full text-gray-600 hover:text-red-600 hover:bg-red-50 dark:text-gray-400 dark:hover:text-red-400 dark:hover:bg-red-950/20"
+                      variant="outline" 
+                      className="w-full border-red-200 text-red-600 hover:bg-red-50 dark:border-red-900/30 dark:hover:bg-red-900/20 py-6 rounded-xl"
                     >
-                      <LogOut className="w-4 h-4 mr-2" />
-                      Sair
+                      <LogOut className="w-5 h-5 mr-2" />
+                      Sair da Conta
                     </Button>
                   </div>
                 </>
               ) : (
                 <>
-                  {/* Navegação para usuários não logados - Melhorada */}
-                  {publicNavItems.map((item, index) => (
-                    <a 
-                      key={index}
-                      href={item.href} 
-                      className="px-4 py-3 rounded-lg font-medium text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-primary/5 transition-all duration-200"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      {item.label}
-                    </a>
-                  ))}
+                  <nav className="space-y-2">
+                    {publicNavItems.map((item, index) => (
+                        <a 
+                        key={index}
+                        href={item.href} 
+                        className="block p-4 rounded-xl font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-200"
+                        onClick={() => setIsMenuOpen(false)}
+                        >
+                        {item.label}
+                        </a>
+                    ))}
+                  </nav>
                   
-                  {/* Botões para usuários não autenticados - Mobile */}
-                  <div className="space-y-2 pt-3">
+                  <div className="space-y-3 pt-4 border-t border-gray-100 dark:border-gray-800">
                     <Link to="/login" onClick={() => setIsMenuOpen(false)}>
-                      <Button variant="ghost" className="w-full text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-primary/5 font-medium">
+                      <Button variant="outline" className="w-full py-6 rounded-xl font-semibold">
                         Entrar
                       </Button>
                     </Link>
                     <Link to="/register" onClick={() => setIsMenuOpen(false)}>
-                      <Button className="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 rounded-lg shadow-sm">
-                        Cadastrar
+                      <Button className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-6 rounded-xl shadow-lg shadow-primary/20">
+                        Criar Conta Grátis
                       </Button>
                     </Link>
                   </div>
                 </>
               )}
-            </nav>
+            </div>
           </div>
         )}
       </div>

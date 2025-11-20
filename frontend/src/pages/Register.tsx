@@ -179,38 +179,43 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-subtle flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
+    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 bg-gradient-to-b from-blue-50/50 to-white dark:from-gray-900 dark:to-gray-950 -z-20"></div>
+      <div className="absolute top-0 left-0 w-[800px] h-[800px] bg-primary/5 rounded-full blur-3xl -translate-y-1/2 -translate-x-1/3 -z-10"></div>
+      <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-accent/5 rounded-full blur-3xl translate-y-1/3 translate-x-1/4 -z-10"></div>
+
+      <div className="max-w-md w-full space-y-8 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/50 dark:border-gray-700/50 relative z-10">
         <div>
-          <div className="mx-auto h-12 w-12 bg-accent rounded-full flex items-center justify-center">
+          <div className="mx-auto h-16 w-16 bg-gradient-to-br from-primary to-accent rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20 transform -rotate-3 hover:rotate-0 transition-transform duration-300">
             <User className="h-8 w-8 text-white" />
           </div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-gray-100">
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-foreground dark:text-white tracking-tight">
             Criar nova conta
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-300">
-            Sistema de Análise de Feridas com IA
+          <p className="mt-2 text-center text-sm text-muted-foreground dark:text-gray-400">
+            Junte-se à Vascular One
           </p>
         </div>
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           {message && (
-            <div className={`rounded-md p-4 ${
+            <div className={`rounded-xl p-4 ${
               message.type === 'success' 
-                ? 'bg-green-50 border border-green-200' 
-                : 'bg-red-50 border border-red-200'
-            }`}>
+                ? 'bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-900/30' 
+                : 'bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/30'
+            } animate-in fade-in slide-in-from-top-2`}>
               <div className="flex">
                 <div className="flex-shrink-0">
                   {message.type === 'success' ? (
-                    <CheckCircle className="h-5 w-5 text-green-400" />
+                    <CheckCircle className="h-5 w-5 text-green-500 dark:text-green-400" />
                   ) : (
-                    <AlertCircle className="h-5 w-5 text-red-400" />
+                    <AlertCircle className="h-5 w-5 text-red-500 dark:text-red-400" />
                   )}
                 </div>
                 <div className="ml-3">
-                  <p className={`text-sm ${
-                    message.type === 'success' ? 'text-green-800' : 'text-red-800'
+                  <p className={`text-sm font-medium ${
+                    message.type === 'success' ? 'text-green-800 dark:text-green-300' : 'text-red-800 dark:text-red-300'
                   }`}>
                     {message.text}
                   </p>
@@ -219,15 +224,15 @@ const Register: React.FC = () => {
             </div>
           )}
 
-          <div className="space-y-4">
+          <div className="space-y-5">
             {/* Nome */}
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                 Nome completo *
               </label>
-              <div className="mt-1 relative">
+              <div className="relative group">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <User className="h-5 w-5 text-gray-400" />
+                  <User className="h-5 w-5 text-gray-400 group-focus-within:text-primary transition-colors" />
                 </div>
                 <input
                   id="name"
@@ -236,25 +241,25 @@ const Register: React.FC = () => {
                   required
                   value={formData.name}
                   onChange={handleChange}
-                  className={`appearance-none relative block w-full pl-10 pr-3 py-2 border ${
-                    errors.name ? 'border-red-300' : 'border-gray-300'
-                  } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-primary focus:border-primary sm:text-sm`}
+                  className={`block w-full pl-10 pr-3 py-3 border ${
+                    errors.name ? 'border-red-300 dark:border-red-600' : 'border-gray-200 dark:border-gray-700'
+                  } rounded-xl text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800/50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white dark:focus:bg-gray-800 transition-all duration-200 sm:text-sm`}
                   placeholder="Seu nome completo"
                 />
               </div>
               {errors.name && (
-                <p className="mt-1 text-sm text-red-600">{errors.name}</p>
+                <p className="mt-1 text-sm text-red-500 font-medium animate-in slide-in-from-top-1">{errors.name}</p>
               )}
             </div>
 
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                 Email *
               </label>
-              <div className="mt-1 relative">
+              <div className="relative group">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-gray-400" />
+                  <Mail className="h-5 w-5 text-gray-400 group-focus-within:text-primary transition-colors" />
                 </div>
                 <input
                   id="email"
@@ -264,40 +269,45 @@ const Register: React.FC = () => {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className={`appearance-none relative block w-full pl-10 pr-3 py-2 border ${
-                    errors.email ? 'border-red-300' : 'border-gray-300'
-                  } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-primary focus:border-primary sm:text-sm`}
+                  className={`block w-full pl-10 pr-3 py-3 border ${
+                    errors.email ? 'border-red-300 dark:border-red-600' : 'border-gray-200 dark:border-gray-700'
+                  } rounded-xl text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800/50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white dark:focus:bg-gray-800 transition-all duration-200 sm:text-sm`}
                   placeholder="seu@email.com"
                 />
               </div>
               {errors.email && (
-                <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+                <p className="mt-1 text-sm text-red-500 font-medium animate-in slide-in-from-top-1">{errors.email}</p>
               )}
             </div>
 
             {/* Tipo de usuário */}
             <div>
-              <label htmlFor="role" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="role" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                 Tipo de usuário *
               </label>
-              <select
-                id="role"
-                name="role"
-                value={formData.role}
-                onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
-              >
-                <option value="user">Usuário</option>
-                <option value="doctor">Médico</option>
-                <option value="nurse">Enfermeiro</option>
-              </select>
+              <div className="relative">
+                <select
+                  id="role"
+                  name="role"
+                  value={formData.role}
+                  onChange={handleChange}
+                  className="block w-full pl-3 pr-10 py-3 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800/50 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white dark:focus:bg-gray-800 transition-all duration-200 sm:text-sm appearance-none"
+                >
+                  <option value="user">Usuário</option>
+                  <option value="doctor">Médico</option>
+                  <option value="nurse">Enfermeiro</option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
+                  <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                </div>
+              </div>
             </div>
 
             {/* Campos específicos para médicos */}
             {formData.role === 'doctor' && (
               <>
-                <div>
-                  <label htmlFor="crm" className="block text-sm font-medium text-gray-700">
+                <div className="animate-in fade-in slide-in-from-top-2">
+                  <label htmlFor="crm" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                     CRM *
                   </label>
                   <input
@@ -306,16 +316,16 @@ const Register: React.FC = () => {
                     type="text"
                     value={formData.crm}
                     onChange={handleChange}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                    className="block w-full px-3 py-3 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800/50 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white dark:focus:bg-gray-800 transition-all duration-200 sm:text-sm"
                     placeholder="123456/UF"
                   />
                   {errors.crm && (
-                    <p className="mt-1 text-sm text-red-600">{errors.crm}</p>
+                    <p className="mt-1 text-sm text-red-500 font-medium animate-in slide-in-from-top-1">{errors.crm}</p>
                   )}
                 </div>
 
-                <div>
-                  <label htmlFor="specialty" className="block text-sm font-medium text-gray-700">
+                <div className="animate-in fade-in slide-in-from-top-2">
+                  <label htmlFor="specialty" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                     Especialidade *
                   </label>
                   <input
@@ -324,13 +334,13 @@ const Register: React.FC = () => {
                     type="text"
                     value={formData.specialty}
                     onChange={handleChange}
-                    className={`mt-1 block w-full px-3 py-2 border ${
-                      errors.specialty ? 'border-red-300' : 'border-gray-300'
-                    } rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm`}
+                    className={`block w-full px-3 py-3 border ${
+                      errors.specialty ? 'border-red-300 dark:border-red-600' : 'border-gray-200 dark:border-gray-700'
+                    } rounded-xl text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800/50 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white dark:focus:bg-gray-800 transition-all duration-200 sm:text-sm`}
                     placeholder="Ex: Dermatologia, Cirurgia Plástica"
                   />
                   {errors.specialty && (
-                    <p className="mt-1 text-sm text-red-600">{errors.specialty}</p>
+                    <p className="mt-1 text-sm text-red-500 font-medium animate-in slide-in-from-top-1">{errors.specialty}</p>
                   )}
                 </div>
               </>
@@ -338,8 +348,8 @@ const Register: React.FC = () => {
 
             {/* Campos específicos para enfermeiros */}
             {formData.role === 'nurse' && (
-              <div>
-                <label htmlFor="specialty" className="block text-sm font-medium text-gray-700">
+              <div className="animate-in fade-in slide-in-from-top-2">
+                <label htmlFor="specialty" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                   Área de atuação *
                 </label>
                 <input
@@ -348,25 +358,25 @@ const Register: React.FC = () => {
                   type="text"
                   value={formData.specialty}
                   onChange={handleChange}
-                  className={`mt-1 block w-full px-3 py-2 border ${
-                    errors.specialty ? 'border-red-300' : 'border-gray-300'
-                  } rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm`}
+                  className={`block w-full px-3 py-3 border ${
+                    errors.specialty ? 'border-red-300 dark:border-red-600' : 'border-gray-200 dark:border-gray-700'
+                  } rounded-xl text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800/50 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white dark:focus:bg-gray-800 transition-all duration-200 sm:text-sm`}
                   placeholder="Ex: UTI, Emergência, Dermatologia"
                 />
                 {errors.specialty && (
-                  <p className="mt-1 text-sm text-red-600">{errors.specialty}</p>
+                  <p className="mt-1 text-sm text-red-500 font-medium animate-in slide-in-from-top-1">{errors.specialty}</p>
                 )}
               </div>
             )}
 
             {/* Telefone */}
             <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                 Telefone
               </label>
-              <div className="mt-1 relative">
+              <div className="relative group">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Phone className="h-5 w-5 text-gray-400" />
+                  <Phone className="h-5 w-5 text-gray-400 group-focus-within:text-primary transition-colors" />
                 </div>
                 <input
                   id="phone"
@@ -374,25 +384,25 @@ const Register: React.FC = () => {
                   type="text"
                   value={formData.phone}
                   onChange={handleChange}
-                  className={`appearance-none relative block w-full pl-10 pr-3 py-2 border ${
-                    errors.phone ? 'border-red-300' : 'border-gray-300'
-                  } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-primary focus:border-primary sm:text-sm`}
+                  className={`block w-full pl-10 pr-3 py-3 border ${
+                    errors.phone ? 'border-red-300 dark:border-red-600' : 'border-gray-200 dark:border-gray-700'
+                  } rounded-xl text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800/50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white dark:focus:bg-gray-800 transition-all duration-200 sm:text-sm`}
                   placeholder="(11) 99999-9999"
                 />
               </div>
               {errors.phone && (
-                <p className="mt-1 text-sm text-red-600">{errors.phone}</p>
+                <p className="mt-1 text-sm text-red-500 font-medium animate-in slide-in-from-top-1">{errors.phone}</p>
               )}
             </div>
 
             {/* Instituição */}
             <div>
-              <label htmlFor="institution" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="institution" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                 Instituição
               </label>
-              <div className="mt-1 relative">
+              <div className="relative group">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Building className="h-5 w-5 text-gray-400" />
+                  <Building className="h-5 w-5 text-gray-400 group-focus-within:text-primary transition-colors" />
                 </div>
                 <input
                   id="institution"
@@ -400,7 +410,7 @@ const Register: React.FC = () => {
                   type="text"
                   value={formData.institution}
                   onChange={handleChange}
-                  className="appearance-none relative block w-full pl-10 pr-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                  className="block w-full pl-10 pr-3 py-3 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800/50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white dark:focus:bg-gray-800 transition-all duration-200 sm:text-sm"
                   placeholder="Hospital, clínica ou universidade"
                 />
               </div>
@@ -408,12 +418,12 @@ const Register: React.FC = () => {
 
             {/* Senha */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                 Senha *
               </label>
-              <div className="mt-1 relative">
+              <div className="relative group">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" />
+                  <Lock className="h-5 w-5 text-gray-400 group-focus-within:text-primary transition-colors" />
                 </div>
                 <input
                   id="password"
@@ -422,9 +432,9 @@ const Register: React.FC = () => {
                   required
                   value={formData.password}
                   onChange={handleChange}
-                  className={`appearance-none relative block w-full pl-10 pr-3 py-2 border ${
-                    errors.password ? 'border-red-300' : 'border-gray-300'
-                  } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-primary focus:border-primary sm:text-sm`}
+                  className={`block w-full pl-10 pr-3 py-3 border ${
+                    errors.password ? 'border-red-300 dark:border-red-600' : 'border-gray-200 dark:border-gray-700'
+                  } rounded-xl text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800/50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white dark:focus:bg-gray-800 transition-all duration-200 sm:text-sm`}
                   placeholder="Mínimo 6 caracteres"
                 />
                 <button
@@ -433,25 +443,25 @@ const Register: React.FC = () => {
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
-                    <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                    <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors" />
                   ) : (
-                    <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                    <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors" />
                   )}
                 </button>
               </div>
               {errors.password && (
-                <p className="mt-1 text-sm text-red-600">{errors.password}</p>
+                <p className="mt-1 text-sm text-red-500 font-medium animate-in slide-in-from-top-1">{errors.password}</p>
               )}
             </div>
 
             {/* Confirmar senha */}
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                 Confirmar senha *
               </label>
-              <div className="mt-1 relative">
+              <div className="relative group">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" />
+                  <Lock className="h-5 w-5 text-gray-400 group-focus-within:text-primary transition-colors" />
                 </div>
                 <input
                   id="confirmPassword"
@@ -460,9 +470,9 @@ const Register: React.FC = () => {
                   required
                   value={formData.confirmPassword}
                   onChange={handleChange}
-                  className={`appearance-none relative block w-full pl-10 pr-10 py-2 border ${
-                    errors.confirmPassword ? 'border-red-300' : 'border-gray-300'
-                  } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-primary focus:border-primary sm:text-sm`}
+                  className={`block w-full pl-10 pr-10 py-3 border ${
+                    errors.confirmPassword ? 'border-red-300 dark:border-red-600' : 'border-gray-200 dark:border-gray-700'
+                  } rounded-xl text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800/50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white dark:focus:bg-gray-800 transition-all duration-200 sm:text-sm`}
                   placeholder="Confirme sua senha"
                 />
                 <button
@@ -471,14 +481,14 @@ const Register: React.FC = () => {
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 >
                   {showConfirmPassword ? (
-                    <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                    <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors" />
                   ) : (
-                    <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                    <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors" />
                   )}
                 </button>
               </div>
               {errors.confirmPassword && (
-                <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>
+                <p className="mt-1 text-sm text-red-500 font-medium animate-in slide-in-from-top-1">{errors.confirmPassword}</p>
               )}
             </div>
           </div>
@@ -487,11 +497,11 @@ const Register: React.FC = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-primary-foreground ${
+              className={`group relative w-full flex justify-center py-3.5 px-4 border border-transparent text-sm font-bold rounded-xl text-white ${
                 isSubmitting
                   ? 'bg-gray-400 cursor-not-allowed'
-                  : 'bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary'
-              } transition duration-150 ease-in-out`}
+                  : 'bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary shadow-lg shadow-primary/25 hover:shadow-primary/40 transform hover:-translate-y-0.5'
+              } transition-all duration-200`}
             >
               {isSubmitting ? (
                 <>
@@ -505,11 +515,11 @@ const Register: React.FC = () => {
           </div>
 
           <div className="text-center">
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-600 dark:text-gray-400">
               Já tem uma conta?{' '}
               <Link
                 to="/login"
-                className="font-medium text-accent hover:text-accent/90"
+                className="font-bold text-primary hover:text-primary-dark transition-colors"
               >
                 Faça login aqui
               </Link>

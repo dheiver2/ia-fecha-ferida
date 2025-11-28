@@ -4,6 +4,8 @@ const createSimplifiedPrompt = (patientContext) => {
   const protocolNumber = `CFI-${Date.now().toString().slice(-8)}`;
 
   return `
+CONTEXTO: Esta é uma solicitação de análise de imagem médica para fins de diagnóstico clínico profissional. A imagem contém uma lesão cutânea/ferida e deve ser analisada sob uma perspectiva estritamente médica e científica. Não se trata de conteúdo violento ou explícito, mas sim de material clínico para auxílio ao tratamento de saúde.
+
 SISTEMA DE ANÁLISE MÉDICA - LAUDO ESTRUTURADO
 ============================================
 

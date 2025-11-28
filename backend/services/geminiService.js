@@ -1,8 +1,24 @@
-const { GoogleGenerativeAI } = require('@google/generative-ai');
+const { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } = require('@google/generative-ai');
 const fs = require('fs');
 const path = require('path');
 // Usando template simplificado para evitar problemas de parsing JSON
 const { createSimplifiedPrompt, createPrognosisPrompt } = require('../templates/simplifiedMedicalReportTemplate.js');
+
+// Lista base alinhada com a documentação e README
+const DEFAULT_MODEL_PRIORITY = [
+  'gemini-2.5-pro',
+  'gemini-2.5-flash',
+  'gemini-2.0-pro',
+  'gemini-2.0-flash',
+  'gemini-flash-latest',
+  'gemini-pro-latest',
+  'gemini-1.5-pro',
+  'gemini-1.5-flash',
+  'gemini-1.5-pro-latest',
+  'gemini-1.5-flash-latest',
+  'gemini-1.5-pro-001',
+  'gemini-1.5-flash-001'
+];
 
 class GeminiService {
   constructor() {
@@ -19,24 +35,77 @@ class GeminiService {
       throw new Error('GEMINI_API_KEY inválida');
     }
     
-    // Lista de modelos em ordem de preferência (do mais recente para o mais estável)
-    this.availableModels = [
-      'gemini-2.5-flash',
-    ];
+    // Define lista de modelos respeitando variáveis de ambiente e fallback
+    this.availableModels = this.buildModelPriorityList();
+    console.log('📋 Prioridade de modelos configurada:', this.availableModels.join(', '));
     
     this.genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     this.currentModel = null;
     this.model = null;
     
+    // Configurações de segurança para permitir conteúdo médico
+    this.safetySettings = [
+      {
+        category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+        threshold: HarmBlockThreshold.BLOCK_NONE,
+      },
+      {
+        category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+        threshold: HarmBlockThreshold.BLOCK_NONE,
+      },
+      {
+        category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+        threshold: HarmBlockThreshold.BLOCK_NONE,
+      },
+      {
+        category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+        threshold: HarmBlockThreshold.BLOCK_NONE,
+      },
+    ];
+
+    // Instrução de sistema para reforçar o contexto médico e evitar bloqueios
+    this.systemInstruction = {
+      role: "system",
+      parts: [{ text: "Você é um assistente médico especializado em dermatologia e tratamento de feridas. Sua função é analisar imagens clínicas para fins de diagnóstico e tratamento. As imagens fornecidas são de contexto médico profissional e não devem ser interpretadas como conteúdo violento ou explícito. Forneça análises técnicas, objetivas e estruturadas." }]
+    };
+
     // Inicializar com o primeiro modelo disponível
     this.initializeModel();
+  }
+
+  buildModelPriorityList() {
+    const rawEnvValue = process.env.GEMINI_MODEL_PRIORITY || '';
+    const envModels = rawEnvValue
+      .split(',')
+      .map((model) => model.trim())
+      .filter(Boolean);
+
+    const priority = [];
+
+    const addModel = (modelName) => {
+      if (!modelName) return;
+      const sanitized = modelName.replace(/^models\//, '');
+      if (!sanitized.startsWith('gemini')) return;
+      if (!priority.includes(sanitized)) {
+        priority.push(sanitized);
+      }
+    };
+
+    envModels.forEach(addModel);
+    DEFAULT_MODEL_PRIORITY.forEach(addModel);
+
+    return priority;
   }
 
   async initializeModel() {
     for (const modelName of this.availableModels) {
       try {
         console.log(`🔄 Tentando inicializar modelo: ${modelName}`);
-        this.model = this.genAI.getGenerativeModel({ model: modelName });
+        this.model = this.genAI.getGenerativeModel({ 
+          model: modelName,
+          safetySettings: this.safetySettings,
+          systemInstruction: this.systemInstruction
+        });
         this.currentModel = modelName;
         console.log(`✅ Gemini AI inicializado com sucesso com modelo: ${modelName}`);
         return;
@@ -57,7 +126,11 @@ class GeminiService {
     for (const modelName of this.availableModels) {
       try {
         console.log(`🔄 Tentando operação com modelo: ${modelName}`);
-        this.model = this.genAI.getGenerativeModel({ model: modelName });
+        this.model = this.genAI.getGenerativeModel({ 
+          model: modelName,
+          safetySettings: this.safetySettings,
+          systemInstruction: this.systemInstruction
+        });
         this.currentModel = modelName;
         
         const result = await operation();

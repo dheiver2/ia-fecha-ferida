@@ -93,7 +93,7 @@ const HeroSection = () => {
               />
               
               {/* Floating Cards */}
-              <div className="absolute -left-4 sm:-left-8 top-10 bg-white/90 dark:bg-slate-800/90 p-4 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 animate-bounce duration-[3000ms] backdrop-blur-md max-w-[200px]">
+              <div className="absolute -left-4 sm:-left-8 top-10 bg-white/90 dark:bg-slate-800/90 p-4 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 animate-bounce [animation-duration:3000ms] backdrop-blur-md max-w-[200px]">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
                     <Sparkles className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
@@ -105,7 +105,7 @@ const HeroSection = () => {
                 </div>
               </div>
 
-              <div className="absolute -right-4 sm:-right-8 bottom-20 bg-white/90 dark:bg-slate-800/90 p-4 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 animate-bounce duration-[4000ms] backdrop-blur-md max-w-[200px]">
+              <div className="absolute -right-4 sm:-right-8 bottom-20 bg-white/90 dark:bg-slate-800/90 p-4 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 animate-bounce [animation-duration:4000ms] backdrop-blur-md max-w-[200px]">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
                     <Users className="w-5 h-5 text-blue-600 dark:text-blue-400" />

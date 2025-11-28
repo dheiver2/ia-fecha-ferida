@@ -39,10 +39,10 @@ async function main() {
 
     console.log('✅ Usuário administrador criado com sucesso!');
     console.log('📧 Email:', adminUser.email);
-    console.log('🔑 Senha: admin123');
     console.log('👤 Nome:', adminUser.name);
     console.log('🎭 Role:', adminUser.role);
     console.log('🆔 ID:', adminUser.id);
+    console.log('⚠️  IMPORTANTE: Altere a senha padrão após o primeiro login!');
 
   } catch (error) {
     console.error('❌ Erro ao criar usuário administrador:', error);

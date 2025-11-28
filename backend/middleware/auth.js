@@ -1,4 +1,5 @@
 const authService = require('../services/authService');
+const prisma = require('../database/prismaClient');
 
 // Middleware de autenticação
 const authenticateToken = async (req, res, next) => {
@@ -136,8 +137,6 @@ const canAccessResource = (resourceType) => {
 
                 case 'patient':
                     // Verificar se o paciente pertence ao usuário
-                    const { PrismaClient } = require('@prisma/client');
-                    const prisma = new PrismaClient();
                     const patient = await prisma.patient.findUnique({
                         where: { id: parseInt(resourceId) },
                         select: { userId: true }
@@ -154,8 +153,7 @@ const canAccessResource = (resourceType) => {
 
                 case 'analysis':
                     // Verificar se a análise pertence ao usuário
-                    const prisma2 = new PrismaClient();
-                    const analysis = await prisma2.woundAnalysis.findUnique({
+                    const analysis = await prisma.woundAnalysis.findUnique({
                         where: { id: parseInt(resourceId) },
                         select: { userId: true }
                     });

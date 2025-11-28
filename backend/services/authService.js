@@ -1,12 +1,18 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const prisma = require('../database/prismaClient');
 
 class AuthService {
     constructor() {
-        this.jwtSecret = process.env.JWT_SECRET || 'fecha-ferida-secret-key-2024';
+        // Validar JWT_SECRET obrigatório em produção
+        if (!process.env.JWT_SECRET) {
+            if (process.env.NODE_ENV === 'production') {
+                throw new Error('JWT_SECRET é obrigatório em produção. Configure a variável de ambiente.');
+            }
+            console.warn('⚠️ AVISO: JWT_SECRET não configurado. Usando chave de desenvolvimento (NÃO USE EM PRODUÇÃO)');
+        }
+        this.jwtSecret = process.env.JWT_SECRET || 'dev-only-insecure-key-2024';
         this.jwtExpiration = process.env.JWT_EXPIRATION || '24h';
         this.saltRounds = 12;
     }
@@ -365,7 +371,10 @@ class AuthService {
                 data: { isActive: false }
             });
 
-            console.log(`✅ Senha alterada para usuário ID: ${userId}`);
+            // Log sem expor dados sensíveis
+            if (process.env.NODE_ENV !== 'production') {
+                console.log(`✅ Senha alterada para usuário ID: ${userId}`);
+            }
             
             return { success: true };
 

@@ -8,9 +8,8 @@ const http = require('http');
 const net = require('net');
 require('dotenv').config();
 
-// Importar Prisma Client
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+// Importar Prisma Client (singleton)
+const prisma = require('./database/prismaClient');
 
 // Importar middlewares de autenticação
 const { authenticateToken, extractRequestInfo } = require('./middleware/auth');
@@ -20,10 +19,27 @@ const SimpleSignalingServer = require('./services/simpleSignalingServer');
 
 const app = express();
 const PORT = parseInt(process.env.PORT, 10) || 3001;
+const isProduction = process.env.NODE_ENV === 'production';
 
-// Configuração CORS específica para desenvolvimento
-const corsOptions = {
-	origin: [
+// Helmet - Headers de segurança HTTP
+app.use(helmet({
+	crossOriginResourcePolicy: { policy: 'cross-origin' },
+	contentSecurityPolicy: isProduction ? undefined : false, // Desabilitar CSP em dev
+}));
+
+// Configuração CORS - restritivo em produção
+const getAllowedOrigins = () => {
+	if (isProduction) {
+		// Em produção, usar apenas origens configuradas
+		const origins = [];
+		if (process.env.FRONTEND_URL) origins.push(process.env.FRONTEND_URL);
+		if (process.env.ALLOWED_ORIGINS) {
+			origins.push(...process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim()));
+		}
+		return origins.length > 0 ? origins : false;
+	}
+	// Em desenvolvimento, permitir localhost
+	return [
 		'http://localhost:8080',
 		'http://127.0.0.1:8080',
 		'http://localhost:8081',
@@ -34,8 +50,11 @@ const corsOptions = {
 		'http://127.0.0.1:5173',
 		'http://localhost:4173',
 		'http://127.0.0.1:4173',
-		process.env.FRONTEND_URL || 'http://localhost:5173'
-	],
+	];
+};
+
+const corsOptions = {
+	origin: getAllowedOrigins(),
 	credentials: true,
 	methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 	allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
@@ -47,7 +66,7 @@ app.use(cors(corsOptions));
 // Rate limiting - Configuração mais permissiva para desenvolvimento
 const limiter = rateLimit({
 	windowMs: 15 * 60 * 1000, // 15 minutos
-	max: process.env.NODE_ENV === 'production' ? 100 : 1000, // 1000 requests em dev, 100 em produção
+	max: isProduction ? 100 : 1000, // 1000 requests em dev, 100 em produção
 	message: {
 		success: false,
 		message: 'Muitas tentativas. Tente novamente em 15 minutos.',
@@ -55,11 +74,11 @@ const limiter = rateLimit({
 	},
 	standardHeaders: true,
 	legacyHeaders: false,
-	trustProxy: false, // Desabilitar proxy em desenvolvimento
+	trustProxy: isProduction, // Habilitar proxy apenas em produção
 	skip: (req) => {
-		// Pular rate limiting para localhost em desenvolvimento
+		// Pular rate limiting para localhost apenas em desenvolvimento
 		if (
-			process.env.NODE_ENV !== 'production' &&
+			!isProduction &&
 			(req.ip === '127.0.0.1' || req.ip === '::1' || req.ip.includes('localhost'))
 		) {
 			return true;
@@ -68,22 +87,27 @@ const limiter = rateLimit({
 	},
 });
 
-// authLimiter removido para desenvolvimento - sem limite de tentativas de login
-// const authLimiter = rateLimit({
-//   windowMs: 15 * 60 * 1000, // 15 minutos
-//   max: 5, // máximo 5 tentativas de login por IP por janela
-//   message: {
-//     success: false,
-//     message: 'Muitas tentativas de login. Tente novamente em 15 minutos.',
-//     code: 'AUTH_RATE_LIMIT_EXCEEDED'
-//   }
-// });
+// Rate limiting específico para autenticação (proteção contra força bruta)
+const authLimiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutos
+	max: isProduction ? 5 : 100, // 5 tentativas em produção, 100 em dev
+	message: {
+		success: false,
+		message: 'Muitas tentativas de login. Tente novamente em 15 minutos.',
+		code: 'AUTH_RATE_LIMIT_EXCEEDED'
+	},
+	standardHeaders: true,
+	legacyHeaders: false,
+	skipSuccessfulRequests: true, // Não contar requisições bem-sucedidas
+});
 
 app.use(limiter);
 
-// Middleware básico - Configuração CORS simplificada e segura
-console.log('DEBUG - ALLOWED_ORIGINS env var:', process.env.ALLOWED_ORIGINS);
-console.log('DEBUG - FRONTEND_URL env var:', process.env.FRONTEND_URL);
+// Logs de debug apenas em desenvolvimento
+if (!isProduction) {
+	console.log('DEBUG - ALLOWED_ORIGINS env var:', process.env.ALLOWED_ORIGINS);
+	console.log('DEBUG - FRONTEND_URL env var:', process.env.FRONTEND_URL);
+}
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
@@ -144,9 +168,9 @@ async function initializeDatabase() {
 	}
 }
 
-// Rotas de autenticação (rate limiting removido para desenvolvimento)
-// app.use('/api/auth/login', authLimiter);
-// app.use('/api/auth/register', authLimiter);
+// Rotas de autenticação com rate limiting para proteção contra força bruta
+app.use('/api/auth/login', authLimiter);
+app.use('/api/auth/register', authLimiter);
 app.use('/api/auth', authRoutes);
 
 // Rotas de pacientes

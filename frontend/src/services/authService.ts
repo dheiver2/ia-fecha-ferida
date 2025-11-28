@@ -1,23 +1,21 @@
 import axios from 'axios';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const isDevelopment = import.meta.env.DEV;
 
-// DEBUG: Log da configuração de ambiente e baseURL
-console.log('[AuthService] Ambiente', {
-  VITE_API_URL: import.meta.env.VITE_API_URL,
-  API_BASE_URL,
-  isProd: import.meta.env.PROD,
-  locationOrigin: typeof window !== 'undefined' ? window.location.origin : 'server'
-});
+// Log apenas em desenvolvimento
+if (isDevelopment) {
+  console.log('[AuthService] Ambiente', {
+    VITE_API_URL: import.meta.env.VITE_API_URL,
+    API_BASE_URL,
+  });
+}
 
 // Configurar axios com interceptors
 const api = axios.create({
   baseURL: API_BASE_URL,
   timeout: 10000,
 });
-
-// DEBUG: Confirmação da instância axios
-console.log('[AuthService] Axios instance criada com baseURL=', api.defaults.baseURL);
 
 // Interceptor para adicionar token automaticamente
 api.interceptors.request.use(
@@ -26,18 +24,10 @@ api.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    // DEBUG: Log da request
-    console.log('[AuthService] Request', {
-      method: config.method,
-      url: config.url,
-      baseURL: config.baseURL,
-      fullUrl: `${config.baseURL || ''}${config.url || ''}`,
-      headers: config.headers
-    });
     return config;
   },
   (error) => {
-    console.error('[AuthService] Request error', error);
+    if (isDevelopment) console.error('[AuthService] Request error', error);
     return Promise.reject(error);
   }
 );
@@ -45,22 +35,16 @@ api.interceptors.request.use(
 // Interceptor para tratar respostas e erros de autenticação
 api.interceptors.response.use(
   (response) => {
-    // DEBUG: Log da response
-    console.log('[AuthService] Response OK', {
-      status: response.status,
-      url: response.config?.url,
-      data: response.data
-    });
     return response;
   },
   (error) => {
-    // DEBUG: Log detalhado do erro
-    console.error('[AuthService] Response error', {
-      message: error.message,
-      status: error.response?.status,
-      url: error.config?.url,
-      data: error.response?.data
-    });
+    if (isDevelopment) {
+      console.error('[AuthService] Response error', {
+        message: error.message,
+        status: error.response?.status,
+        url: error.config?.url,
+      });
+    }
     if (error.response?.status === 401) {
       // Token expirado ou inválido
       localStorage.removeItem('auth_token');
